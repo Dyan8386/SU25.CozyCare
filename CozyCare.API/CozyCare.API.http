@@ -1,6 +1,0 @@
-@CozyCare.API_HostAddress = http://localhost:5234
-
-GET {{CozyCare.API_HostAddress}}/weatherforecast/
-Accept: application/json
-
-###
