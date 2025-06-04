@@ -20,11 +20,11 @@ namespace CozyCare.API.Extentions
             return services;
         }
 
-        //public static IServiceCollection AddDbFactory(this IServiceCollection services)
-        //{
-        //    //services.AddScoped<IDbFactory, DbFactory>();
-        //    //return services;
-        //}
+        public static IServiceCollection AddDbFactory(this IServiceCollection services)
+        {
+            services.AddScoped<IDbFactory, DbFactory>();
+            return services;
+        }
 
         public static IServiceCollection AddServices(this IServiceCollection services)
         {

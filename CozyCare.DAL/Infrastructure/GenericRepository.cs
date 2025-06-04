@@ -1,17 +1,44 @@
 ﻿using CozyCare.DAL.DBContext;
 using Microsoft.EntityFrameworkCore;
+using System.Linq.Expressions;
 
 namespace CozyCare.DAL.Infrastructure
 {
     public class GenericRepository<T> : IGenericRepository<T> where T : class
     {
-        protected readonly CozyCareContext _context;
-        protected readonly DbSet<T> _dbSet;
+        private readonly DbContext _context;
+        private readonly DbSet<T> _dbSet;
 
-        public GenericRepository(CozyCareContext context)
+        public GenericRepository(DbContext context)
         {
             _context = context;
-            _dbSet = context.Set<T>();
+            _dbSet = _context.Set<T>();
+        }
+
+        public async Task<T?> GetByIdAsync(object id)
+        {
+            return await _dbSet.FindAsync(id);
+        }
+
+        public async Task<IEnumerable<T>> GetAllAsync(string? includeProperties = null)
+        {
+            IQueryable<T> query = _dbSet;
+            query = ApplyIncludeProperties(query, includeProperties);
+            return await query.ToListAsync();
+        }
+
+        public async Task<T?> GetFirstOrDefaultAsync(Expression<Func<T, bool>> filter, string? includeProperties = null)
+        {
+            IQueryable<T> query = _dbSet.Where(filter);
+            query = ApplyIncludeProperties(query, includeProperties);
+            return await query.FirstOrDefaultAsync();
+        }
+
+        public async Task<IEnumerable<T>> SearchAsync(Expression<Func<T, bool>> filter, string? includeProperties = null)
+        {
+            IQueryable<T> query = _dbSet.Where(filter);
+            query = ApplyIncludeProperties(query, includeProperties);
+            return await query.ToListAsync();
         }
 
         public async Task AddAsync(T entity)
@@ -24,30 +51,48 @@ namespace CozyCare.DAL.Infrastructure
             await _dbSet.AddRangeAsync(entities);
         }
 
-        public async Task<IEnumerable<T>> GetAllAsync()
-        {
-            return await _dbSet.ToListAsync();
-        }
-
-        public async Task<T?> GetByIdAsync(int id)
-        {
-            return await _dbSet.FindAsync(id);
-        }
-
-        public async Task<T?> GetByIdAsync(string id)
-        {
-            return await _dbSet.FindAsync(id);
-        }
-
-        public void Remove(T entity)
-        {
-            _dbSet.Remove(entity);
-        }
-
         public void Update(T entity)
         {
-            _dbSet.Attach(entity);
-            _context.Entry(entity).State = EntityState.Modified;
+            _dbSet.Update(entity);
+        }
+
+        public void UpdateRange(IEnumerable<T> entities)
+        {
+            _dbSet.UpdateRange(entities);
+        }
+
+        public async Task Remove(object id)
+        {
+            var entity = await _dbSet.FindAsync(id);
+            if (entity != null)
+            {
+                _dbSet.Remove(entity);
+            }
+        }
+
+        public async Task RemoveRangeById(IEnumerable<object> ids)
+        {
+            foreach (var id in ids)
+            {
+                var entity = await _dbSet.FindAsync(id);
+                if (entity != null)
+                {
+                    _dbSet.Remove(entity);
+                }
+            }
+        }
+
+        // Helper method to apply eager loading (navigation properties)
+        private IQueryable<T> ApplyIncludeProperties(IQueryable<T> query, string? includeProperties)
+        {
+            if (!string.IsNullOrWhiteSpace(includeProperties))
+            {
+                foreach (var includeProperty in includeProperties.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
+                {
+                    query = query.Include(includeProperty.Trim());
+                }
+            }
+            return query;
         }
     }
 }

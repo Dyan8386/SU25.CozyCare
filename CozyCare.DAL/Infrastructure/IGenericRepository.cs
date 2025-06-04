@@ -9,11 +9,16 @@ namespace CozyCare.DAL.Infrastructure
 {
 	public interface IGenericRepository<T> where T : class
 	{
-        Task<T?> GetByIdAsync(int id);
-        Task<T?> GetByIdAsync(string id);
-        Task<IEnumerable<T>> GetAllAsync();
+        Task<IEnumerable<T>> SearchAsync(Expression<Func<T, bool>> filter,
+                                     string? includeProperties = null);
+        Task<T?> GetByIdAsync(object id);
+        Task<IEnumerable<T>> GetAllAsync(string? includeProperties = null);
         Task AddAsync(T entity);
+        Task AddRangeAsync(IEnumerable<T> entities);
         void Update(T entity);
-        void Remove(T entity);
+        void UpdateRange(IEnumerable<T> entities);
+        Task Remove(object id);
+        Task RemoveRangeById(IEnumerable<object> ids);
+        Task<T?> GetFirstOrDefaultAsync(Expression<Func<T, bool>> filter, string? includeProperties = null);
     }
 }
