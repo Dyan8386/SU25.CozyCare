@@ -1,6 +1,8 @@
 ﻿using CozyCare.API.Constants;
 using CozyCare.API.Middlewares;
 using CozyCare.BLL.Errors;
+using CozyCare.BLL.Services.Implements;
+using CozyCare.BLL.Services.Interfaces;
 using CozyCare.BLL.Utils;
 using CozyCare.DAL.Infrastructure;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -28,7 +30,7 @@ namespace CozyCare.API.Extentions
 
         public static IServiceCollection AddServices(this IServiceCollection services)
         {
-            //services.AddScoped<ICategoryService, CategoryService>();
+            services.AddScoped<ICategoryService, CategoryService>();
             //services.AddScoped<IAuthenticationService, AuthenticationService>();
             //services.AddScoped<IAccountService, AccountService>();
             //services.AddScoped<IServiceHomeService, ServiceHomeService>();

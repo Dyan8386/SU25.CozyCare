@@ -49,9 +49,10 @@ namespace CozyCare.BLL.Utils
         public static string GetErrorsString(ValidationResult validationResult)
         {
             List<ErrorDetail> errors = new List<ErrorDetail>();
+            ErrorDetail? errorDetail;
             foreach (var error in validationResult.Errors)
             {
-                ErrorDetail errorDetail = errors.FirstOrDefault(x => x.FieldNameError.Equals(error.PropertyName));
+                errorDetail = errors.FirstOrDefault(x => x.FieldNameError.Equals(error.PropertyName));
                 if (errorDetail == null)
                 {
                     List<string> descriptionError = new List<string>();

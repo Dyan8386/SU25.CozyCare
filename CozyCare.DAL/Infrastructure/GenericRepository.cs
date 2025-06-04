@@ -27,16 +27,26 @@ namespace CozyCare.DAL.Infrastructure
             return await query.ToListAsync();
         }
 
-        public async Task<T?> GetFirstOrDefaultAsync(Expression<Func<T, bool>> filter, string? includeProperties = null)
+        public async Task<T?> GetFirstOrDefaultAsync(Expression<Func<T, bool>>? filter, string? includeProperties = null)
         {
-            IQueryable<T> query = _dbSet.Where(filter);
+            IQueryable<T> query = _dbSet;
+
+            if (filter != null)
+            {
+                query = query.Where(filter);
+            }
             query = ApplyIncludeProperties(query, includeProperties);
             return await query.FirstOrDefaultAsync();
         }
 
-        public async Task<IEnumerable<T>> SearchAsync(Expression<Func<T, bool>> filter, string? includeProperties = null)
+        public async Task<IEnumerable<T>> SearchAsync(Expression<Func<T, bool>>? filter, string? includeProperties = null)
         {
-            IQueryable<T> query = _dbSet.Where(filter);
+            IQueryable<T> query = _dbSet;
+
+            if (filter != null)
+            {
+                query = query.Where(filter);
+            }
             query = ApplyIncludeProperties(query, includeProperties);
             return await query.ToListAsync();
         }
@@ -61,7 +71,7 @@ namespace CozyCare.DAL.Infrastructure
             _dbSet.UpdateRange(entities);
         }
 
-        public async Task Remove(object id)
+        public async Task RemoveAsync(object id)
         {
             var entity = await _dbSet.FindAsync(id);
             if (entity != null)
@@ -70,7 +80,7 @@ namespace CozyCare.DAL.Infrastructure
             }
         }
 
-        public async Task RemoveRangeById(IEnumerable<object> ids)
+        public async Task RemoveRangeByIdAsync(IEnumerable<object> ids)
         {
             foreach (var id in ids)
             {
