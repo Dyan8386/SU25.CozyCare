@@ -4,6 +4,8 @@ using CozyCare.BLL.Errors;
 using CozyCare.BLL.Services.Implements;
 using CozyCare.BLL.Services.Interfaces;
 using CozyCare.BLL.Utils;
+using CozyCare.BLL.Services.Implements;
+using CozyCare.BLL.Services.Interfaces;
 using CozyCare.DAL.Infrastructure;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
@@ -22,24 +24,25 @@ namespace CozyCare.API.Extentions
             return services;
         }
 
-        public static IServiceCollection AddDbFactory(this IServiceCollection services)
-        {
-            services.AddScoped<IDbFactory, DbFactory>();
-            return services;
-        }
+        //public static IServiceCollection AddDbFactory(this IServiceCollection services)
+        //{
+        //    //services.AddScoped<IDbFactory, DbFactory>();
+        //    //return services;
+        //}
 
         public static IServiceCollection AddServices(this IServiceCollection services)
         {
             services.AddScoped<ICategoryService, CategoryService>();
             //services.AddScoped<IAuthenticationService, AuthenticationService>();
             //services.AddScoped<IAccountService, AccountService>();
-            //services.AddScoped<IServiceHomeService, ServiceHomeService>();
+            services.AddScoped<IHomeServiceService, HomeServiceService>();
+            services.AddScoped<IHomeServiceDetailService, HomeServiceDetailService>();
             //services.AddScoped<IPaymentService, PaymentService>();
             //services.AddScoped<IReportService, ReportService>();
             //services.AddScoped<IReviewService, ReviewService>();
             //services.AddScoped<IVnpay, Vnpay>();
-            //services.AddScoped<IBookingService, BookingService>();
-            //services.AddScoped<IBookingDetailService, BookingDetailService>();
+            services.AddScoped<IBookingService, BookingService>();
+            services.AddScoped<IBookingDetailService, BookingDetailService>();
             //services.AddScoped<IServiceDetailService, ServiceDetailService>();
             //services.AddScoped<IPromotionService, PromotionService>();
             //services.AddScoped<IScheduleAssignService , ScheduleAssignService>();
