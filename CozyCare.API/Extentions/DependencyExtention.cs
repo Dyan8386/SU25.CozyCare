@@ -4,8 +4,6 @@ using CozyCare.BLL.Errors;
 using CozyCare.BLL.Services.Implements;
 using CozyCare.BLL.Services.Interfaces;
 using CozyCare.BLL.Utils;
-using CozyCare.BLL.Services.Implements;
-using CozyCare.BLL.Services.Interfaces;
 using CozyCare.DAL.Infrastructure;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
