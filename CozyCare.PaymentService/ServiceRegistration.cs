@@ -1,5 +1,4 @@
-﻿using CozyCare.CatalogService.Infrastructure.DBContext;
-using CozyCare.CatalogService.Infrastructure;
+﻿
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
