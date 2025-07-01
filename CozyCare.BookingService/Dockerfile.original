@@ -13,8 +13,6 @@ FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 COPY ["CozyCare.BookingService/CozyCare.BookingService.csproj", "CozyCare.BookingService/"]
-COPY ["CozyCare.Persistence/CozyCare.Persistence.csproj", "CozyCare.Persistence/"]
-COPY ["CozyCare.SharedKernel/CozyCare.SharedKernel.csproj", "CozyCare.SharedKernel/"]
 RUN dotnet restore "./CozyCare.BookingService/CozyCare.BookingService.csproj"
 COPY . .
 WORKDIR "/src/CozyCare.BookingService"

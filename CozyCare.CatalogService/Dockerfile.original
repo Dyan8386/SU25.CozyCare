@@ -12,21 +12,19 @@ EXPOSE 8081
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
-COPY ["CozyCare.BookingService/CozyCare.BookingService.csproj", "CozyCare.BookingService/"]
-COPY ["CozyCare.Persistence/CozyCare.Persistence.csproj", "CozyCare.Persistence/"]
-COPY ["CozyCare.SharedKernel/CozyCare.SharedKernel.csproj", "CozyCare.SharedKernel/"]
-RUN dotnet restore "./CozyCare.BookingService/CozyCare.BookingService.csproj"
+COPY ["CozyCare.CatalogService/CozyCare.CatalogService.csproj", "CozyCare.CatalogService/"]
+RUN dotnet restore "./CozyCare.CatalogService/CozyCare.CatalogService.csproj"
 COPY . .
-WORKDIR "/src/CozyCare.BookingService"
-RUN dotnet build "./CozyCare.BookingService.csproj" -c $BUILD_CONFIGURATION -o /app/build
+WORKDIR "/src/CozyCare.CatalogService"
+RUN dotnet build "./CozyCare.CatalogService.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
 # This stage is used to publish the service project to be copied to the final stage
 FROM build AS publish
 ARG BUILD_CONFIGURATION=Release
-RUN dotnet publish "./CozyCare.BookingService.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
+RUN dotnet publish "./CozyCare.CatalogService.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
 
 # This stage is used in production or when running from VS in regular mode (Default when not using the Debug configuration)
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "CozyCare.BookingService.dll"]
+ENTRYPOINT ["dotnet", "CozyCare.CatalogService.dll"]
