@@ -45,7 +45,27 @@ namespace CozyCare.Persistence
 
             return await query.FirstOrDefaultAsync();
         }
+        public async Task<IEnumerable<T>>? SearchAsync(Expression<Func<T, bool>> filter,
+                                              Func<IQueryable<T>, IOrderedQueryable<T>>? orderBy,
+                                              string? includeProperties = null)
+        {
+            IQueryable<T> query = _dbSet.Where(filter);
 
+            if (!string.IsNullOrEmpty(includeProperties))
+            {
+                foreach (var includeProperty in includeProperties.Split(',', StringSplitOptions.RemoveEmptyEntries))
+                {
+                    query = query.Include(includeProperty);
+                }
+            }
+
+            if (orderBy != null)
+            {
+                query = orderBy(query);
+            }
+
+            return await query.ToListAsync();
+        }
         public async Task AddAsync(T entity) => await _dbSet.AddAsync(entity);
 
         public void Update(T entity) => _dbSet.Update(entity);
