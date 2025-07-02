@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
@@ -31,8 +31,12 @@
 	  <Folder Include="Controllers\" />
 	</ItemGroup>
 	<ItemGroup>
-	  <ProjectReference Include="..\CozyCare.Persistence\CozyCare.Persistence.csproj" />
-	  <ProjectReference Include="..\CozyCare.SharedKernel\CozyCare.SharedKernel.csproj" />
+	  <ProjectReference Include="..\CozyCare.Persistence\CozyCare.Persistence.csproj">
+	    <Private>True</Private>
+	  </ProjectReference>
+	  <ProjectReference Include="..\CozyCare.SharedKernel\CozyCare.SharedKernel.csproj">
+	    <Private>True</Private>
+	  </ProjectReference>
 	</ItemGroup>
 
 </Project>

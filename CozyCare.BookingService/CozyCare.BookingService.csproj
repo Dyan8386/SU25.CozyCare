@@ -29,8 +29,12 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <ProjectReference Include="..\CozyCare.Persistence\CozyCare.Persistence.csproj" />
-	  <ProjectReference Include="..\CozyCare.SharedKernel\CozyCare.SharedKernel.csproj" />
+	  <ProjectReference Include="..\CozyCare.Persistence\CozyCare.Persistence.csproj">
+	    <Private>True</Private>
+	  </ProjectReference>
+	  <ProjectReference Include="..\CozyCare.SharedKernel\CozyCare.SharedKernel.csproj">
+	    <Private>True</Private>
+	  </ProjectReference>
 	</ItemGroup>
 
 </Project>

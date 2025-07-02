@@ -1,7 +1,7 @@
 ﻿using CozyCare.SharedKernel.Store;
 using CozyCare.SharedKernel.Utils;
 
-namespace CozyCare.SharedKernelS.Base
+namespace CozyCare.SharedKernel.Base
 {
     public class BaseResponse<T>
     {
