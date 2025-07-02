@@ -1,0 +1,6 @@
+@CozyCare.PaymentService_HostAddress = http://localhost:5232
+
+GET {{CozyCare.PaymentService_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

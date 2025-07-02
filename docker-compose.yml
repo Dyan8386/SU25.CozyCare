@@ -1,0 +1,110 @@
+services:
+  cozycare.identityservice:
+    build:
+      context: ../CozyCare.IdentityService
+      dockerfile: Dockerfile
+    image: cozycare.identityservice
+    ports:
+      - "5001:80"
+    depends_on:
+      - identity.db
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__DefaultConnection=Server=identity.db;Database=IdentityDb;User=sa;Password=Your_password123;
+
+  identity.db:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: identity.db
+    environment:
+      - SA_PASSWORD=Your_password123
+      - ACCEPT_EULA=Y
+    ports:
+      - "14331:1433"
+
+  cozycare.catalogservice:
+    build:
+      context: ../CozyCare.CatalogService
+      dockerfile: Dockerfile
+    image: cozycare.catalogservice
+    ports:
+      - "5002:80"
+    depends_on:
+      - catalog.db
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__DefaultConnection=Server=catalog.db;Database=CatalogDb;User=sa;Password=Your_password123;
+
+  catalog.db:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: catalog.db
+    environment:
+      - SA_PASSWORD=Your_password123
+      - ACCEPT_EULA=Y
+    ports:
+      - "14332:1433"
+
+  cozycare.bookingservice:
+    build:
+      context: ../CozyCare.BookingService
+      dockerfile: Dockerfile
+    image: cozycare.bookingservice
+    ports:
+      - "5003:80"
+    depends_on:
+      - booking.db
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__DefaultConnection=Server=booking.db;Database=BookingDb;User=sa;Password=Your_password123;
+
+  booking.db:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: booking.db
+    environment:
+      - SA_PASSWORD=Your_password123
+      - ACCEPT_EULA=Y
+    ports:
+      - "14333:1433"
+
+  cozycare.jobservice:
+    build:
+      context: ../CozyCare.JobService
+      dockerfile: Dockerfile
+    image: cozycare.jobservice
+    ports:
+      - "5004:80"
+    depends_on:
+      - job.db
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__DefaultConnection=Server=job.db;Database=JobDb;User=sa;Password=Your_password123;
+
+  job.db:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: job.db
+    environment:
+      - SA_PASSWORD=Your_password123
+      - ACCEPT_EULA=Y
+    ports:
+      - "14334:1433"
+
+  cozycare.paymentservice:
+    build:
+      context: ../CozyCare.PaymentService
+      dockerfile: Dockerfile
+    image: cozycare.paymentservice
+    ports:
+      - "5005:80"
+    depends_on:
+      - payment.db
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__DefaultConnection=Server=payment.db;Database=PaymentDb;User=sa;Password=Your_password123;
+
+  payment.db:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: payment.db
+    environment:
+      - SA_PASSWORD=Your_password123
+      - ACCEPT_EULA=Y
+    ports:
+      - "14335:1433"
