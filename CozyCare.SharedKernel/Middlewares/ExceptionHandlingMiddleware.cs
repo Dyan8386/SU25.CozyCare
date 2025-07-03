@@ -27,7 +27,12 @@ namespace CozyCare.SharedKernel.Middlewares
             catch (BaseException.ErrorException ex)
             {
                 _logger.LogWarning("[Handled] ErrorException: {Message}", ex.ErrorDetail?.ErrorMessage?.ToString());
-                await WriteJsonResponseAsync(context, ex.StatusCode, ex.ErrorDetail);
+                await WriteJsonResponseAsync(context, ex.StatusCode, ex.ErrorDetail ?? new BaseException.ErrorDetail
+                {
+                    ErrorCode = "unknown_error",
+                    ErrorMessage = "An unknown error occurred."
+                });
+
             }
             catch (BaseException.CoreException ex)
             {
@@ -51,6 +56,7 @@ namespace CozyCare.SharedKernel.Middlewares
 
         private static async Task WriteJsonResponseAsync(HttpContext context, int statusCode, BaseException.ErrorDetail errorDetail)
         {
+            ArgumentNullException.ThrowIfNull(errorDetail);
             context.Response.ContentType = "application/json";
             context.Response.StatusCode = statusCode;
 
