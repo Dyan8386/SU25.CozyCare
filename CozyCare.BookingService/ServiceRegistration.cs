@@ -3,6 +3,9 @@ using CozyCare.BookingService.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using CozyCare.BookingService.Applications.Interfaces;
+using CozyCare.BookingService.Applications.Services;
+
 
 namespace CozyCare.BookingService;
 
@@ -17,6 +20,13 @@ public static class ServiceRegistration
         // Đăng ký UnitOfWork
         services.AddScoped<IBookingUnitOfWork, BookingUnitOfWork>();
 
+		// Đăng ký các dịch vụ liên quan đến Booking
+		services.AddScoped<IBookingService, Applications.Services.BookingService>();
+		services.AddScoped<IBookingDetailService, BookingDetailService>();
+		services.AddScoped<IBookingStatusService, BookingStatusService>();
+
+		//Đăng ký Profile 
+		services.AddAutoMapper(typeof(ServiceRegistration).Assembly);
         return services;
     }
 }
