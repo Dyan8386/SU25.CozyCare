@@ -2,19 +2,19 @@
 {
 	public class BookingRequest
 	{
-		public string bookingNumber { get; set; }
+		public string? bookingNumber { get; set; }
 
 		public int customerId { get; set; }
 
-		public string promotionCode { get; set; }
+		public string? promotionCode { get; set; }
 
 		public DateTime? bookingDate { get; set; }
 
-		public DateTime deadline { get; set; }
+		public DateTime? deadline { get; set; }
 
 		public decimal totalAmount { get; set; }
 
-		public string notes { get; set; }
+		public string? notes { get; set; }
 
 		public int bookingStatusId { get; set; }
 
