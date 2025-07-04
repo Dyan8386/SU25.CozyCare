@@ -12,17 +12,26 @@ namespace CozyCare.CatalogService.Application.Profiles
             // Category Mappings
             CreateMap<Category, CategoryDto>().ReverseMap();
             CreateMap<CreateCategoryDto, Category>();
-            CreateMap<UpdateCategoryDto, Category>();
+            CreateMap<UpdateCategoryDto, Category>()
+                .ForAllMembers(opts =>
+                    opts.Condition((src, dest, srcMember) => srcMember != null)
+                );
 
             // Service Mappings
             CreateMap<Service, ServiceDto>().ReverseMap();
             CreateMap<CreateServiceDto, Service>();
-            CreateMap<UpdateServiceDto, Service>();
+            CreateMap<UpdateServiceDto, Service>()
+                .ForAllMembers(opts =>
+                    opts.Condition((src, dest, srcMember) => srcMember != null)
+                );
 
             // ServiceDetail Mappings
             CreateMap<ServiceDetail, ServiceDetailDto>().ReverseMap();
             CreateMap<CreateServiceDetailDto, ServiceDetail>();
-            CreateMap<UpdateServiceDetailDto, ServiceDetail>();
+            CreateMap<UpdateServiceDetailDto, ServiceDetail>()
+                .ForAllMembers(opts =>
+                    opts.Condition((src, dest, srcMember) => srcMember != null)
+                );
         }
     }
 }
