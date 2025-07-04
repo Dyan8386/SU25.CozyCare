@@ -1,4 +1,5 @@
 ﻿using CozyCare.SharedKernel.Middlewares;
+using CozyCare.SharedKernel.Utils;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -12,7 +13,13 @@ namespace CozyCare.SharedKernel.DependencyInjection
         public static IServiceCollection AddSharedServices<TContext>(this IServiceCollection services, IConfiguration config, string fileName) where TContext : DbContext
         {
             services.AddDbContext<TContext>(option => option.UseSqlServer(config.GetConnectionString("DefaultConnection"), sqlserverOption => sqlserverOption.EnableRetryOnFailure()));
-           
+
+            services.AddControllers()
+                .AddJsonOptions(options =>
+                {
+                    options.JsonSerializerOptions.Converters.Add(new FlexibleDateTimeJsonConverter());
+                });
+
             // configure Serilog logging
             Log.Logger = new LoggerConfiguration()
                 .MinimumLevel.Information()
