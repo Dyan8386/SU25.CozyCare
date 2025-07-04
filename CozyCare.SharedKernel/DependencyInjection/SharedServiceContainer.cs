@@ -35,7 +35,7 @@ namespace CozyCare.SharedKernel.DependencyInjection
             app.UseMiddleware<ExceptionHandlingMiddleware>();
 
             //Register Middleware to block all outsiders API calls
-            app.UseMiddleware<ListenToOnlyApiGateway>();
+            //app.UseMiddleware<ListenToOnlyApiGateway>();
 
             return app;
         }
