@@ -1,6 +1,0 @@
-@CozyCare.BookingService_HostAddress = http://localhost:5223
-
-GET {{CozyCare.BookingService_HostAddress}}/weatherforecast/
-Accept: application/json
-
-###
