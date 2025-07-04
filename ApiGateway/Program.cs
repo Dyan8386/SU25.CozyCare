@@ -1,4 +1,7 @@
+using ApiGateway.Middleware;
+using CozyCare.SharedKernel.DependencyInjection;
 using CozyCare.SharedKernel.Middlewares;
+using Ocelot.Cache.CacheManager;
 using Ocelot.DependencyInjection;
 using Ocelot.Middleware;
 
@@ -8,19 +11,26 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Configuration.AddJsonFile("ocelot.json", optional: false, reloadOnChange: true);
 
 // Add Ocelot
-builder.Services.AddOcelot(builder.Configuration);
+builder.Services.AddOcelot().AddCacheManager(x => x.WithDictionaryHandle());
+
+JWTAuthenticationScheme.AddJWTAuthenticationScheme(builder.Services, builder.Configuration);
+
+builder.Services.AddCors(options =>
+{
+    options.AddDefaultPolicy(builder =>
+    {
+        builder.AllowAnyHeader()
+        .AllowAnyMethod()
+        .AllowAnyOrigin();
+    });
+});
 
 var app = builder.Build();
 
-// Use global exception handler
-app.UseMiddleware<ExceptionHandlingMiddleware>();
-
+app.UseCors();
 app.UseHttpsRedirection();
-
-// No need for Swagger or controllers in Gateway unless explicitly used
-app.UseAuthorization();
-
+app.UseMiddleware<AttachSignatureToRequest>();
 // Must be the last middleware before Run
-await app.UseOcelot();
+app.UseOcelot().Wait();
 
 app.Run();
