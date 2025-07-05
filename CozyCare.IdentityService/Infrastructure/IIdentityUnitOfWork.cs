@@ -1,4 +1,5 @@
 ﻿using CozyCare.IdentityService.Domain.Entities;
+using CozyCare.IdentityService.Infrastructure.Repositories;
 using CozyCare.Persistence;
 
 namespace CozyCare.IdentityService.Infrastructure
@@ -8,5 +9,6 @@ namespace CozyCare.IdentityService.Infrastructure
         IGenericRepository<Account> Accounts { get; }
         IGenericRepository<Role> Roles { get; }
         IGenericRepository<AccountStatus> AccountStatuses { get; }
+        IAuthenticationRepository Authentications { get; }
     }
 }
