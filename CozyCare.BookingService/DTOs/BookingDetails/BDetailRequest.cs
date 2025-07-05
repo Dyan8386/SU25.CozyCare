@@ -6,7 +6,7 @@
 
 		public int serviceId { get; set; }
 
-		public DateTime scheduleDatetime { get; set; }
+		public DateTime? scheduleDatetime { get; set; }
 
 		public int quantity { get; set; }
 
