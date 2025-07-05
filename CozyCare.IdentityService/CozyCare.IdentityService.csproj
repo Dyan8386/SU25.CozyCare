@@ -9,6 +9,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="15.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.17" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="8.0.17" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.17" />
@@ -38,6 +39,7 @@
     <ProjectReference Include="..\CozyCare.SharedKernel\CozyCare.SharedKernel.csproj">
       <Private>True</Private>
     </ProjectReference>
+    <ProjectReference Include="..\CozyCare.ViewModels\CozyCare.ViewModels.csproj" />
   </ItemGroup>
 
   <ItemGroup>
