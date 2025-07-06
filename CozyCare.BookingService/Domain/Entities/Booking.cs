@@ -39,7 +39,10 @@ public partial class Booking
 
     public int paymentStatusId { get; set; }
 
-    [InverseProperty("booking")]
+	[StringLength(400)] // Adjust the length as needed
+	public string address { get; set; } // Add the Address field
+
+	[InverseProperty("booking")]
     public virtual ICollection<BookingDetail> BookingDetails { get; set; } = new List<BookingDetail>();
 
     [ForeignKey("bookingStatusId")]

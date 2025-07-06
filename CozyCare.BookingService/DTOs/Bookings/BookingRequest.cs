@@ -19,5 +19,8 @@
 		public int bookingStatusId { get; set; }
 
 		public int paymentStatusId { get; set; }
+
+		public string? address { get; set; } // Add the Address field
+
 	}
 }
