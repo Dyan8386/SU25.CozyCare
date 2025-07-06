@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using CozyCare.BookingService.Applications.Interfaces;
+using CozyCare.BookingService.Domain.Entities;
 using CozyCare.BookingService.DTOs.BookingDetails;
 using CozyCare.BookingService.Infrastructure;
 using CozyCare.SharedKernel.Base;
@@ -37,7 +38,7 @@ namespace CozyCare.BookingService.Applications.Services
 
 		public async Task<BaseResponse<BDetailResponse>> CreateBookingDetailAsync(BDetailRequest request)
 		{
-			var bookingDetail = _mapper.Map<Domain.Entities.BookingDetail>(request);
+			var bookingDetail = _mapper.Map<BookingDetail>(request);
 			await _unitOfWork.BookingDetails.AddAsync(bookingDetail);
 			await _unitOfWork.SaveChangesAsync();
 			var response = _mapper.Map<BDetailResponse>(bookingDetail);
