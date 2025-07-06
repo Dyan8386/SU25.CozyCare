@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using CozyCare.BookingService.Domain.Entities;
 using CozyCare.BookingService.DTOs.BookingDetails;
+using CozyCare.SharedKernel.Utils;
 
 namespace CozyCare.BookingService.Applications.Profiles
 {
@@ -12,7 +13,10 @@ namespace CozyCare.BookingService.Applications.Profiles
 			CreateMap<BDetailRequest, BookingDetail>();
 			CreateMap<BDetailRequest, BookingDetail>()
 				.ForAllMembers(opts =>
-					opts.Condition((src, dest, srcMember) => srcMember != null)
+					opts.Condition((src, dest, srcMember) =>
+						srcMember != null &&
+						(!ProfileHelper.IsNumericType(srcMember.GetType()) || !srcMember.Equals(0))
+					)
 				);
 		}
 	}
