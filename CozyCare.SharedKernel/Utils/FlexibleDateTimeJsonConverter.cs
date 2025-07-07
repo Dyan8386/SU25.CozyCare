@@ -45,7 +45,8 @@ namespace CozyCare.SharedKernel.Utils
 		public override void Write(Utf8JsonWriter writer, DateTime value, JsonSerializerOptions options)
 		{
 			// Luôn output theo format yyyy-MM-dd (chỉ ngày)
-			writer.WriteStringValue(value.ToString("yyyy-MM-dd"));
+			//writer.WriteStringValue(value.ToString("yyyy-MM-dd"));
+			writer.WriteStringValue(value.ToString("O", CultureInfo.InvariantCulture));
 		}
 	}
 }
