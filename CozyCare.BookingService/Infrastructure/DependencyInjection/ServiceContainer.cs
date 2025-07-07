@@ -1,4 +1,5 @@
-﻿using CozyCare.BookingService.Applications.Interfaces;
+﻿using CozyCare.BookingService.Applications.External;
+using CozyCare.BookingService.Applications.Interfaces;
 using CozyCare.BookingService.Applications.Profiles;
 using CozyCare.BookingService.Applications.Services;
 using CozyCare.BookingService.Infrastructure;
@@ -24,9 +25,11 @@ namespace CozyCare.BookingService.Infrastructure.DependencyInjection
 			services.AddScoped<IBookingService, Applications.Services.BookingService>();
 			services.AddScoped<IBookingDetailService, BookingDetailService>();
 			services.AddScoped<IBookingStatusService, BookingStatusService>();
+            services.AddScoped<ICatalogApiClient, CatalogApiClient>();
 
-			//Đăng ký Profile 
-			services.AddAutoMapper(typeof(BookingProfile).Assembly, 
+
+            //Đăng ký Profile 
+            services.AddAutoMapper(typeof(BookingProfile).Assembly, 
                 typeof(BookingDetailProfile).Assembly, 
                 typeof(BookingStatusProfile).Assembly);
 

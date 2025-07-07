@@ -3,6 +3,7 @@ using CozyCare.IdentityService.Application.Interfaces;
 using CozyCare.IdentityService.Domain.Entities;
 using CozyCare.IdentityService.Infrastructure;
 using CozyCare.SharedKernel.Base;
+using CozyCare.SharedKernel.Utils;
 using CozyCare.ViewModels.DTOs;
 
 namespace CozyCare.IdentityService.Application.Services
@@ -21,9 +22,14 @@ namespace CozyCare.IdentityService.Application.Services
         public async Task<BaseResponse<AccountDto>> CreateAsync(CreateAccountRequestDto request)
         {
             var entity = _mapper.Map<Account>(request);
+
+            entity.password = PasswordHelper.HashPassword(request.Password);
+
             entity.createdDate = DateTime.UtcNow;
+
             await _uow.Accounts.AddAsync(entity);
             await _uow.SaveChangesAsync();
+
             return BaseResponse<AccountDto>.OkResponse(_mapper.Map<AccountDto>(entity));
         }
 
