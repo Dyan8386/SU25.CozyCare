@@ -20,6 +20,8 @@ namespace CozyCare.SharedKernel.DependencyInjection
                     options.JsonSerializerOptions.Converters.Add(new FlexibleDateTimeJsonConverter());
                 });
 
+            services.AddHttpClients(config);
+
             // configure Serilog logging
             Log.Logger = new LoggerConfiguration()
                 .MinimumLevel.Information()
