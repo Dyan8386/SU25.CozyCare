@@ -10,6 +10,6 @@
 
 		public int quantity { get; set; }
 
-		public decimal unitPrice { get; set; }
+		public decimal? unitPrice { get; set; }
 	}
 }
