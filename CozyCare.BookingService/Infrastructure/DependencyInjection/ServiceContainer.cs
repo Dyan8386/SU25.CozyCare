@@ -25,7 +25,6 @@ namespace CozyCare.BookingService.Infrastructure.DependencyInjection
 			services.AddScoped<IBookingService, Applications.Services.BookingService>();
 			services.AddScoped<IBookingDetailService, BookingDetailService>();
 			services.AddScoped<IBookingStatusService, BookingStatusService>();
-            services.AddScoped<ICatalogApiClient, CatalogApiClient>();
 
 
             //Đăng ký Profile 
@@ -33,7 +32,11 @@ namespace CozyCare.BookingService.Infrastructure.DependencyInjection
                 typeof(BookingDetailProfile).Assembly, 
                 typeof(BookingStatusProfile).Assembly);
 
-			return services;
+            services.AddHttpClients(config);
+            services.AddHttpClient<ICatalogApiClient, CatalogApiClient>("CatalogService");
+
+
+            return services;
         }
 
         public static IApplicationBuilder UseInfrastructurePolicy(this IApplicationBuilder app)
