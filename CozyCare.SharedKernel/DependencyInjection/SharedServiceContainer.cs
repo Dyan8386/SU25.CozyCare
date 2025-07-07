@@ -1,4 +1,5 @@
 ﻿using CozyCare.SharedKernel.Middlewares;
+using CozyCare.SharedKernel.Store;
 using CozyCare.SharedKernel.Utils;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
@@ -21,7 +22,8 @@ namespace CozyCare.SharedKernel.DependencyInjection
                 });
 
             services.AddHttpClients(config);
-
+            // bind settings
+            services.Configure<JwtSettings>(config.GetSection("Authentication"));
             // configure Serilog logging
             Log.Logger = new LoggerConfiguration()
                 .MinimumLevel.Information()
@@ -42,7 +44,8 @@ namespace CozyCare.SharedKernel.DependencyInjection
         {
             //Use Middleware Exception
             app.UseMiddleware<ExceptionHandlingMiddleware>();
-
+            app.UseAuthentication();
+            //app.UseAuthorization();
             //Register Middleware to block all outsiders API calls
             //app.UseMiddleware<ListenToOnlyApiGateway>();
 
