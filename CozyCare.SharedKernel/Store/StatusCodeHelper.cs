@@ -7,6 +7,12 @@ namespace CozyCare.SharedKernel.Store
         [CustomName("Success")]
         OK = 200,
 
+        [CustomName("Created")]
+        Created = 201,
+
+        [CustomName("No Content")]
+        NoContent = 204,
+
         [CustomName("Bad Request")]
         BadRequest = 400,
 
@@ -18,6 +24,12 @@ namespace CozyCare.SharedKernel.Store
 
         [CustomName("Not Found")]
         NotFound = 404,
+
+        [CustomName("Conflict")]
+        Conflict = 409,
+
+        [CustomName("Unprocessable Entity")]
+        UnprocessableEntity = 422,
 
         [CustomName("Internal Server Error")]
         ServerError = 500

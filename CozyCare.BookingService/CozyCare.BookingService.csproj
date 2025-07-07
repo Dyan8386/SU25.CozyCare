@@ -38,6 +38,7 @@
 	  <ProjectReference Include="..\CozyCare.SharedKernel\CozyCare.SharedKernel.csproj">
 	    <Private>True</Private>
 	  </ProjectReference>
+	  <ProjectReference Include="..\CozyCare.ViewModels\CozyCare.ViewModels.csproj" />
 	</ItemGroup>
 
 </Project>

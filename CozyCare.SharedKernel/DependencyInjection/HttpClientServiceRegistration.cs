@@ -24,7 +24,8 @@ namespace CozyCare.SharedKernel.DependencyInjection
             foreach (var svc in serviceRoutes)
             {
                 var name = svc.Key;                // e.g. "CatalogService"
-                var prefix = svc.Value.TrimEnd('/'); // e.g. "/catalog"
+                var prefix = (svc.Value ?? throw new InvalidOperationException($"Missing route for service: {svc.Key}"))
+                .TrimEnd('/');
 
                 services
                     .AddHttpClient(name, client =>

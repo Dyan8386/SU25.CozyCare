@@ -48,10 +48,15 @@ namespace CozyCare.IdentityService.Application.Services
 
         private string GenerateJwtToken(Account account)
         {
-            var key = Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]);
-            var issuer = _configuration["Jwt:Issuer"];
-            var audience = _configuration["Jwt:Audience"];
+            // read and validate
+            var keyString = _configuration["Jwt:Key"]
+                ?? throw new InvalidOperationException("JWT Key is not configured.");
+            var issuer = _configuration["Jwt:Issuer"]
+                ?? throw new InvalidOperationException("JWT Issuer is not configured.");
+            var audience = _configuration["Jwt:Audience"]
+                ?? throw new InvalidOperationException("JWT Audience is not configured.");
 
+            var key = Encoding.UTF8.GetBytes(keyString);
             var claims = new[]
             {
                 new Claim(JwtRegisteredClaimNames.Sub, account.email),
@@ -59,8 +64,9 @@ namespace CozyCare.IdentityService.Application.Services
                 new Claim("roleId", account.roleId.ToString()),
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
             };
-
-            var creds = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256);
+            var creds = new SigningCredentials(
+                new SymmetricSecurityKey(key),
+                SecurityAlgorithms.HmacSha256);
 
             var token = new JwtSecurityToken(
                 issuer: issuer,
