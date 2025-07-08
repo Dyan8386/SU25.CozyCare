@@ -23,7 +23,6 @@ namespace CozyCare.CatalogService.Infrastructure.DependencyInjection
             services.AddScoped<IServiceService, ServiceService>();
 
             services.AddAutoMapper(typeof(CatalogMappingProfile).Assembly);
-            services.AddHttpClients(config);
             services.AddHttpClient<IIdentityApiClient, IdentityApiClient>("IdentityService");
 
 
