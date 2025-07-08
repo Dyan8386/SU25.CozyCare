@@ -12,11 +12,13 @@ namespace CozyCare.IdentityService.Application.Services
     {
         private readonly IIdentityUnitOfWork _uow;
         private readonly IMapper _mapper;
+        private readonly ICurrentAccountService _currentAccount;
 
-        public AccountService(IIdentityUnitOfWork uow, IMapper mapper)
+        public AccountService(IIdentityUnitOfWork uow, IMapper mapper, ICurrentAccountService currentAccount)
         {
             _uow = uow;
             _mapper = mapper;
+            _currentAccount = currentAccount;
         }
 
         public async Task<BaseResponse<AccountDto>> CreateAsync(CreateAccountRequestDto request)
@@ -24,14 +26,20 @@ namespace CozyCare.IdentityService.Application.Services
             var entity = _mapper.Map<Account>(request);
 
             entity.password = PasswordHelper.HashPassword(request.Password);
-
             entity.createdDate = DateTime.UtcNow;
+
+            var current = _currentAccount.GetCurrentAccount();
+            if (current != null)
+            {
+                entity.createdBy = current.AccountId;
+            }
 
             await _uow.Accounts.AddAsync(entity);
             await _uow.SaveChangesAsync();
 
             return BaseResponse<AccountDto>.OkResponse(_mapper.Map<AccountDto>(entity));
         }
+
 
         public async Task<BaseResponse<string>> DeleteAsync(int id)
         {
@@ -60,10 +68,15 @@ namespace CozyCare.IdentityService.Application.Services
 
         public async Task<BaseResponse<AccountDto>> UpdateAsync(int id, UpdateAccountRequestDto request)
         {
+
             var entity = await _uow.Accounts.GetByIdAsync(id);
             if (entity == null)
                 return BaseResponse<AccountDto>.NotFoundResponse("Account not found");
-
+            var current = _currentAccount.GetCurrentAccount();
+            if (current != null)
+            {
+                entity.updatedBy = current.AccountId;
+            }
             _mapper.Map(request, entity);
             entity.updatedDate = DateTime.UtcNow;
             _uow.Accounts.Update(entity);

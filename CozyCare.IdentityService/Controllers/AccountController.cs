@@ -1,8 +1,9 @@
 ﻿using CozyCare.IdentityService.Application.Interfaces;
-using CozyCare.ViewModels.DTOs;
 using CozyCare.SharedKernel.Base;
+using CozyCare.ViewModels.DTOs;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace CozyCare.IdentityService.Controllers
 {
@@ -52,6 +53,21 @@ namespace CozyCare.IdentityService.Controllers
         {
             var result = await _accountService.DeleteAsync(id);
             return FromBaseResponse(result);
+        }
+
+        [HttpGet("current")]
+        public IActionResult GetCurrent()
+        {
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            var username = User.Identity?.Name;
+            var roles = User.FindAll(ClaimTypes.Role).Select(r => r.Value).ToList();
+
+            return Ok(new
+            {
+                id = int.Parse(userId!),
+                username,
+                roles
+            });
         }
     }
 }

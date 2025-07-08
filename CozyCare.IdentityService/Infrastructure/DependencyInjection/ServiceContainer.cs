@@ -19,6 +19,9 @@ namespace CozyCare.IdentityService.Infrastructure.DependencyInjection
             services.AddScoped<IIdentityUnitOfWork, IdentityUnitOfWork>();
             services.AddScoped<IAccountService, AccountService>();
             services.AddScoped<IAuthenticationService, AuthenticationService>();
+            services.AddHttpContextAccessor();
+            services.AddScoped<ICurrentAccountService, CurrentAccountService>();
+
             //services.AddScoped<IServiceService, ServiceService>();
 
             services.AddAutoMapper(typeof(IdentityMappingProfile).Assembly);

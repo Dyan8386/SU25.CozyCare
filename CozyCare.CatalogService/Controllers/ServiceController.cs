@@ -3,11 +3,13 @@ using CozyCare.ViewModels.DTOs;
 using CozyCare.SharedKernel.Base;
 using Microsoft.AspNetCore.Mvc;
 using System.Linq.Expressions;
+using Microsoft.AspNetCore.Authorization;
 
 namespace CozyCare.CatalogService.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
+    [Authorize]
     public class ServiceController : BaseApiController
     {
         private readonly IServiceService _service;
