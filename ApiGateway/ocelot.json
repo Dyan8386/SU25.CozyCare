@@ -1,6 +1,6 @@
 {
   "Routes": [
-    // Routes cho CategoryController
+    // CategoryController
     {
       "DownstreamPathTemplate": "/api/Category/{everything}",
       "DownstreamScheme": "http",
@@ -38,7 +38,7 @@
       "UpstreamHttpMethod": [ "Get" ]
     },
 
-    // Routes cho ServiceController
+    // ServiceController
     {
       "DownstreamPathTemplate": "/api/Service/{everything}",
       "DownstreamScheme": "http",
@@ -76,7 +76,7 @@
       "UpstreamHttpMethod": [ "Get" ]
     },
 
-    // Routes cho ServiceDetailController
+    // ServiceDetailController
     {
       "DownstreamPathTemplate": "/api/ServiceDetail/{everything}",
       "DownstreamScheme": "http",
@@ -113,13 +113,10 @@
       "UpstreamPathTemplate": "/catalog/service-details/search",
       "UpstreamHttpMethod": [ "Get" ]
     },
-    // Routes cho AccountController
+
+    // AccountController (Identity Service)
     {
       "DownstreamPathTemplate": "/api/Account/{everything}",
-
-    //Routes for Booking
-    {
-      "DownstreamPathTemplate": "/api/Bookings/{everything}",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
@@ -132,14 +129,6 @@
     },
     {
       "DownstreamPathTemplate": "/api/Account",
-          "Port": 5223
-        }
-      ],
-      "UpstreamPathTemplate": "/booking/bookings/{everything}",
-      "UpstreamHttpMethod": [ "Get", "Put", "Delete", "Patch" ]
-    },
-    {
-      "DownstreamPathTemplate": "/api/Bookings",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
@@ -152,16 +141,6 @@
     },
     {
       "DownstreamPathTemplate": "/api/Account/current",
-          "Port": 5223
-        }
-      ],
-      "UpstreamPathTemplate": "/booking/bookings",
-      "UpstreamHttpMethod": [ "Get", "Post" ]
-    },
-
-    //Routes for BookingDetail
-    {
-      "DownstreamPathTemplate": "/api/BookingDetails/{everything}",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
@@ -172,9 +151,54 @@
       "UpstreamPathTemplate": "/identity/account/current",
       "UpstreamHttpMethod": [ "Get" ]
     },
-    // Routes cho AuthenticationController
+
+    // AuthController (Identity Service)
     {
       "DownstreamPathTemplate": "/api/Auth/login",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5163
+        }
+      ],
+      "UpstreamPathTemplate": "/identity/auth/login",
+      "UpstreamHttpMethod": [ "Post" ]
+    },
+
+    // BookingController (Booking Service)
+    {
+      "DownstreamPathTemplate": "/api/Bookings/{everything}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5223
+        }
+      ],
+      "UpstreamPathTemplate": "/booking/bookings/{everything}",
+      "UpstreamHttpMethod": [ "Get", "Put", "Delete", "Patch" ]
+    },
+    {
+      "DownstreamPathTemplate": "/api/Bookings",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5223
+        }
+      ],
+      "UpstreamPathTemplate": "/booking/bookings",
+      "UpstreamHttpMethod": [ "Get", "Post" ]
+    },
+
+    // BookingDetailController
+    {
+      "DownstreamPathTemplate": "/api/BookingDetails/{everything}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
           "Port": 5223
         }
       ],
@@ -187,11 +211,6 @@
       "DownstreamHostAndPorts": [
         {
           "Host": "localhost",
-          "Port": 5163
-        }
-      ],
-      "UpstreamPathTemplate": "/identity/auth/login",
-      "UpstreamHttpMethod": [ "Post" ]
           "Port": 5223
         }
       ],
@@ -199,7 +218,7 @@
       "UpstreamHttpMethod": [ "Get", "Post" ]
     },
 
-    //Routes for BookingStatus
+    // BookingStatusController
     {
       "DownstreamPathTemplate": "/api/BookingStatuses/{everything}",
       "DownstreamScheme": "http",

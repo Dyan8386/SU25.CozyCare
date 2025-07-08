@@ -39,9 +39,7 @@ builder.Services.AddSwaggerGen(options =>
             Array.Empty<string>()
         }
     });
-}); builder.Services.AddInfrastructureService(builder.Configuration);
-
-builder.Services.AddSwaggerGen();
+}); 
 builder.Services.AddInfrastructureService(builder.Configuration);
 builder.Services.AddCors(options =>
 {
