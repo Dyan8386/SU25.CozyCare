@@ -16,7 +16,7 @@ namespace CozyCare.IdentityService.Application.Services
         public CurrentAccountDto? GetCurrentAccount()
         {
             var user = _httpContextAccessor.HttpContext?.User;
-            if (user == null || !user.Identity.IsAuthenticated)
+            if (user?.Identity?.IsAuthenticated != true)
                 return null;
 
             return new CurrentAccountDto

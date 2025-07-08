@@ -22,6 +22,8 @@ namespace CozyCare.SharedKernel.DependencyInjection
                 });
 
             services.AddHttpClients(config);
+            services.AddHttpContextAccessor();
+            services.AddScoped<ITokenAccessor, TokenAccessor>();
             // bind settings
             services.Configure<JwtSettings>(config.GetSection("Authentication"));
             // configure Serilog logging
