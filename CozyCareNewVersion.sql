@@ -212,3 +212,56 @@ CREATE TABLE Payments (
 
 INSERT INTO PaymentStatuses (statusName) VALUES ('UNPAID'), ('PAID'), ('REFUNDED');
 GO
+
+
+-- 1. CozyCare.IdentityDb
+USE [CozyCare.IdentityDb];
+GO
+INSERT INTO Accounts (email, password, fullName, avatar, address, phone, roleId, statusId)
+VALUES
+  ('alice@example.com', 'hashedpwd1', 'Alice Smith', '/avatars/alice.png', '123 Main St', '0123456789', 1, 1),
+  ('bob@example.com',   'hashedpwd2', 'Bob Nguyen',   '/avatars/bob.png',   '456 Second St','0987654321', 2, 1),
+  ('carol@example.com', 'hashedpwd3', 'Carol Tran',   '/avatars/carol.png', '789 Third St', '0911223344', 3, 2);
+
+
+-- 2. CozyCare.CatalogDb
+USE [CozyCare.CatalogDb];
+GO
+
+-- Categories
+INSERT INTO Categories (categoryName, description, image)
+VALUES
+  ('Cleaning', 'Dịch vụ dọn dẹp nhà cửa', '/images/cat_cleaning.jpg'),
+  ('Gardening', 'Chăm sóc vườn tược', '/images/cat_gardening.jpg'),
+  ('Plumbing', 'Sửa chữa ống nước', '/images/cat_plumbing.jpg');
+
+-- Services
+INSERT INTO Services (categoryId, serviceName, description, image, price, duration)
+VALUES
+  (1, 'House Cleaning Basic',    'Dọn dẹp phòng khách, phòng ngủ',        '/images/svc_clean_basic.jpg',    150.00, 120),
+  (2, 'Garden Maintenance',       'Cắt cỏ, tỉa cây, vun gốc',               '/images/svc_garden.jpg',         200.00, 180),
+  (3, 'Leak Fix',                 'Sửa chữa rò rỉ ống nước',                '/images/svc_plumbing_leak.jpg',  250.00, 90);
+
+-- ServiceDetails
+INSERT INTO ServiceDetails (serviceId, optionName, optionType, basePrice, unit, duration, description)
+VALUES
+  (1, 'Extra Room',   'ADDON',  50.00,   'per room',  30, 'Thêm 1 phòng ngủ'),
+  (2, 'Hedge Trimming','STANDARD', 100.00, 'flat',      60, 'Tỉa hàng rào'),
+  (3, 'Emergency Call','PREMIUM',  300.00,  'flat',      120,'Gọi khẩn cấp ngoài giờ');
+
+
+  -- 5. CozyCare.PaymentDb
+USE [CozyCare.PaymentDb];
+GO
+
+-- Promotions
+INSERT INTO Promotions (code, discountType, discountAmount, discountPercent, startDate, endDate, minOrderAmount, maxDiscountAmount)
+VALUES
+  ('SUMMER25','PERCENT', NULL, 25.0, GETDATE(), DATEADD(month,1,GETDATE()), 100.00, 50.00),
+  ('WELCOME50','AMOUNT',   50.0, NULL, GETDATE(), DATEADD(month,3,GETDATE()), 200.00, 100.00),
+  ('HALFOFF',  'PERCENT', NULL, 50.0, GETDATE(), DATEADD(day,15,GETDATE()), 150.00, 75.00);
+
+-- Payments
+INSERT INTO Payments (bookingId, amount, paymentMethod, statusId, paymentDate, notes)
+VALUES
+  (1, 300.00, 'Credit Card',   2, GETDATE(), 'Thanh toán đầy đủ');

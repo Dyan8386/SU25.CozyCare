@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using CozyCare.BookingService.Applications.External;
+using CozyCare.BookingService.Applications.Externals;
 using CozyCare.BookingService.Applications.Interfaces;
 using CozyCare.BookingService.Domain.Entities;
 using CozyCare.BookingService.DTOs.BookingDetails;

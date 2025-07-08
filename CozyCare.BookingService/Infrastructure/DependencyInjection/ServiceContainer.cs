@@ -34,7 +34,10 @@ namespace CozyCare.BookingService.Infrastructure.DependencyInjection
                 typeof(BookingStatusProfile).Assembly);
 
             services.AddHttpClients(config);
-            services.AddHttpClient<ICatalogApiClient, CatalogApiClient>("CatalogService");
+			
+			services.AddHttpContextAccessor();
+
+			services.AddHttpClient<ICatalogApiClient, CatalogApiClient>("CatalogService");
             services.AddHttpClient<IIdentityApiClient, IdentityApiClient>("IdentityService");
 
             return services;

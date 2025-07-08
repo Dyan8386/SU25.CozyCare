@@ -78,7 +78,7 @@ namespace CozyCare.IdentityService.Application.Services
                 issuer: issuer,
                 audience: audience,
                 claims: claims,
-                expires: DateTime.UtcNow.AddMinutes(_jwtSettings.ExpireHours),
+                expires: DateTime.UtcNow.AddHours(_jwtSettings.ExpireHours),
                 signingCredentials: creds
             );
 
