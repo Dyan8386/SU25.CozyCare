@@ -1,6 +1,5 @@
 {
   "Routes": [
-    // CategoryController
     {
       "DownstreamPathTemplate": "/api/Category/{everything}",
       "DownstreamScheme": "http",
@@ -11,7 +10,11 @@
         }
       ],
       "UpstreamPathTemplate": "/catalog/categories/{everything}",
-      "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete", "Patch" ]
+      "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete", "Patch" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
     },
     {
       "DownstreamPathTemplate": "/api/Category",
@@ -23,7 +26,11 @@
         }
       ],
       "UpstreamPathTemplate": "/catalog/categories",
-      "UpstreamHttpMethod": [ "Get", "Post" ]
+      "UpstreamHttpMethod": [ "Get", "Post" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
     },
     {
       "DownstreamPathTemplate": "/api/Category/search",
@@ -35,10 +42,13 @@
         }
       ],
       "UpstreamPathTemplate": "/catalog/categories/search",
-      "UpstreamHttpMethod": [ "Get" ]
+      "UpstreamHttpMethod": [ "Get" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
     },
 
-    // ServiceController
     {
       "DownstreamPathTemplate": "/api/Service/{everything}",
       "DownstreamScheme": "http",
@@ -50,7 +60,6 @@
       ],
       "UpstreamPathTemplate": "/catalog/services/{everything}",
       "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete", "Patch" ],
-      // Add authentication options for the ServiceController
       "AuthenticationOptions": {
         "AuthenticationProviderKey": "Bearer",
         "AllowedScopes": []
@@ -67,7 +76,6 @@
       ],
       "UpstreamPathTemplate": "/catalog/services",
       "UpstreamHttpMethod": [ "Get", "Post" ],
-      // Add authentication options for the ServiceController
       "AuthenticationOptions": {
         "AuthenticationProviderKey": "Bearer",
         "AllowedScopes": []
@@ -83,10 +91,13 @@
         }
       ],
       "UpstreamPathTemplate": "/catalog/services/search",
-      "UpstreamHttpMethod": [ "Get" ]
+      "UpstreamHttpMethod": [ "Get" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
     },
 
-    // ServiceDetailController
     {
       "DownstreamPathTemplate": "/api/ServiceDetail/{everything}",
       "DownstreamScheme": "http",
@@ -97,7 +108,11 @@
         }
       ],
       "UpstreamPathTemplate": "/catalog/service-details/{everything}",
-      "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete", "Patch" ]
+      "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete", "Patch" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
     },
     {
       "DownstreamPathTemplate": "/api/ServiceDetail",
@@ -109,7 +124,11 @@
         }
       ],
       "UpstreamPathTemplate": "/catalog/service-details",
-      "UpstreamHttpMethod": [ "Get", "Post" ]
+      "UpstreamHttpMethod": [ "Get", "Post" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
     },
     {
       "DownstreamPathTemplate": "/api/ServiceDetail/search",
@@ -121,10 +140,13 @@
         }
       ],
       "UpstreamPathTemplate": "/catalog/service-details/search",
-      "UpstreamHttpMethod": [ "Get" ]
+      "UpstreamHttpMethod": [ "Get" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
     },
 
-    // AccountController (Identity Service)
     {
       "DownstreamPathTemplate": "/api/Account/{everything}",
       "DownstreamScheme": "http",
@@ -135,7 +157,11 @@
         }
       ],
       "UpstreamPathTemplate": "/identity/account/{everything}",
-      "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete", "Patch" ]
+      "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete", "Patch" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
     },
     {
       "DownstreamPathTemplate": "/api/Account",
@@ -147,7 +173,11 @@
         }
       ],
       "UpstreamPathTemplate": "/identity/account",
-      "UpstreamHttpMethod": [ "Get", "Post" ]
+      "UpstreamHttpMethod": [ "Get", "Post" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
     },
     {
       "DownstreamPathTemplate": "/api/Account/current",
@@ -159,10 +189,13 @@
         }
       ],
       "UpstreamPathTemplate": "/identity/account/current",
-      "UpstreamHttpMethod": [ "Get" ]
+      "UpstreamHttpMethod": [ "Get" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
     },
 
-    // AuthController (Identity Service)
     {
       "DownstreamPathTemplate": "/api/Auth/login",
       "DownstreamScheme": "http",
@@ -173,10 +206,13 @@
         }
       ],
       "UpstreamPathTemplate": "/identity/auth/login",
-      "UpstreamHttpMethod": [ "Post" ]
+      "UpstreamHttpMethod": [ "Post" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
     },
 
-    // BookingController (Booking Service)
     {
       "DownstreamPathTemplate": "/api/Bookings/{everything}",
       "DownstreamScheme": "http",
@@ -187,7 +223,11 @@
         }
       ],
       "UpstreamPathTemplate": "/booking/bookings/{everything}",
-      "UpstreamHttpMethod": [ "Get", "Put", "Delete", "Patch" ]
+      "UpstreamHttpMethod": [ "Get", "Put", "Delete", "Patch" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
     },
     {
       "DownstreamPathTemplate": "/api/Bookings",
@@ -199,10 +239,13 @@
         }
       ],
       "UpstreamPathTemplate": "/booking/bookings",
-      "UpstreamHttpMethod": [ "Get", "Post" ]
+      "UpstreamHttpMethod": [ "Get", "Post" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
     },
 
-    // BookingDetailController
     {
       "DownstreamPathTemplate": "/api/BookingDetails/{everything}",
       "DownstreamScheme": "http",
@@ -213,7 +256,11 @@
         }
       ],
       "UpstreamPathTemplate": "/booking/booking-details/{everything}",
-      "UpstreamHttpMethod": [ "Get", "Put", "Delete", "Patch" ]
+      "UpstreamHttpMethod": [ "Get", "Put", "Delete", "Patch" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
     },
     {
       "DownstreamPathTemplate": "/api/BookingDetails",
@@ -225,10 +272,13 @@
         }
       ],
       "UpstreamPathTemplate": "/booking/booking-details",
-      "UpstreamHttpMethod": [ "Get", "Post" ]
+      "UpstreamHttpMethod": [ "Get", "Post" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
     },
 
-    // BookingStatusController
     {
       "DownstreamPathTemplate": "/api/BookingStatuses/{everything}",
       "DownstreamScheme": "http",
@@ -239,7 +289,11 @@
         }
       ],
       "UpstreamPathTemplate": "/booking/booking-statuses/{everything}",
-      "UpstreamHttpMethod": [ "Get", "Put", "Delete", "Patch" ]
+      "UpstreamHttpMethod": [ "Get", "Put", "Delete", "Patch" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
     },
     {
       "DownstreamPathTemplate": "/api/BookingStatuses",
@@ -251,7 +305,11 @@
         }
       ],
       "UpstreamPathTemplate": "/booking/booking-statuses",
-      "UpstreamHttpMethod": [ "Get", "Post" ]
+      "UpstreamHttpMethod": [ "Get", "Post" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
     }
   ],
   "GlobalConfiguration": {

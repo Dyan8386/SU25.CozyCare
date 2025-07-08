@@ -13,6 +13,7 @@ public partial class Payment
     [Key]
     public int paymentId { get; set; }
 
+    public int userId { get; set; }
     public int bookingId { get; set; }
 
     [Column(TypeName = "decimal(10, 2)")]
