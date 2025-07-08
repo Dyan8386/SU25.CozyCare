@@ -9,6 +9,7 @@ namespace CozyCare.ViewModels.DTOs
     public class PaymentDto
     {
         public int PaymentId { get; set; }
+        public int UserId { get; set; }
         public int BookingId { get; set; }
         public decimal Amount { get; set; }
         public string PaymentMethod { get; set; } = string.Empty;
@@ -22,6 +23,7 @@ namespace CozyCare.ViewModels.DTOs
     public class CreatePaymentDto
     {
         public int BookingId { get; set; }
+        public int UserId { get; set; }
         public decimal Amount { get; set; }
         public string PaymentMethod { get; set; } = string.Empty;
         public int StatusId { get; set; }

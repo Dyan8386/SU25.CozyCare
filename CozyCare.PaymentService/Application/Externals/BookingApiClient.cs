@@ -1,6 +1,7 @@
 ﻿using CozyCare.SharedKernel.Base;
 using CozyCare.SharedKernel.Store;
 using CozyCare.ViewModels.DTOs;
+using System.Net;
 using System.Net.Http.Headers;
 using System.Text.Json;
 
@@ -26,12 +27,21 @@ namespace CozyCare.PaymentService.Application.Externals
         public async Task<BaseResponse<BookingDto>> GetBookingByIdAsync(int bookingId, CancellationToken ct = default)
         {
             var token = _tokenAccessor.GetAccessToken();
-            if (!string.IsNullOrEmpty(token))
-                _http.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+            _http.DefaultRequestHeaders.Remove("Authorization");
+            _http.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
             // Gọi qua Gateway: /booking/api/bookings/{id}
             var resp = await _http.GetAsync($"/booking/api/bookings/{bookingId}", ct);
             var json = await resp.Content.ReadAsStringAsync(ct);
+            if (resp.StatusCode == HttpStatusCode.TemporaryRedirect ||
+            resp.StatusCode == HttpStatusCode.MovedPermanently ||
+            resp.StatusCode == HttpStatusCode.PermanentRedirect)
+            {
+                var redirectUri = resp.Headers.Location!;
+                // chắc chắn header vẫn còn
+                _http.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+                resp = await _http.GetAsync(redirectUri, ct);
+            }
 
             if (!resp.IsSuccessStatusCode)
             {
