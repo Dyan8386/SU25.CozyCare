@@ -26,7 +26,7 @@ namespace CozyCare.BookingService.Applications.Externals
         public async Task<BaseResponse<IEnumerable<CategoryDto>>> GetAllCategoriesAsync(CancellationToken ct = default)
         {
             // Gọi lên Ocelot: GET https://localhost:5158/catalog/categories
-            var resp = await _http.GetAsync("/categories", ct);
+            var resp = await _http.GetAsync("/catalog/categories", ct);
             var json = await resp.Content.ReadAsStringAsync(ct);
 
             if (!resp.IsSuccessStatusCode)
@@ -44,7 +44,7 @@ namespace CozyCare.BookingService.Applications.Externals
         public async Task<BaseResponse<ServiceDto>> GetServiceByIdAsync(int serviceId, CancellationToken ct = default)
         {
             // Gọi lên Ocelot: GET https://localhost:5158/catalog/services/{serviceId}
-            var resp = await _http.GetAsync($"/services/{serviceId}", ct);
+            var resp = await _http.GetAsync($"/catalog/services/{serviceId}", ct);
             var json = await resp.Content.ReadAsStringAsync(ct);
 
             if (!resp.IsSuccessStatusCode)
