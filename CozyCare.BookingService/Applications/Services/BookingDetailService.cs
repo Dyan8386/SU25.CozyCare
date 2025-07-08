@@ -87,5 +87,31 @@ namespace CozyCare.BookingService.Applications.Services
 			await _unitOfWork.SaveChangesAsync();
 			return BaseResponse<string>.OkResponse("Booking detail deleted successfully.");
 		}
+
+		public async Task<BaseResponse<IEnumerable<TaskAvailableResponse>>> GetAvailableTasksAsync()
+		{
+			const int PENDING = 1;  // trạng thái cần lọc
+
+			// Lọc bookingDetail sao cho booking.bookingStatusId == AVAILABLE_STATUS
+			// Include luôn navigation property "booking" để lấy BookingNumber và BookingStatusId
+			var details = await _unitOfWork.BookingDetails
+				.SearchAsync(
+					filter: bd => bd.booking.bookingStatusId == PENDING,
+					includeProperties: "booking"
+				);
+
+			// Map sang DTO
+			var dtos = details.Select(bd =>
+			{
+				var dto = _mapper.Map<TaskAvailableResponse>(bd);
+				// Nếu AutoMapper không cấu hình map navigation,
+				// bạn có thể gán thủ công:
+				dto.BookingNumber = bd.booking.bookingNumber;
+				dto.BookingStatusId = bd.booking.bookingStatusId;
+				return dto;
+			});
+
+			return BaseResponse<IEnumerable<TaskAvailableResponse>>.OkResponse(dtos);
+		}
 	}
 }

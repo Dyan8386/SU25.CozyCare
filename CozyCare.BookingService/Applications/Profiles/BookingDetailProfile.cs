@@ -10,6 +10,7 @@ namespace CozyCare.BookingService.Applications.Profiles
 		public BookingDetailProfile()
 		{
 			CreateMap<BookingDetail, BDetailResponse>().ReverseMap();
+			CreateMap<BookingDetail, TaskAvailableResponse>().ReverseMap();
 			CreateMap<BDetailRequest, BookingDetail>();
 			CreateMap<BDetailRequest, BookingDetail>()
 				// Map tất cả member nhưng với điều kiện chung cho số = 0 và datetime = default
