@@ -30,8 +30,9 @@ namespace CozyCare.BookingService.Applications.Externals
         {
             // Móc nối Token
             var token = _tokenAccessor.GetAccessToken();
-            if (!string.IsNullOrEmpty(token))
-                _http.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+            _http.DefaultRequestHeaders.Remove("Authorization");
+            _http.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
 
             // Gọi lên Ocelot: GET https://localhost:5158/catalog/categories
             var resp = await _http.GetAsync("/catalog/categories", ct);
