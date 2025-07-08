@@ -3,6 +3,7 @@ using CozyCare.SharedKernel.Store;
 using CozyCare.ViewModels.DTOs;
 using System;
 using System.Collections.Generic;
+using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text.Json;
@@ -30,11 +31,11 @@ namespace CozyCare.BookingService.Applications.Externals
         {
             // Móc nối Token
             var token = _tokenAccessor.GetAccessToken();
-            if (!string.IsNullOrEmpty(token))
-                _http.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+			_http.DefaultRequestHeaders.Remove("Authorization");
+			_http.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
-            // Gọi lên Ocelot: GET https://localhost:5158/catalog/categories
-            var resp = await _http.GetAsync("/catalog/categories", ct);
+			// Gọi lên Ocelot: GET https://localhost:5158/catalog/categories
+			var resp = await _http.GetAsync("/catalog/categories", ct);
             var json = await resp.Content.ReadAsStringAsync(ct);
 
             if (!resp.IsSuccessStatusCode)
@@ -51,9 +52,24 @@ namespace CozyCare.BookingService.Applications.Externals
 
         public async Task<BaseResponse<ServiceDto>> GetServiceByIdAsync(int serviceId, CancellationToken ct = default)
         {
-            // Gọi lên Ocelot: GET https://localhost:5158/catalog/services/{serviceId}
-            var resp = await _http.GetAsync($"/catalog/services/{serviceId}", ct);
-            var json = await resp.Content.ReadAsStringAsync(ct);
+			// Móc nối Token
+			var token = _tokenAccessor.GetAccessToken();
+			_http.DefaultRequestHeaders.Remove("Authorization");
+			_http.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+			// Gọi lên Ocelot: GET https://localhost:5158/catalog/services/{serviceId}
+			var resp = await _http.GetAsync($"/catalog/services/{serviceId}", ct);
+			if (resp.StatusCode == HttpStatusCode.TemporaryRedirect ||
+			resp.StatusCode == HttpStatusCode.MovedPermanently ||
+			resp.StatusCode == HttpStatusCode.PermanentRedirect)
+			{
+				var redirectUri = resp.Headers.Location!;
+				// chắc chắn header vẫn còn
+				_http.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+				resp = await _http.GetAsync(redirectUri, ct);
+			}
+
+			var json = await resp.Content.ReadAsStringAsync(ct);
 
             if (!resp.IsSuccessStatusCode)
             {

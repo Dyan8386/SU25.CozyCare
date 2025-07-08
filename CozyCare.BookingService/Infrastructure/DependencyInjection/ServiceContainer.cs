@@ -33,10 +33,19 @@ namespace CozyCare.BookingService.Infrastructure.DependencyInjection
                 typeof(BookingDetailProfile).Assembly, 
                 typeof(BookingStatusProfile).Assembly);
 
-			services.AddHttpClient<ICatalogApiClient, CatalogApiClient>("CatalogService");
-            services.AddHttpClient<IIdentityApiClient, IdentityApiClient>("IdentityService");
+			services.AddHttpClient<ICatalogApiClient, CatalogApiClient>("CatalogService")
+				.ConfigurePrimaryHttpMessageHandler(() => new HttpClientHandler
+				{
+					AllowAutoRedirect = false
+				});
 
-            return services;
+            services.AddHttpClient<IIdentityApiClient, IdentityApiClient>("IdentityService")
+				.ConfigurePrimaryHttpMessageHandler(() => new HttpClientHandler
+				{
+					AllowAutoRedirect = false
+				});
+
+			return services;
         }
 
         public static IApplicationBuilder UseInfrastructurePolicy(this IApplicationBuilder app)
