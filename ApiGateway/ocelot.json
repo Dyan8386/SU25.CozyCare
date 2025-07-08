@@ -112,6 +112,56 @@
       ],
       "UpstreamPathTemplate": "/catalog/service-details/search",
       "UpstreamHttpMethod": [ "Get" ]
+    },
+    // Routes cho AccountController
+    {
+      "DownstreamPathTemplate": "/api/Account/{everything}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5163
+        }
+      ],
+      "UpstreamPathTemplate": "/identity/account/{everything}",
+      "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete", "Patch" ]
+    },
+    {
+      "DownstreamPathTemplate": "/api/Account",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5163
+        }
+      ],
+      "UpstreamPathTemplate": "/identity/account",
+      "UpstreamHttpMethod": [ "Get", "Post" ]
+    },
+    {
+      "DownstreamPathTemplate": "/api/Account/current",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5163
+        }
+      ],
+      "UpstreamPathTemplate": "/identity/account/current",
+      "UpstreamHttpMethod": [ "Get" ]
+    },
+    // Routes cho AuthenticationController
+    {
+      "DownstreamPathTemplate": "/api/Auth/login",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5163
+        }
+      ],
+      "UpstreamPathTemplate": "/identity/auth/login",
+      "UpstreamHttpMethod": [ "Post" ]
     }
   ],
   "GlobalConfiguration": {

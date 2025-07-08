@@ -1,6 +1,7 @@
 ﻿using CozyCare.BookingService.Applications.Interfaces;
 using CozyCare.BookingService.DTOs.Bookings;
 using CozyCare.SharedKernel.Base;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -8,6 +9,7 @@ namespace CozyCare.BookingService.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class BookingsController : BaseApiController
     {
         private readonly IBookingService _bookingService;

@@ -21,7 +21,11 @@ namespace CozyCare.SharedKernel.DependencyInjection
 
             // 3. Đăng ký JWT Bearer
             services
-                .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddAuthentication(options =>
+                {
+                    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                })
                 .AddJwtBearer("Bearer", options =>
                 {
                     options.RequireHttpsMetadata = false;

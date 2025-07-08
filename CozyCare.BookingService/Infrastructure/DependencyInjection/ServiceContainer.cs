@@ -1,4 +1,5 @@
-﻿using CozyCare.BookingService.Applications.External;
+﻿using CozyCare.BookingService.Application.Externals;
+using CozyCare.BookingService.Applications.Externals;
 using CozyCare.BookingService.Applications.Interfaces;
 using CozyCare.BookingService.Applications.Profiles;
 using CozyCare.BookingService.Applications.Services;
@@ -34,7 +35,7 @@ namespace CozyCare.BookingService.Infrastructure.DependencyInjection
 
             services.AddHttpClients(config);
             services.AddHttpClient<ICatalogApiClient, CatalogApiClient>("CatalogService");
-
+            services.AddHttpClient<IIdentityApiClient, IdentityApiClient>("IdentityService");
 
             return services;
         }
