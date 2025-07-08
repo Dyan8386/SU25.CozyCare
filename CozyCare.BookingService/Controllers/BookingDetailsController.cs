@@ -1,54 +1,49 @@
 ﻿using CozyCare.BookingService.Applications.Interfaces;
 using CozyCare.BookingService.DTOs.BookingDetails;
+using CozyCare.SharedKernel.Base;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CozyCare.BookingService.Controllers
 {
-	[Route("api/[controller]")]
-	[ApiController]
-	public class BookingDetailsController : ControllerBase
-	{
-		private readonly IBookingDetailService _bookingDetailService;
+    [Route("api/[controller]")]
+    [ApiController]
+    [Authorize]
+    public class BookingDetailsController : BaseApiController
+    {
+        private readonly IBookingDetailService _bookingDetailService;
 
-		public BookingDetailsController(IBookingDetailService bookingDetailService)
-		{
-			_bookingDetailService = bookingDetailService;
-		}
+        public BookingDetailsController(IBookingDetailService bookingDetailService)
+        {
+            _bookingDetailService = bookingDetailService;
+        }
 
-		[HttpGet]
-		public async Task<IActionResult> GetAllBookingDetails()
-		{
-			var response = await _bookingDetailService.GetAllBookingDetailsAsync();
-			return Ok(response);
-		}
+        [HttpGet]
+        public async Task<IActionResult> GetAllBookingDetails() =>
+            FromBaseResponse(await _bookingDetailService.GetAllBookingDetailsAsync());
 
-		[HttpGet("{id}")]
-		public async Task<IActionResult> GetBookingDetailById(int id)
-		{
-			var response = await _bookingDetailService.GetBookingDetailByIdAsync(id);
-			return Ok(response);
-		}
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetBookingDetailById(int id) =>
+            FromBaseResponse(await _bookingDetailService.GetBookingDetailByIdAsync(id));
 
-		[HttpPost]
-		public async Task<IActionResult> CreateBookingDetail([FromBody] BDetailRequest bookingDetail)
-		{
-			var response = await _bookingDetailService.CreateBookingDetailAsync(bookingDetail);
-			return CreatedAtAction(nameof(GetBookingDetailById), new { id = response.Data.detailId }, response);
-		}
+        [HttpPost]
+        public async Task<IActionResult> CreateBookingDetail([FromBody] BDetailRequest bookingDetail) =>
+            FromBaseResponse(await _bookingDetailService.CreateBookingDetailAsync(bookingDetail));
 
-		[HttpPut("{id}")]
-		public async Task<IActionResult> UpdateBookingDetail(int id, [FromBody] BDetailRequest bookingDetail)
-		{
-			var response = await _bookingDetailService.UpdateBookingDetailAsync(id, bookingDetail);
-			return Ok(response);
-		}
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateBookingDetail(int id, [FromBody] BDetailRequest bookingDetail) =>
+            FromBaseResponse(await _bookingDetailService.UpdateBookingDetailAsync(id, bookingDetail));
 
-		[HttpDelete("{id}")]
-		public async Task<IActionResult> DeleteBookingDetail(int id)
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteBookingDetail(int id) =>
+            FromBaseResponse(await _bookingDetailService.DeleteBookingDetailAsync(id));
+
+		[HttpGet("available-tasks")]
+		public async Task<IActionResult> GetAvailableTasks()
 		{
-			var response = await _bookingDetailService.DeleteBookingDetailAsync(id);
-			return Ok(response);
+			var resp = await _bookingDetailService.GetAvailableTasksAsync();
+			return FromBaseResponse(resp);
 		}
 	}
 }

@@ -1,9 +1,11 @@
 ﻿using AutoMapper;
+using CozyCare.BookingService.Applications.Externals;
 using CozyCare.BookingService.Applications.Interfaces;
 using CozyCare.BookingService.Domain.Entities;
 using CozyCare.BookingService.DTOs.BookingDetails;
 using CozyCare.BookingService.Infrastructure;
 using CozyCare.SharedKernel.Base;
+using CozyCare.SharedKernel.Store;
 
 namespace CozyCare.BookingService.Applications.Services
 {
@@ -11,11 +13,13 @@ namespace CozyCare.BookingService.Applications.Services
 	{
 		private readonly IBookingUnitOfWork _unitOfWork;
 		private readonly IMapper _mapper;
+		private readonly ICatalogApiClient _catalogApiClient;
 
-		public BookingDetailService(IBookingUnitOfWork unitOfWork, IMapper mapper)
+		public BookingDetailService(IBookingUnitOfWork unitOfWork, IMapper mapper, ICatalogApiClient catalogApiClient)
 		{
 			_unitOfWork = unitOfWork;
 			_mapper = mapper;
+			_catalogApiClient = catalogApiClient;
 		}
 
 		public async Task<BaseResponse<IEnumerable<BDetailResponse>>> GetAllBookingDetailsAsync()
@@ -38,7 +42,16 @@ namespace CozyCare.BookingService.Applications.Services
 
 		public async Task<BaseResponse<BDetailResponse>> CreateBookingDetailAsync(BDetailRequest request)
 		{
+			var service = await _catalogApiClient.GetServiceByIdAsync(request.serviceId);
+			if (service.StatusCode != StatusCodeHelper.OK || service.Data == null)
+			{
+				return service.StatusCode == StatusCodeHelper.NotFound
+					? BaseResponse<BDetailResponse>.NotFoundResponse($"Service with ID {request.serviceId} not found.")
+					: BaseResponse<BDetailResponse>.ErrorResponse(service.Message);
+			}
+
 			var bookingDetail = _mapper.Map<BookingDetail>(request);
+			
 			await _unitOfWork.BookingDetails.AddAsync(bookingDetail);
 			await _unitOfWork.SaveChangesAsync();
 			var response = _mapper.Map<BDetailResponse>(bookingDetail);
@@ -47,6 +60,11 @@ namespace CozyCare.BookingService.Applications.Services
 
 		public async Task<BaseResponse<string>> UpdateBookingDetailAsync(int id, BDetailRequest request)
 		{
+			var service = await _catalogApiClient.GetServiceByIdAsync(request.serviceId);
+			if (service.StatusCode != StatusCodeHelper.OK || service.Data == null)
+			{
+				return BaseResponse<string>.NotFoundResponse($"Service with ID {request.serviceId} not found.");
+			}
 			var bookingDetail = await _unitOfWork.BookingDetails.GetByIdAsync(id);
 			if (bookingDetail == null)
 			{
@@ -68,6 +86,32 @@ namespace CozyCare.BookingService.Applications.Services
 			_unitOfWork.BookingDetails.Delete(bookingDetail);
 			await _unitOfWork.SaveChangesAsync();
 			return BaseResponse<string>.OkResponse("Booking detail deleted successfully.");
+		}
+
+		public async Task<BaseResponse<IEnumerable<TaskAvailableResponse>>> GetAvailableTasksAsync()
+		{
+			const int PENDING = 1;  // trạng thái cần lọc
+
+			// Lọc bookingDetail sao cho booking.bookingStatusId == AVAILABLE_STATUS
+			// Include luôn navigation property "booking" để lấy BookingNumber và BookingStatusId
+			var details = await _unitOfWork.BookingDetails
+				.SearchAsync(
+					filter: bd => bd.booking.bookingStatusId == PENDING,
+					includeProperties: "booking"
+				);
+
+			// Map sang DTO
+			var dtos = details.Select(bd =>
+			{
+				var dto = _mapper.Map<TaskAvailableResponse>(bd);
+				// Nếu AutoMapper không cấu hình map navigation,
+				// bạn có thể gán thủ công:
+				dto.BookingNumber = bd.booking.bookingNumber;
+				dto.BookingStatusId = bd.booking.bookingStatusId;
+				return dto;
+			});
+
+			return BaseResponse<IEnumerable<TaskAvailableResponse>>.OkResponse(dtos);
 		}
 	}
 }

@@ -1,12 +1,9 @@
-﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+﻿using CozyCare.SharedKernel.Store;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace CozyCare.SharedKernel.DependencyInjection
 {
@@ -14,27 +11,41 @@ namespace CozyCare.SharedKernel.DependencyInjection
     {
         public static IServiceCollection AddJWTAuthenticationScheme(this IServiceCollection services, IConfiguration config)
         {
-            // Add JWT service
-            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+            // 1. Bind JwtSettings trực tiếp từ config
+            var jwt = new JwtSettings();
+            config.GetSection("Authentication").Bind(jwt);
+
+
+            // 2. Tạo key bytes
+            var keyBytes = Encoding.UTF8.GetBytes(jwt.Key);
+
+            // 3. Đăng ký JWT Bearer
+            services
+                .AddAuthentication(options =>
+                {
+                    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                })
                 .AddJwtBearer("Bearer", options =>
                 {
-                    var key = Encoding.UTF8.GetBytes(config.GetSection("Authentication:Key").Value!);
-                    string issuser = config.GetSection("Authentication:Issuser").Value!;
-                    string audience = config.GetSection("Authentication:Audience").Value!;
-
                     options.RequireHttpsMetadata = false;
                     options.SaveToken = true;
                     options.TokenValidationParameters = new TokenValidationParameters
                     {
-                        ValidateIssuer = true,
-                        ValidateAudience = true,
-                        ValidateLifetime = false,
                         ValidateIssuerSigningKey = true,
-                        ValidIssuer = issuser,
-                        ValidAudience = audience,
-                        IssuerSigningKey = new SymmetricSecurityKey(key)
+                        IssuerSigningKey = new SymmetricSecurityKey(keyBytes),
+
+                        ValidateIssuer = true,
+                        ValidIssuer = jwt.Issuer,
+
+                        ValidateAudience = true,
+                        ValidAudience = jwt.Audience,
+
+                        ValidateLifetime = true,
+                        ClockSkew = TimeSpan.Zero
                     };
                 });
+
             return services;
         }
     }

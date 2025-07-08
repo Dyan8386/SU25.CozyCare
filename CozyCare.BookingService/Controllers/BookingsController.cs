@@ -1,56 +1,57 @@
 ﻿using CozyCare.BookingService.Applications.Interfaces;
 using CozyCare.BookingService.DTOs.Bookings;
+using CozyCare.SharedKernel.Base;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CozyCare.BookingService.Controllers
 {
-	[Route("api/[controller]")]
-	[ApiController]
-	public class BookingsController : ControllerBase
-	{
-		private readonly IBookingService _bookingService;
+    [Route("api/[controller]")]
+    [ApiController]
+    [Authorize]
+    public class BookingsController : BaseApiController
+    {
+        private readonly IBookingService _bookingService;
 
-		public BookingsController(IBookingService bookingService)
-		{
-			_bookingService = bookingService;
-		}
+        public BookingsController(IBookingService bookingService)
+        {
+            _bookingService = bookingService;
+        }
 
-		[HttpGet]
-		public async Task<IActionResult> GetAllBookings()
-		{
-			var response = await _bookingService.GetAllBookingsAsync();
-			return Ok(response);
-		}
+        [HttpGet]
+        public async Task<IActionResult> GetAllBookings() =>
+            FromBaseResponse(await _bookingService.GetAllBookingsAsync());
 
-		[HttpGet("{id}")]
-		public async Task<IActionResult> GetBookingById(int id)
-		{
-			var response = await _bookingService.GetBookingByIdAsync(id);
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetBookingById(int id) =>
+            FromBaseResponse(await _bookingService.GetBookingByIdAsync(id));
 
-			return Ok(response);
-		}
+        [HttpPost]
+        public async Task<IActionResult> CreateBooking([FromBody] BookingRequest booking) =>
+            FromBaseResponse(await _bookingService.CreateBookingAsync(booking));
 
-		[HttpPost]
-		public async Task<IActionResult> CreateBooking([FromBody] BookingRequest booking)
-		{
-			var response = await _bookingService.CreateBookingAsync(booking);
-			return CreatedAtAction(nameof(GetBookingById), new { id = response.Data.bookingId }, response);
-		}
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateBooking(int id, [FromBody] BookingRequest booking) =>
+            FromBaseResponse(await _bookingService.UpdateBookingAsync(id, booking));
 
-		[HttpPut("{id}")]
-		public async Task<IActionResult> UpdateBooking(int id, [FromBody] BookingRequest booking)
-		{
-			var response = await _bookingService.UpdateBookingAsync(id, booking);
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteBooking(int id) =>
+            FromBaseResponse(await _bookingService.DeleteBookingAsync(id));
 
-			return Ok(response);
-		}
+        //[HttpGet("available-tasks")]
+        //public async Task<IActionResult> GetAvailableTasks()
+        //{
+        //	var resp = await _bookingService.GetAvailableTasksAsync();
+        //	return FromBaseResponse(resp);
+        //}
 
-		[HttpDelete("{id}")]
-		public async Task<IActionResult> DeleteBooking(int id)
-		{
-			var response = await _bookingService.DeleteBookingAsync(id);
-			return Ok(response);
-		}
-	}
+        [HttpGet("users/{id}")]
+        public async Task<IActionResult> GetBookingsByUserId(int id)
+        {
+            var response = await _bookingService.GetBookingsByAccountIdAsync(id);
+            return FromBaseResponse(response);
+
+        }
+    }
 }

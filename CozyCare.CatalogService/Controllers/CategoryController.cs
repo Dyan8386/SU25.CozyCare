@@ -1,14 +1,16 @@
 ﻿using CozyCare.CatalogService.Application.Interfaces;
 using CozyCare.ViewModels.DTOs;
-using Microsoft.AspNetCore.Http;
+using CozyCare.SharedKernel.Base;
 using Microsoft.AspNetCore.Mvc;
 using System.Linq.Expressions;
+using Microsoft.AspNetCore.Authorization;
 
 namespace CozyCare.CatalogService.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class CategoryController : ControllerBase
+    [Authorize]
+    public class CategoryController : BaseApiController
     {
         private readonly ICategoryService _categoryService;
 
@@ -19,34 +21,34 @@ namespace CozyCare.CatalogService.Controllers
 
         [HttpGet]
         public async Task<IActionResult> GetAll() =>
-            Ok(await _categoryService.GetAllAsync());
+            FromBaseResponse(await _categoryService.GetAllAsync());
 
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(int id) =>
-            Ok(await _categoryService.GetByIdAsync(id));
+            FromBaseResponse(await _categoryService.GetByIdAsync(id));
 
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] CreateCategoryDto dto) =>
-            Ok(await _categoryService.CreateAsync(dto));
+            FromBaseResponse(await _categoryService.CreateAsync(dto));
 
         [HttpPut("{id}")]
         public async Task<IActionResult> Update(int id, [FromBody] UpdateCategoryDto dto) =>
-            Ok(await _categoryService.UpdateAsync(id, dto));
+            FromBaseResponse(await _categoryService.UpdateAsync(id, dto));
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id) =>
-            Ok(await _categoryService.DeleteAsync(id));
+            FromBaseResponse(await _categoryService.DeleteAsync(id));
 
         [HttpGet("search")]
         public async Task<IActionResult> Search([FromQuery] string? keyword)
         {
             Expression<Func<Domain.Entities.Category, bool>> filter = c =>
                 string.IsNullOrEmpty(keyword) || c.categoryName.Contains(keyword);
-            return Ok(await _categoryService.SearchAsync(filter));
+            return FromBaseResponse(await _categoryService.SearchAsync(filter));
         }
 
         [HttpPatch("{id}/status")]
         public async Task<IActionResult> SetStatus(int id, [FromBody] LockCategoryDto dto) =>
-            Ok(await _categoryService.SetCategoryStatusAsync(id, dto));
+            FromBaseResponse(await _categoryService.SetCategoryStatusAsync(id, dto));
     }
 }

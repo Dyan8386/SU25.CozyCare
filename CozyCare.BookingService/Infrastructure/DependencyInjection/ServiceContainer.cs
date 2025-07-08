@@ -1,4 +1,6 @@
-﻿using CozyCare.BookingService.Applications.Interfaces;
+﻿using CozyCare.BookingService.Application.Externals;
+using CozyCare.BookingService.Applications.Externals;
+using CozyCare.BookingService.Applications.Interfaces;
 using CozyCare.BookingService.Applications.Profiles;
 using CozyCare.BookingService.Applications.Services;
 using CozyCare.BookingService.Infrastructure;
@@ -25,10 +27,23 @@ namespace CozyCare.BookingService.Infrastructure.DependencyInjection
 			services.AddScoped<IBookingDetailService, BookingDetailService>();
 			services.AddScoped<IBookingStatusService, BookingStatusService>();
 
-			//Đăng ký Profile 
-			services.AddAutoMapper(typeof(BookingProfile).Assembly, 
+
+            //Đăng ký Profile 
+            services.AddAutoMapper(typeof(BookingProfile).Assembly, 
                 typeof(BookingDetailProfile).Assembly, 
                 typeof(BookingStatusProfile).Assembly);
+
+			services.AddHttpClient<ICatalogApiClient, CatalogApiClient>("CatalogService")
+				.ConfigurePrimaryHttpMessageHandler(() => new HttpClientHandler
+				{
+					AllowAutoRedirect = false
+				});
+
+            services.AddHttpClient<IIdentityApiClient, IdentityApiClient>("IdentityService")
+				.ConfigurePrimaryHttpMessageHandler(() => new HttpClientHandler
+				{
+					AllowAutoRedirect = false
+				});
 
 			return services;
         }

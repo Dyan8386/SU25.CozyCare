@@ -69,5 +69,37 @@ namespace CozyCare.BookingService.Applications.Services
 			await _unitOfWork.SaveChangesAsync();
 			return BaseResponse<string>.OkResponse("Booking deleted successfully.");
 		}
+
+		public async Task<BaseResponse<IEnumerable<BookingResponse>>> GetAvailableTasksAsync()
+		{
+
+			const int PENDING = 1;
+
+			// Dùng phương thức SearchAsync của repository
+			var availableBookings = await _unitOfWork.Bookings
+				.SearchAsync(b => b.bookingStatusId == PENDING);
+
+			// Nếu cần sắp xếp hoặc include thêm, bạn có thể xài overload của SearchAsync
+
+			// 2. Map sang DTO
+			var resultDtos = _mapper.Map<IEnumerable<BookingResponse>>(availableBookings);
+
+			// 3. Trả về
+			return BaseResponse<IEnumerable<BookingResponse>>.OkResponse(resultDtos);
+		}
+
+		public async Task<BaseResponse<IEnumerable<BookingResponse>>> GetBookingsByStatusAsync(int statusId)
+		{
+			var bookings = await _unitOfWork.Bookings.SearchAsync(b => b.bookingStatusId == statusId);
+			var bookingResponses = _mapper.Map<IEnumerable<BookingResponse>>(bookings);
+			return BaseResponse<IEnumerable<BookingResponse>>.OkResponse(bookingResponses);
+		}
+
+		public async Task<BaseResponse<IEnumerable<BookingResponse>>> GetBookingsByAccountIdAsync(int accountId)
+		{
+			var bookings = await _unitOfWork.Bookings.SearchAsync(b => b.customerId == accountId);
+			var bookingResponses = _mapper.Map<IEnumerable<BookingResponse>>(bookings);
+			return BaseResponse<IEnumerable<BookingResponse>>.OkResponse(bookingResponses);
+		}
 	}
 }
