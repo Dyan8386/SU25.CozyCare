@@ -1,4 +1,5 @@
 ﻿using CozyCare.SharedKernel.Base;
+using CozyCare.SharedKernel.Store;
 using CozyCare.ViewModels.DTOs;
 using System.Net.Http.Headers;
 using System.Text.Json;
@@ -8,10 +9,15 @@ namespace CozyCare.BookingService.Application.Externals
     public class IdentityApiClient : IIdentityApiClient
     {
         private readonly HttpClient _http;
-
-        public IdentityApiClient(HttpClient http)
+        private static readonly JsonSerializerOptions _jsonOptions = new()
         {
-            _http = http;
+            PropertyNameCaseInsensitive = true
+        };
+        private readonly ITokenAccessor _tokenAccessor;
+        public IdentityApiClient(HttpClient httpClient, ITokenAccessor tokenAccessor)
+        {
+            _http = httpClient;
+            _tokenAccessor = tokenAccessor;
         }
 
         public async Task<BaseResponse<CurrentAccountDto?>> GetCurrentAccountAsync(string accessToken)

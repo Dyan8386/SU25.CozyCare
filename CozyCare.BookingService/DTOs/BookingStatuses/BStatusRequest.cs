@@ -4,6 +4,6 @@ namespace CozyCare.BookingService.DTOs.BookingStatuses
 {
 	public class BStatusRequest
 	{
-		public string statusName { get; set; }
+		public string statusName { get; set; } = string.Empty;
 	}
 }

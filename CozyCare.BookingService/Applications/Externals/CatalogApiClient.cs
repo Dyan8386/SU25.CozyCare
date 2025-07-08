@@ -1,8 +1,10 @@
 ﻿using CozyCare.SharedKernel.Base;
+using CozyCare.SharedKernel.Store;
 using CozyCare.ViewModels.DTOs;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
@@ -16,15 +18,21 @@ namespace CozyCare.BookingService.Applications.Externals
         {
             PropertyNameCaseInsensitive = true
         };
-
-        public CatalogApiClient(HttpClient httpClient)
+        private readonly ITokenAccessor _tokenAccessor;
+        public CatalogApiClient(HttpClient httpClient, ITokenAccessor tokenAccessor)
         {
             _http = httpClient;
+            _tokenAccessor = tokenAccessor;
             // BaseAddress đã được set bởi AddHttpClient("CatalogService") là https://localhost:5158/catalog
         }
 
         public async Task<BaseResponse<IEnumerable<CategoryDto>>> GetAllCategoriesAsync(CancellationToken ct = default)
         {
+            // Móc nối Token
+            var token = _tokenAccessor.GetAccessToken();
+            if (!string.IsNullOrEmpty(token))
+                _http.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
             // Gọi lên Ocelot: GET https://localhost:5158/catalog/categories
             var resp = await _http.GetAsync("/catalog/categories", ct);
             var json = await resp.Content.ReadAsStringAsync(ct);
