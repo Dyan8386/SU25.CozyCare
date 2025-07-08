@@ -39,12 +39,19 @@ namespace CozyCare.BookingService.Controllers
         public async Task<IActionResult> DeleteBooking(int id) =>
             FromBaseResponse(await _bookingService.DeleteBookingAsync(id));
 
-		[HttpGet("available-tasks")]
-		public async Task<IActionResult> GetAvailableTasks()
-		{
-			var resp = await _bookingService.GetAvailableTasksAsync();
-			return FromBaseResponse(resp);
-		}
+        //[HttpGet("available-tasks")]
+        //public async Task<IActionResult> GetAvailableTasks()
+        //{
+        //	var resp = await _bookingService.GetAvailableTasksAsync();
+        //	return FromBaseResponse(resp);
+        //}
 
-	}
+        [HttpGet("users/{id}")]
+        public async Task<IActionResult> GetBookingsByUserId(int id)
+        {
+            var response = await _bookingService.GetBookingsByAccountIdAsync(id);
+            return FromBaseResponse(response);
+
+        }
+    }
 }

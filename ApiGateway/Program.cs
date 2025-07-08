@@ -29,6 +29,8 @@ var app = builder.Build();
 
 app.UseCors();
 app.UseHttpsRedirection();
+app.UseAuthentication();
+app.UseAuthorization();
 app.UseMiddleware<AttachSignatureToRequest>();
 // Must be the last middleware before Run
 app.UseOcelot().Wait();

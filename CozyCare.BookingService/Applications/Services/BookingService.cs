@@ -72,7 +72,7 @@ namespace CozyCare.BookingService.Applications.Services
 
 		public async Task<BaseResponse<IEnumerable<BookingResponse>>> GetAvailableTasksAsync()
 		{
-			
+
 			const int PENDING = 1;
 
 			// Dùng phương thức SearchAsync của repository
@@ -86,6 +86,20 @@ namespace CozyCare.BookingService.Applications.Services
 
 			// 3. Trả về
 			return BaseResponse<IEnumerable<BookingResponse>>.OkResponse(resultDtos);
+		}
+
+		public async Task<BaseResponse<IEnumerable<BookingResponse>>> GetBookingsByStatusAsync(int statusId)
+		{
+			var bookings = await _unitOfWork.Bookings.SearchAsync(b => b.bookingStatusId == statusId);
+			var bookingResponses = _mapper.Map<IEnumerable<BookingResponse>>(bookings);
+			return BaseResponse<IEnumerable<BookingResponse>>.OkResponse(bookingResponses);
+		}
+
+		public async Task<BaseResponse<IEnumerable<BookingResponse>>> GetBookingsByAccountIdAsync(int accountId)
+		{
+			var bookings = await _unitOfWork.Bookings.SearchAsync(b => b.customerId == accountId);
+			var bookingResponses = _mapper.Map<IEnumerable<BookingResponse>>(bookings);
+			return BaseResponse<IEnumerable<BookingResponse>>.OkResponse(bookingResponses);
 		}
 	}
 }
