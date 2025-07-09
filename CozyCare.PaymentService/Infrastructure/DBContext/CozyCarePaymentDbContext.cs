@@ -48,7 +48,7 @@ public partial class CozyCarePaymentDbContext : DbContext
         modelBuilder.Entity<Payment>(entity =>
         {
             entity.HasKey(e => e.paymentId).HasName("PK__Payments__A0D9EFC60A080688");
-            entity.Property<int>("UserId").HasColumnName("userId").IsRequired();
+            entity.Property(e => e.userId).IsRequired();
             entity.Property(e => e.createdDate).HasDefaultValueSql("(getdate())");
             entity.Property(e => e.paymentDate).HasDefaultValueSql("(getdate())");
 

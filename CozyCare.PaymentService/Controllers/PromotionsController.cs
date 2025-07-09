@@ -1,11 +1,14 @@
 ﻿using CozyCare.PaymentService.Application.Interfaces;
 using CozyCare.SharedKernel.Base;
 using CozyCare.ViewModels.DTOs;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CozyCare.PaymentService.Controllers
 {
     [Route("api/[controller]")]
+    [Authorize]
+
     public class PromotionsController : BaseApiController
     {
         private readonly IPromotionService _promotionService;
