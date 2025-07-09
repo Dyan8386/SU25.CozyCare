@@ -26,8 +26,6 @@ namespace CozyCare.ViewModels.DTOs
         public int BookingId { get; set; }
         public int UserId { get; set; }
         public decimal Amount { get; set; }
-        public string PaymentMethod { get; set; } = string.Empty;
-        public int StatusId { get; set; }
         public DateTime? PaymentDate { get; set; }
         public string? Notes { get; set; }
     }

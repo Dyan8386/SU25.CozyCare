@@ -47,10 +47,8 @@ namespace CozyCare.PaymentService.Application.Services
         {
             // 1. Kiểm tra đơn booking có tồn tại
             var bookingRes = await _bookingApiClient.GetBookingByIdAsync(req.BookingId);
-            if (bookingRes == null || bookingRes.Data == null)
-            {
+            if (bookingRes.StatusCode != StatusCodeHelper.OK || bookingRes.Data == null)
                 return BaseResponse<string>.NotFoundResponse($"Booking #{req.BookingId} not found");
-            }
 
             var orderId = Guid.NewGuid().ToString();
             var requestId = Guid.NewGuid().ToString();
@@ -62,7 +60,8 @@ namespace CozyCare.PaymentService.Application.Services
                 $"&requestId={requestId}&amount={amount}" +
                 $"&orderId={orderId}&orderInfo={req.Notes}" +
                 $"&returnUrl={_opts.ReturnUrl}&notifyUrl={_opts.NotifyUrl}" +
-                $"&extraData={extraData}&requestType={_opts.RequestType}";
+                $"&extraData={extraData}";
+
 
             var signature = ComputeHmacSHA256(raw, _opts.SecretKey);
 
@@ -83,10 +82,18 @@ namespace CozyCare.PaymentService.Application.Services
 
             var json = JsonSerializer.Serialize(payload);
             var body = new StringContent(json, Encoding.UTF8, "application/json");
-            var resp = await _http.PostAsync(_opts.MomoApiUrl, body);
+            var request = new HttpRequestMessage(HttpMethod.Post, new Uri(_opts.MomoApiUrl))
+            {
+                Content = body
+            };
+
+            var resp = await _http.SendAsync(request);
+
             resp.EnsureSuccessStatusCode();
 
             var respJson = await resp.Content.ReadAsStringAsync();
+            Console.WriteLine("Momo raw JSON response: " + respJson);
+
             var model = JsonSerializer.Deserialize<MomoCreatePaymentResponseModel>(
                 respJson,
                 new JsonSerializerOptions { PropertyNameCaseInsensitive = true }

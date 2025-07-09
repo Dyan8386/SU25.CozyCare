@@ -4,7 +4,7 @@
     <TargetFramework>net8.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
-    <UserSecretsId>67c477f2-3681-4b51-a96e-33ab58d5c768</UserSecretsId>
+    <UserSecretsId>dotnet ef migrations add FixUserIdMappingdotnet ef migrations add FixUserIdMapping</UserSecretsId>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
   </PropertyGroup>
 

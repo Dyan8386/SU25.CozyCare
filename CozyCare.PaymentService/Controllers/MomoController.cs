@@ -2,12 +2,14 @@
 using CozyCare.SharedKernel.Base;
 using CozyCare.ViewModels.DTOs;
 using CozyCare.ViewModels.Momo;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 
 namespace CozyCare.PaymentService.Controllers
 {
     [Route("api/[controller]")]
+    [Authorize]
     public class MomoController : BaseApiController
     {
         private readonly IMomoService _momoService;
