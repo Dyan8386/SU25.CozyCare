@@ -201,6 +201,18 @@
       "UpstreamPathTemplate": "/booking/bookings",
       "UpstreamHttpMethod": [ "Get", "Post" ]
     },
+    {
+      "DownstreamPathTemplate": "/api/Bookings/users/{everything}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5223
+        }
+      ],
+      "UpstreamPathTemplate": "/booking/bookings/users/{everything}",
+      "UpstreamHttpMethod": [ "Get" ]
+    },
 
     // BookingDetailController
     {
@@ -226,6 +238,18 @@
       ],
       "UpstreamPathTemplate": "/booking/booking-details",
       "UpstreamHttpMethod": [ "Get", "Post" ]
+    },
+    {
+      "DownstreamPathTemplate": "/api/BookingDetails/booking/{everything}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5223
+        }
+      ],
+      "UpstreamPathTemplate": "/booking/booking-details/booking/{everything}",
+      "UpstreamHttpMethod": [ "Get" ]
     },
 
     // BookingStatusController
