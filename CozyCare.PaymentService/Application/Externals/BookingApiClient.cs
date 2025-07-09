@@ -31,7 +31,10 @@ namespace CozyCare.PaymentService.Application.Externals
             _http.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
             // Gọi qua Gateway: /booking/api/bookings/{id}
-            var resp = await _http.GetAsync($"/booking/api/bookings/{bookingId}", ct);
+            //var resp = await _http.GetAsync($"/booking/api/bookings/{bookingId}", ct);
+            //var json = await resp.Content.ReadAsStringAsync(ct);
+
+            var resp = await _http.GetAsync($"bookings/{bookingId}", ct);
             var json = await resp.Content.ReadAsStringAsync(ct);
             if (resp.StatusCode == HttpStatusCode.TemporaryRedirect ||
             resp.StatusCode == HttpStatusCode.MovedPermanently ||

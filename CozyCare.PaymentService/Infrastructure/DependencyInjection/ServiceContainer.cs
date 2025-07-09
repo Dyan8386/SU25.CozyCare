@@ -20,7 +20,11 @@ namespace CozyCare.PaymentService.Infrastructure.DependencyInjection
             //services.AddScoped<ICategoryService, CategoryService>();
             services.AddScoped<IPaymentsService, PaymentsService>();
             services.AddScoped<IPromotionService, PromotionService>();
-            services.AddHttpClient<IBookingApiClient, BookingApiClient>("BookingService");
+            services.AddScoped<IBookingApiClient, BookingApiClient>();
+            services.AddHttpClient<IBookingApiClient, BookingApiClient>("BookingService").ConfigurePrimaryHttpMessageHandler(() => new HttpClientHandler
+            {
+                AllowAutoRedirect = false
+            }); ;
             //services.AddAutoMapper(typeof(CatalogMappingProfile).Assembly);
             //services.AddHttpClient<IIdentityApiClient, IdentityApiClient>("IdentityService");
 
