@@ -113,5 +113,17 @@ namespace CozyCare.BookingService.Applications.Services
 
 			return BaseResponse<IEnumerable<TaskAvailableResponse>>.OkResponse(dtos);
 		}
+
+		public async Task<BaseResponse<IEnumerable<BDetailResponse>>> GetBookingDetailsByBookingIdAsync(int bookingId)
+		{
+			var bookingDetails = await _unitOfWork.BookingDetails
+				.SearchAsync(bd => bd.bookingId == bookingId);
+			if (bookingDetails == null || !bookingDetails.Any())
+			{
+				return BaseResponse<IEnumerable<BDetailResponse>>.NotFoundResponse($"No booking details found for Booking ID {bookingId}.");
+			}
+			var response = _mapper.Map<IEnumerable<BDetailResponse>>(bookingDetails);
+			return BaseResponse<IEnumerable<BDetailResponse>>.OkResponse(response);
+		}
 	}
 }

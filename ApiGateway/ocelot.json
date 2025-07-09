@@ -245,6 +245,18 @@
         "AllowedScopes": []
       }
     },
+    {
+      "DownstreamPathTemplate": "/api/Bookings/users/{everything}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5223
+        }
+      ],
+      "UpstreamPathTemplate": "/booking/bookings/users/{everything}",
+      "UpstreamHttpMethod": [ "Get" ]
+    },
 
     {
       "DownstreamPathTemplate": "/api/BookingDetails/{everything}",
@@ -277,6 +289,18 @@
         "AuthenticationProviderKey": "Bearer",
         "AllowedScopes": []
       }
+    },
+    {
+      "DownstreamPathTemplate": "/api/BookingDetails/booking/{everything}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5223
+        }
+      ],
+      "UpstreamPathTemplate": "/booking/booking-details/booking/{everything}",
+      "UpstreamHttpMethod": [ "Get" ]
     },
 
     {
