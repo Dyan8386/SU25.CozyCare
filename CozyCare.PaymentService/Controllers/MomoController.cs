@@ -9,7 +9,6 @@ using Microsoft.Extensions.Options;
 namespace CozyCare.PaymentService.Controllers
 {
     [Route("api/[controller]")]
-    [Authorize]
     public class MomoController : BaseApiController
     {
         private readonly IMomoService _momoService;

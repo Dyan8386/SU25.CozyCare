@@ -148,8 +148,6 @@ namespace CozyCare.PaymentService.Application.Services
             if (payment == null || payment.statusId == (int)PaymentStatusEnum.Paid) return;
 
             payment.statusId = (int)PaymentStatusEnum.Paid;
-
-
             payment.statusId = 2;
             payment.updatedDate = DateTime.UtcNow;
             await repo.UpdateAsync(payment);
