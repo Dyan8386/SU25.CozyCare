@@ -3,6 +3,7 @@ using CozyCare.ViewModels.DTOs;
 using Microsoft.AspNetCore.Mvc;
 using System.Linq.Expressions;
 using CozyCare.SharedKernel.Base;
+using CozyCare.SharedKernel.Store;
 namespace CozyCare.JobService.Controllers
 {
     [ApiController]
@@ -42,6 +43,16 @@ namespace CozyCare.JobService.Controllers
             Expression<Func<Domain.Entities.TaskClaim, bool>> filter = c =>
                 string.IsNullOrEmpty(keyword) || c.note.Contains(keyword);
             return FromBaseResponse(await _taskClaimService.SearchAsync(filter));
+        }
+        [HttpPost("change-status/{id}")]
+        public async Task<IActionResult> ChangeStatus(int id)
+        {
+            var result = await _taskClaimService.ChangeStatusTaskClaim(id);
+            if (result.StatusCode == StatusCodeHelper.OK) // Replace 'IsSuccess' with a valid property or condition  
+            {
+                return Ok(result.Data);
+            }
+            return BadRequest(result.Message);
         }
     }
 }

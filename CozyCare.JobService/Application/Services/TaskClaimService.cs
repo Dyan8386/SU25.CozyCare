@@ -95,5 +95,16 @@ namespace CozyCare.JobService.Application.Services
         // Add methods for task claim operations here
         // For example: CreateClaimAsync, GetClaimsAsync, UpdateClaimAsync, etc.
 
+        public async Task<BaseResponse<bool>> ChangeStatusTaskClaim(int id)
+        {
+            var entity = await _unitOfWork.TaskClaims.GetByIdAsync(id);
+
+            if (entity == null)
+                throw new BaseException.BadRequestException("TaskClaims_not_found", "TaskClaims not found");
+            entity.statusId = 2;
+            _unitOfWork.TaskClaims.Update(entity);
+            await _unitOfWork.SaveChangesAsync();
+            return BaseResponse<bool>.OkResponse(true); // Fixed by removing the second argument
+        }
     }
 }

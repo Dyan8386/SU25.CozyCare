@@ -13,6 +13,8 @@ namespace CozyCare.JobService.Application.Interfaces
         Task<BaseResponse<TaskClaimDto>> CreateAsync(CreateTaskClaimDto dto);
         Task<BaseResponse<string>> UpdateAsync(int id, UpdateTaskClaimDto dto);
         Task<BaseResponse<string>> DeleteAsync(int id);
-        
+        Task<BaseResponse<bool>> ChangeStatusTaskClaim(int id);
+
+
     }
 }
