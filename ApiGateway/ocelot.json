@@ -146,7 +146,38 @@
         "AllowedScopes": []
       }
     },
-
+    {
+      "DownstreamPathTemplate": "/api/Service/category/{categoryId}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5100
+        }
+      ],
+      "UpstreamPathTemplate": "/catalog/services/category/{categoryId}",
+      "UpstreamHttpMethod": [ "Get" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/ServiceDetail/service/{serviceId}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5100
+        }
+      ],
+      "UpstreamPathTemplate": "/catalog/service-details/service/{serviceId}",
+      "UpstreamHttpMethod": [ "Get" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    },
     {
       "DownstreamPathTemplate": "/api/Account/{everything}",
       "DownstreamScheme": "http",
@@ -345,11 +376,7 @@
         }
       ],
       "UpstreamPathTemplate": "/payment/momo/create",
-      "UpstreamHttpMethod": [ "Post" ],
-      "AuthenticationOptions": {
-        "AuthenticationProviderKey": "Bearer",
-        "AllowedScopes": []
-      }
+      "UpstreamHttpMethod": [ "Post" ]
     },
     {
       "DownstreamPathTemplate": "/api/momo/callback",
@@ -361,11 +388,7 @@
         }
       ],
       "UpstreamPathTemplate": "/payment/momo/callback",
-      "UpstreamHttpMethod": [ "Get" ],
-      "AuthenticationOptions": {
-        "AuthenticationProviderKey": "Bearer",
-        "AllowedScopes": []
-      }
+      "UpstreamHttpMethod": [ "Get" ]
     },
     {
       "DownstreamPathTemplate": "/api/payments/{everything}",

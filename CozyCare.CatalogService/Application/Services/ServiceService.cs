@@ -92,5 +92,13 @@ namespace CozyCare.CatalogService.Application.Services
 
             return BaseResponse<string>.OkResponse("Service status updated");
         }
+        public async Task<BaseResponse<IEnumerable<ServiceDto>>> GetByCategoryIdAsync(int categoryId)
+        {
+            // Lấy danh sách services theo categoryId
+            var results = await _unitOfWork.Services
+                .SearchAsync(s => s.categoryId == categoryId, includeProperties: "ServiceDetails,category");
+            var dtos = _mapper.Map<IEnumerable<ServiceDto>>(results);
+            return BaseResponse<IEnumerable<ServiceDto>>.OkResponse(dtos);
+        }
     }
 }
