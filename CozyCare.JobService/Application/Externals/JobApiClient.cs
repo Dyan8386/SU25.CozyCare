@@ -24,7 +24,7 @@ namespace CozyCare.JobService.Application.Externals
             // BaseAddress được set trong AddHttpClient("CatalogService") là: https://localhost:5158/catalog/
         }
 
-        public async Task<BaseResponse<BookingDetailDto>> GetServiceByIdAsync(int id, CancellationToken ct = default)
+        public async Task<BaseResponse<BookingDetailDto>> GetBookingDetailByIdAsync(int id, CancellationToken ct = default)
         {
             // Gắn token
             var token = _tokenAccessor.GetAccessToken();
@@ -95,5 +95,6 @@ namespace CozyCare.JobService.Application.Externals
             return BaseResponse<AccountDto>.OkResponse(svc);
         }
 
+        
     }
 }
