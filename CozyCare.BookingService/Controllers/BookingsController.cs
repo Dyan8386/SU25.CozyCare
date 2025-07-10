@@ -47,6 +47,7 @@ namespace CozyCare.BookingService.Controllers
         //}
 
         [HttpGet("users/{id}")]
+        [AllowAnonymous]
         public async Task<IActionResult> GetBookingsByUserId(int id)
         {
             var response = await _bookingService.GetBookingsByAccountIdAsync(id);

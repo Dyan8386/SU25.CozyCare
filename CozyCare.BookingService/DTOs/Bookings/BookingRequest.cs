@@ -2,7 +2,7 @@
 {
 	public class BookingRequest
 	{
-		public string? bookingNumber { get; set; }
+		//public string? bookingNumber { get; set; }
 
 		public int customerId { get; set; }
 

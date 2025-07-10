@@ -12,5 +12,6 @@ namespace CozyCare.BookingService.Applications.Interfaces
 		Task<BaseResponse<string>> UpdateBookingDetailAsync(int id, BDetailRequest request);
 		Task<BaseResponse<string>> DeleteBookingDetailAsync(int id);
 		Task<BaseResponse<IEnumerable<TaskAvailableResponse>>> GetAvailableTasksAsync();
+		Task<BaseResponse<IEnumerable<BDetailResponse>>> GetBookingDetailsByBookingIdAsync(int bookingId);
 	}
 }
