@@ -1,4 +1,5 @@
 ﻿
+using CozyCare.JobService.Application.Externals;
 using CozyCare.JobService.Application.Interfaces;
 using CozyCare.JobService.Application.Services;
 using CozyCare.JobService.Infrastructure.DBContext;
@@ -23,7 +24,10 @@ namespace CozyCare.JobService.Infrastructure.DependencyInjection
             services.AddHttpClient<ITaskClaimStatusService, TaskClaimStatusService>("BookingService");
             //services.AddAutoMapper(typeof(CatalogMappingProfile).Assembly);
             //services.AddHttpClient<IIdentityApiClient, IdentityApiClient>("IdentityService");
-
+            services.AddHttpClient<IJobApiClient, JobApiClient>("JobService").ConfigurePrimaryHttpMessageHandler(() => new HttpClientHandler
+            {
+                AllowAutoRedirect = false
+            }); ;
 
             return services;
         }
