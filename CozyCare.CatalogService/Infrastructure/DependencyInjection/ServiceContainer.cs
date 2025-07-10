@@ -23,7 +23,10 @@ namespace CozyCare.CatalogService.Infrastructure.DependencyInjection
             services.AddScoped<IServiceService, ServiceService>();
 
             services.AddAutoMapper(typeof(CatalogMappingProfile).Assembly);
-            services.AddHttpClient<IIdentityApiClient, IdentityApiClient>("IdentityService");
+            services.AddHttpClient<IIdentityApiClient, IdentityApiClient>("IdentityService").ConfigurePrimaryHttpMessageHandler(() => new HttpClientHandler
+            {
+                AllowAutoRedirect = false
+            }); ;
 
 
             return services;

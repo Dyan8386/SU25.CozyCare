@@ -146,7 +146,38 @@
         "AllowedScopes": []
       }
     },
-
+    {
+      "DownstreamPathTemplate": "/api/Service/category/{categoryId}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5100
+        }
+      ],
+      "UpstreamPathTemplate": "/catalog/services/category/{categoryId}",
+      "UpstreamHttpMethod": [ "Get" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/ServiceDetail/service/{serviceId}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5100
+        }
+      ],
+      "UpstreamPathTemplate": "/catalog/service-details/service/{serviceId}",
+      "UpstreamHttpMethod": [ "Get" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    },
     {
       "DownstreamPathTemplate": "/api/Account/{everything}",
       "DownstreamScheme": "http",
@@ -310,7 +341,65 @@
         "AuthenticationProviderKey": "Bearer",
         "AllowedScopes": []
       }
+    }, // ... phần trước của "Routes"
+    {
+      "DownstreamPathTemplate": "/api/momo/create",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5232
+        }
+      ],
+      "UpstreamPathTemplate": "/payment/momo/create",
+      "UpstreamHttpMethod": [ "Post" ]
+    },
+    {
+      "DownstreamPathTemplate": "/api/momo/callback",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5232
+        }
+      ],
+      "UpstreamPathTemplate": "/payment/momo/callback",
+      "UpstreamHttpMethod": [ "Get" ]
+    },
+    {
+      "DownstreamPathTemplate": "/api/payments/{everything}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5232
+        }
+      ],
+      "UpstreamPathTemplate": "/payment/payments/{everything}",
+      "UpstreamHttpMethod": [ "Get" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/promotions/{everything}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5232
+        }
+      ],
+      "UpstreamPathTemplate": "/payment/promotions/{everything}",
+      "UpstreamHttpMethod": [ "Get", "Post", "Put" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
     }
+    // ... phần sau của "Routes"
+
   ],
   "GlobalConfiguration": {
     "BaseUrl": "https://localhost:5158"

@@ -50,5 +50,10 @@ namespace CozyCare.CatalogService.Controllers
         [HttpPatch("{id}/status")]
         public async Task<IActionResult> SetStatus(int id, [FromBody] LockServiceDetailDto dto) =>
             FromBaseResponse(await _serviceDetail.SetServiceDetailStatusAsync(id, dto));
+
+        [HttpGet("service/{serviceId}")]
+        public async Task<IActionResult> GetByService(int serviceId)=>
+            FromBaseResponse(await _serviceDetail.GetByServiceIdAsync(serviceId));
+
     }
 }

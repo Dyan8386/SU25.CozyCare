@@ -1,9 +1,10 @@
 ﻿using CozyCare.CatalogService.Application.Interfaces;
-using CozyCare.ViewModels.DTOs;
+using CozyCare.CatalogService.Application.Services;
 using CozyCare.SharedKernel.Base;
+using CozyCare.ViewModels.DTOs;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Linq.Expressions;
-using Microsoft.AspNetCore.Authorization;
 
 namespace CozyCare.CatalogService.Controllers
 {
@@ -26,6 +27,12 @@ namespace CozyCare.CatalogService.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(int id) =>
             FromBaseResponse(await _service.GetByIdAsync(id));
+
+        // GET api/service/category/5
+        [HttpGet("category/{categoryId}")]
+        public async Task<IActionResult> GetByCategory(int categoryId) => 
+            FromBaseResponse(await _service.GetByCategoryIdAsync(categoryId));
+      
 
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] CreateServiceDto dto) =>

@@ -1,7 +1,6 @@
 ﻿using CozyCare.SharedKernel.Middlewares;
 using CozyCare.SharedKernel.Store;
 using CozyCare.SharedKernel.Utils;
-using CozyCare.ViewModels.Momo;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -25,7 +24,7 @@ namespace CozyCare.SharedKernel.DependencyInjection
             services.AddHttpClients(config);
             services.AddHttpContextAccessor();
             services.AddScoped<ITokenAccessor, TokenAccessor>();
-            services.Configure<MomoOptionModel>(config.GetSection("Momo"));
+           
             // bind settings
             services.Configure<JwtSettings>(config.GetSection("Authentication"));
             // configure Serilog logging

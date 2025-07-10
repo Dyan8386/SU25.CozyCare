@@ -18,6 +18,7 @@ namespace CozyCare.ViewModels.DTOs
         public DateTime? CreatedDate { get; set; }
         public DateTime? UpdatedDate { get; set; }
         public string? Notes { get; set; }
+        public string? MomoOrderId { get; set; }
     }
 
     public class CreatePaymentDto
@@ -25,9 +26,8 @@ namespace CozyCare.ViewModels.DTOs
         public int BookingId { get; set; }
         public int UserId { get; set; }
         public decimal Amount { get; set; }
-        public string PaymentMethod { get; set; } = string.Empty;
-        public int StatusId { get; set; }
         public DateTime? PaymentDate { get; set; }
         public string? Notes { get; set; }
     }
+
 }

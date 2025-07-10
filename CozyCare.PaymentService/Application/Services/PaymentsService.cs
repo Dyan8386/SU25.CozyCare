@@ -18,17 +18,6 @@ namespace CozyCare.PaymentService.Application.Services
             _mapper = mapper;
         }
 
-        public async Task<BaseResponse<PaymentDto>> CreateAsync(CreatePaymentDto request)
-        {
-            var entity = _mapper.Map<Payment>(request);
-            entity.createdDate = DateTime.UtcNow;
-
-            await _uow.Payments.AddAsync(entity);
-            await _uow.SaveChangesAsync();
-
-            return BaseResponse<PaymentDto>.OkResponse(_mapper.Map<PaymentDto>(entity));
-        }
-
         public async Task<BaseResponse<PaymentDto>> GetByIdAsync(int id)
         {
             var entity = await _uow.Payments.GetByIdAsync(id);

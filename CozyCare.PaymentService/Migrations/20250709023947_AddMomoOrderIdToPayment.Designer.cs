@@ -4,6 +4,7 @@ using CozyCare.PaymentService.Infrastructure.DBContext;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CozyCare.PaymentService.Migrations
 {
     [DbContext(typeof(CozyCarePaymentDbContext))]
-    partial class CozyCarePaymentDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250709023947_AddMomoOrderIdToPayment")]
+    partial class AddMomoOrderIdToPayment
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -29,6 +32,10 @@ namespace CozyCare.PaymentService.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("paymentId"));
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int")
+                        .HasColumnName("userId");
 
                     b.Property<decimal>("amount")
                         .HasColumnType("decimal(10, 2)");
@@ -73,7 +80,11 @@ namespace CozyCare.PaymentService.Migrations
 
                     b.HasIndex("statusId");
 
-                    b.ToTable("Payments");
+                    b.ToTable("Payments", t =>
+                        {
+                            t.Property("userId")
+                                .HasColumnName("userId1");
+                        });
                 });
 
             modelBuilder.Entity("CozyCare.PaymentService.Domain.Entities.PaymentStatus", b =>

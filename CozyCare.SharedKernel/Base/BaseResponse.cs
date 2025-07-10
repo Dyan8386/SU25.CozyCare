@@ -9,6 +9,8 @@ namespace CozyCare.SharedKernel.Base
         public string? Message { get; set; }
         public StatusCodeHelper StatusCode { get; set; }
         public string? Code { get; set; }
+
+        public BaseResponse() { }
         private BaseResponse(StatusCodeHelper statusCode, string code, T? data, string? message)
         {
             Data = data;
