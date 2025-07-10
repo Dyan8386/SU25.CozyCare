@@ -89,5 +89,12 @@ namespace CozyCare.CatalogService.Application.Services
             return BaseResponse<string>.OkResponse("Service detail status updated");
         }
 
+        public async Task<BaseResponse<IEnumerable<ServiceDetailDto>>> GetByServiceIdAsync(int serviceId)
+        {
+            var results = await _unitOfWork.ServiceDetails
+                .SearchAsync(d => d.serviceId == serviceId, includeProperties: "service");
+            var dtos = _mapper.Map<IEnumerable<ServiceDetailDto>>(results);
+            return BaseResponse<IEnumerable<ServiceDetailDto>>.OkResponse(dtos);
+        }
     }
 }

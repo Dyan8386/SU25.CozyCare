@@ -8,7 +8,6 @@ using CozyCare.SharedKernel.Store;
 using CozyCare.ViewModels.DTOs;
 using CozyCare.ViewModels.Enums;
 using CozyCare.ViewModels.Momo;
-using CozyyCare.ViewModels.Momo;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
 using System;
@@ -116,14 +115,15 @@ namespace CozyCare.PaymentService.Application.Services
             await _uow.Payments.AddAsync(payment);
             await _uow.SaveChangesAsync();
 
-            return BaseResponse<string>.OkResponse(model.PayUrl);
+            return BaseResponse<string>.OkResponse(data: model.PayUrl);
         }
 
 
         public MomoExecuteResponseModel ParseCallback(IQueryCollection q)
         {
             string G(string k) => q.ContainsKey(k) ? q[k].ToString() : "";
-            return new MomoExecuteResponseModel
+
+            var model = new MomoExecuteResponseModel
             {
                 PartnerCode = G("partnerCode"),
                 OrderId = G("orderId"),
@@ -132,6 +132,7 @@ namespace CozyCare.PaymentService.Application.Services
                 OrderInfo = G("orderInfo"),
                 OrderType = G("orderType"),
                 TransId = G("transId"),
+                ErrorCode = int.TryParse(G("errorCode"), out var ec) ? ec : -1,
                 ResultCode = int.TryParse(G("resultCode"), out var rc) ? rc : -1,
                 Message = G("message"),
                 PayType = G("payType"),
@@ -139,7 +140,10 @@ namespace CozyCare.PaymentService.Application.Services
                 ExtraData = G("extraData"),
                 Signature = G("signature")
             };
+
+            return model;
         }
+
 
         public async Task HandleSuccessfulPaymentAsync(MomoExecuteResponseModel r)
         {
