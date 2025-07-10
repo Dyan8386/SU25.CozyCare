@@ -4,10 +4,12 @@ using Microsoft.AspNetCore.Mvc;
 using System.Linq.Expressions;
 using CozyCare.SharedKernel.Base;
 using CozyCare.SharedKernel.Store;
+using Microsoft.AspNetCore.Authorization;
 namespace CozyCare.JobService.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
+    [Authorize]
     public class TaskClaimController : BaseApiController
     {
         private readonly ITaskClaimService _taskClaimService;

@@ -5,11 +5,13 @@ using System.Linq.Expressions;
 using CozyCare.SharedKernel.Base;
 using CozyCare.JobService.Application.Services;
 using CozyCare.JobService.Application.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 
 namespace CozyCare.JobService.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
+    [Authorize]
     public class ReviewController : BaseApiController
     {
         private readonly IReviewService _reviewService;
