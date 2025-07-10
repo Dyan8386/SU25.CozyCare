@@ -7,12 +7,12 @@ namespace CozyCare.JobService.Application.Interfaces
 {
     public interface ITaskClaimService
     {
-        Task<BaseResponse<IEnumerable<TaskClaimStatusDto>>> SearchAsync(Expression<Func<Review, bool>> filter);
-        Task<BaseResponse<IEnumerable<TaskClaimStatusDto>>> GetAllAsync();
-        Task<BaseResponse<TaskClaimStatusDto>> GetByIdAsync(int id);
-        Task<BaseResponse<TaskClaimStatusDto>> CreateAsync(CreateReviewDto dto);
-        Task<BaseResponse<string>> UpdateAsync(int id, UpdateReviewDto dto);
+        Task<BaseResponse<IEnumerable<TaskClaimDto>>> SearchAsync(Expression<Func<TaskClaim, bool>> filter);
+        Task<BaseResponse<IEnumerable<TaskClaimDto>>> GetAllAsync();
+        Task<BaseResponse<TaskClaimDto>> GetByIdAsync(int id);
+        Task<BaseResponse<TaskClaimDto>> CreateAsync(CreateTaskClaimDto dto);
+        Task<BaseResponse<string>> UpdateAsync(int id, UpdateTaskClaimDto dto);
         Task<BaseResponse<string>> DeleteAsync(int id);
-        Task<BaseResponse<string>> SetReviewStatusAsync(int id, LockReviewDto dto);
+        
     }
 }

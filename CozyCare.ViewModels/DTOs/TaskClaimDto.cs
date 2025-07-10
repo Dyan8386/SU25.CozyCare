@@ -39,4 +39,5 @@ namespace CozyCare.ViewModels.DTOs
         public int statusId { get; set; }
         public string note { get; set; }
     }
+   
 }
