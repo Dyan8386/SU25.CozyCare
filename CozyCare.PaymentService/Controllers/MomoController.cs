@@ -2,6 +2,7 @@
 using CozyCare.SharedKernel.Base;
 using CozyCare.ViewModels.DTOs;
 using CozyCare.ViewModels.Momo;
+
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
@@ -34,21 +35,29 @@ namespace CozyCare.PaymentService.Controllers
         /// <summary>
         /// Callback từ MoMo gửi về sau khi người dùng thanh toán
         /// </summary>
-        [HttpGet("callback")]
-        public async Task<IActionResult> Callback()
+        // 1. Endpoint để Momo thông báo kết quả (server‑to‑server)
+        [HttpPost("notify")]
+        public async Task<IActionResult> Notify([FromBody] MomoExecuteResponseModel model)
         {
-            var model = _momoService.ParseCallback(Request.Query);
-
             if (model.ResultCode == 0)
-            {
                 await _momoService.HandleSuccessfulPaymentAsync(model);
-                return Redirect($"{_returnUrl}?result=success");
-            }
             else
-            {
                 await _momoService.HandleFailedPaymentAsync(model);
-                return Redirect($"{_returnUrl}?result=fail&message={Uri.EscapeDataString(model.Message)}");
-            }
+
+            // Momo yêu cầu response JSON { "resultCode": 0, "message": "OK" }
+            return Ok(new { resultCode = 0, message = "Received" });
         }
+
+        [HttpGet("return")]
+        public IActionResult Return([FromQuery] MomoExecuteResponseModel model)
+        {
+            // DÙNG ErrorCode cho return URL
+            var isSuccess = model.ErrorCode == 0;
+            var redirectUrl = isSuccess
+                ? $"{_returnUrl}?result=success"
+                : $"{_returnUrl}?result=fail&message={Uri.EscapeDataString(model.Message)}";
+            return Redirect(redirectUrl);
+        }
+
     }
 }

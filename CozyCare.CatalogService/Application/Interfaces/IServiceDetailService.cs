@@ -14,5 +14,6 @@ namespace CozyCare.CatalogService.Application.Interfaces
         Task<BaseResponse<string>> UpdateAsync(int id, UpdateServiceDetailDto dto);
         Task<BaseResponse<string>> DeleteAsync(int id);
         Task<BaseResponse<string>> SetServiceDetailStatusAsync(int id, LockServiceDetailDto dto);
+        Task<BaseResponse<IEnumerable<ServiceDetailDto>>> GetByServiceIdAsync(int serviceId);
     }
 }
