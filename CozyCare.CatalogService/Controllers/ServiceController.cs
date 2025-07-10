@@ -24,7 +24,8 @@ namespace CozyCare.CatalogService.Controllers
             FromBaseResponse(await _service.GetAllAsync());
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetById(int id) =>
+        [AllowAnonymous]
+		public async Task<IActionResult> GetById(int id) =>
             FromBaseResponse(await _service.GetByIdAsync(id));
 
         [HttpPost]

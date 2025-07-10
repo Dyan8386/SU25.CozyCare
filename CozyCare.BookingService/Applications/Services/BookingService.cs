@@ -39,6 +39,11 @@ namespace CozyCare.BookingService.Applications.Services
 		public async Task<BaseResponse<BookingResponse>> CreateBookingAsync(BookingRequest bookingRequest)
 		{
 			var booking = _mapper.Map<Booking>(bookingRequest);
+			//tạo booking number dua tren thời gian hien tai
+			var timestamp = DateTime.UtcNow.ToString("yyyyMMddHHmmssfff");
+			var randomSuffix = new Random().Next(1000, 9999);
+			booking.bookingNumber = $"BOOK-{timestamp}-{randomSuffix}";
+
 			await _unitOfWork.Bookings.AddAsync(booking);
 			await _unitOfWork.SaveChangesAsync();
 			var bookingResponse = _mapper.Map<BookingResponse>(booking);

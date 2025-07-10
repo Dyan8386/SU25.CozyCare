@@ -59,11 +59,11 @@
         }
       ],
       "UpstreamPathTemplate": "/catalog/services/{everything}",
-      "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete", "Patch" ],
-      "AuthenticationOptions": {
-        "AuthenticationProviderKey": "Bearer",
-        "AllowedScopes": []
-      }
+      "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete", "Patch" ]
+      //"AuthenticationOptions": {
+      //  "AuthenticationProviderKey": "Bearer",
+      //  "AllowedScopes": []
+      //}
     },
     {
       "DownstreamPathTemplate": "/api/Service",
@@ -206,11 +206,11 @@
         }
       ],
       "UpstreamPathTemplate": "/identity/auth/login",
-      "UpstreamHttpMethod": [ "Post" ],
-      "AuthenticationOptions": {
-        "AuthenticationProviderKey": "Bearer",
-        "AllowedScopes": []
-      }
+      "UpstreamHttpMethod": [ "Post" ]
+      //"AuthenticationOptions": {
+      //  "AuthenticationProviderKey": "Bearer",
+      //  "AllowedScopes": []
+      //}
     },
 
     {
@@ -223,11 +223,11 @@
         }
       ],
       "UpstreamPathTemplate": "/booking/bookings/{everything}",
-      "UpstreamHttpMethod": [ "Get", "Put", "Delete", "Patch" ],
-      "AuthenticationOptions": {
-        "AuthenticationProviderKey": "Bearer",
-        "AllowedScopes": []
-      }
+      "UpstreamHttpMethod": [ "Get", "Put", "Delete", "Patch" ]
+      //"AuthenticationOptions": {
+      //  "AuthenticationProviderKey": "Bearer",
+      //  "AllowedScopes": []
+      //}
     },
     {
       "DownstreamPathTemplate": "/api/Bookings",
@@ -239,11 +239,11 @@
         }
       ],
       "UpstreamPathTemplate": "/booking/bookings",
-      "UpstreamHttpMethod": [ "Get", "Post" ],
-      "AuthenticationOptions": {
-        "AuthenticationProviderKey": "Bearer",
-        "AllowedScopes": []
-      }
+      "UpstreamHttpMethod": [ "Get", "Post" ]
+      //"AuthenticationOptions": {
+      //  "AuthenticationProviderKey": "Bearer",
+      //  "AllowedScopes": []
+      //}
     },
     {
       "DownstreamPathTemplate": "/api/Bookings/users/{everything}",
@@ -268,11 +268,11 @@
         }
       ],
       "UpstreamPathTemplate": "/booking/booking-details/{everything}",
-      "UpstreamHttpMethod": [ "Get", "Put", "Delete", "Patch" ],
-      "AuthenticationOptions": {
-        "AuthenticationProviderKey": "Bearer",
-        "AllowedScopes": []
-      }
+      "UpstreamHttpMethod": [ "Get", "Put", "Delete", "Patch" ]
+      //"AuthenticationOptions": {
+      //  "AuthenticationProviderKey": "Bearer",
+      //  "AllowedScopes": []
+      //}
     },
     {
       "DownstreamPathTemplate": "/api/BookingDetails",
@@ -284,11 +284,11 @@
         }
       ],
       "UpstreamPathTemplate": "/booking/booking-details",
-      "UpstreamHttpMethod": [ "Get", "Post" ],
-      "AuthenticationOptions": {
-        "AuthenticationProviderKey": "Bearer",
-        "AllowedScopes": []
-      }
+      "UpstreamHttpMethod": [ "Get", "Post" ]
+      //"AuthenticationOptions": {
+      //  "AuthenticationProviderKey": "Bearer",
+      //  "AllowedScopes": []
+      //}
     },
     {
       "DownstreamPathTemplate": "/api/BookingDetails/booking/{everything}",
@@ -313,11 +313,11 @@
         }
       ],
       "UpstreamPathTemplate": "/booking/booking-statuses/{everything}",
-      "UpstreamHttpMethod": [ "Get", "Put", "Delete", "Patch" ],
-      "AuthenticationOptions": {
-        "AuthenticationProviderKey": "Bearer",
-        "AllowedScopes": []
-      }
+      "UpstreamHttpMethod": [ "Get", "Put", "Delete", "Patch" ]
+      //"AuthenticationOptions": {
+      //  "AuthenticationProviderKey": "Bearer",
+      //  "AllowedScopes": []
+      //}
     },
     {
       "DownstreamPathTemplate": "/api/BookingStatuses",
@@ -329,11 +329,11 @@
         }
       ],
       "UpstreamPathTemplate": "/booking/booking-statuses",
-      "UpstreamHttpMethod": [ "Get", "Post" ],
-      "AuthenticationOptions": {
-        "AuthenticationProviderKey": "Bearer",
-        "AllowedScopes": []
-      }
+      "UpstreamHttpMethod": [ "Get", "Post" ]
+      //"AuthenticationOptions": {
+      //  "AuthenticationProviderKey": "Bearer",
+      //  "AllowedScopes": []
+      //}
     }, // ... phần trước của "Routes"
     {
       "DownstreamPathTemplate": "/api/momo/create",
