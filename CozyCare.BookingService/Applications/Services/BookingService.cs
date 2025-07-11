@@ -1,9 +1,12 @@
 ﻿using AutoMapper;
+using CozyCare.BookingService.Application.Externals;
+using CozyCare.BookingService.Applications.Externals;
 using CozyCare.BookingService.Applications.Interfaces;
 using CozyCare.BookingService.Domain.Entities;
 using CozyCare.BookingService.DTOs.Bookings;
 using CozyCare.BookingService.Infrastructure;
 using CozyCare.SharedKernel.Base;
+using CozyCare.SharedKernel.Store;
 
 namespace CozyCare.BookingService.Applications.Services
 {
@@ -11,11 +14,15 @@ namespace CozyCare.BookingService.Applications.Services
 	{
 		private readonly IBookingUnitOfWork _unitOfWork;
 		private readonly IMapper _mapper;
+		private readonly IIdentityApiClient _identityApiClient;
+		private readonly IPaymentApiClient _paymentApiClient;
 
-		public BookingService(IBookingUnitOfWork unitOfWork, IMapper mapper)
+		public BookingService(IBookingUnitOfWork unitOfWork, IMapper mapper, IIdentityApiClient identityApiClient, IPaymentApiClient paymentApiClient)
 		{
 			_unitOfWork = unitOfWork;
 			_mapper = mapper;
+			_identityApiClient = identityApiClient;
+			_paymentApiClient = paymentApiClient;
 		}
 
 		public async Task<BaseResponse<IEnumerable<BookingResponse>>> GetAllBookingsAsync()
@@ -38,6 +45,14 @@ namespace CozyCare.BookingService.Applications.Services
 
 		public async Task<BaseResponse<BookingResponse>> CreateBookingAsync(BookingRequest bookingRequest)
 		{
+			var customer = await _identityApiClient.GetAccountById(bookingRequest.customerId);
+			if (customer.StatusCode != StatusCodeHelper.OK || customer.Data == null)
+			{
+				return customer.StatusCode == StatusCodeHelper.NotFound
+					? BaseResponse<BookingResponse>.NotFoundResponse($"Customer with ID {bookingRequest.customerId} not found.")
+					: BaseResponse<BookingResponse>.ErrorResponse(customer.Message);
+			}
+
 			var booking = _mapper.Map<Booking>(bookingRequest);
 			//tạo booking number dua tren thời gian hien tai
 			var timestamp = DateTime.UtcNow.ToString("yyyyMMddHHmmssfff");

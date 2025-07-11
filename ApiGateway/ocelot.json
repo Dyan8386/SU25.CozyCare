@@ -391,7 +391,7 @@
       "UpstreamHttpMethod": [ "Get" ]
     },
     {
-      "DownstreamPathTemplate": "/api/payments/{everything}",
+      "DownstreamPathTemplate": "/api/Payments/{everything}",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
@@ -407,7 +407,7 @@
       }
     },
     {
-      "DownstreamPathTemplate": "/api/promotions/{everything}",
+      "DownstreamPathTemplate": "/api/Promotions/{everything}",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
