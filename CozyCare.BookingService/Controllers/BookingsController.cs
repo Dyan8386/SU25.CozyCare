@@ -1,4 +1,6 @@
-﻿using CozyCare.BookingService.Applications.Interfaces;
+﻿using CozyCare.BookingService.Application.Externals;
+using CozyCare.BookingService.Applications.Externals;
+using CozyCare.BookingService.Applications.Interfaces;
 using CozyCare.BookingService.DTOs.Bookings;
 using CozyCare.SharedKernel.Base;
 using Microsoft.AspNetCore.Authorization;
@@ -13,10 +15,14 @@ namespace CozyCare.BookingService.Controllers
     public class BookingsController : BaseApiController
     {
         private readonly IBookingService _bookingService;
+        private readonly IIdentityApiClient _identityApiClient;
+        private readonly IPaymentApiClient _paymentApiClient;
 
-        public BookingsController(IBookingService bookingService)
+        public BookingsController(IBookingService bookingService, IIdentityApiClient identityApiClient, IPaymentApiClient paymentApiClient)
         {
             _bookingService = bookingService;
+            _identityApiClient = identityApiClient;
+            _paymentApiClient = paymentApiClient;
         }
 
         [HttpGet]
@@ -53,6 +59,27 @@ namespace CozyCare.BookingService.Controllers
             var response = await _bookingService.GetBookingsByAccountIdAsync(id);
             return FromBaseResponse(response);
 
+        }
+
+        [HttpGet("getUser/{id}")]
+        public async Task<IActionResult> GetUserById(int id)
+        {
+            var reponse = await _identityApiClient.GetAccountById(id);
+            return FromBaseResponse(reponse);
+        }
+
+        [HttpGet("getPayment/{id}")]
+        public async Task<IActionResult> GetPaymentById(int id)
+        {
+            var response = await _paymentApiClient.GetPaymentByIdAsync(id);
+            return FromBaseResponse(response);
+        }
+
+        [HttpGet("getPromotion/{code}")]
+        public async Task<IActionResult> GetPromotionByCode(string code)
+        {
+            var response = await _paymentApiClient.GetPromotionByCode(code);
+            return FromBaseResponse(response);
         }
     }
 }

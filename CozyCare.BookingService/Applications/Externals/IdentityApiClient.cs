@@ -21,6 +21,7 @@ namespace CozyCare.BookingService.Application.Externals
 			_tokenAccessor = tokenAccessor;
 		}
 
+
 		public async Task<BaseResponse<AccountDto>> GetAccountById(int accountId, CancellationToken ct = default)
 		{
 			// Gắn token

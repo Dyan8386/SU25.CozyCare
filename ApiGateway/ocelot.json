@@ -1,14 +1,6 @@
 {
   "Routes": [
-    // ============================
-    // Catalog: Categories (CRUD + search)
-    // RouteName: Catalog_Categories_All
-    // Upstream: GET/POST/PUT/DELETE/PATCH /catalog/categories/{everything}
-    // Downstream: http://localhost:5100/api/Category/{everything}
-    // Authentication: Bearer
-    // ============================
     {
-      "RouteName": "Catalog_Categories_All",
       "DownstreamPathTemplate": "/api/Category/{everything}",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
@@ -24,16 +16,7 @@
         "AllowedScopes": []
       }
     },
-
-    // ============================
-    // Catalog: Categories (list + create)
-    // RouteName: Catalog_Categories_Base
-    // Upstream: GET/POST /catalog/categories
-    // Downstream: http://localhost:5100/api/Category
-    // Authentication: Bearer
-    // ============================
     {
-      "RouteName": "Catalog_Categories_Base",
       "DownstreamPathTemplate": "/api/Category",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
@@ -49,16 +32,7 @@
         "AllowedScopes": []
       }
     },
-
-    // ============================
-    // Catalog: Categories Search
-    // RouteName: Catalog_Categories_Search
-    // Upstream: GET /catalog/categories/search
-    // Downstream: http://localhost:5100/api/Category/search
-    // Authentication: Bearer
-    // ============================
     {
-      "RouteName": "Catalog_Categories_Search",
       "DownstreamPathTemplate": "/api/Category/search",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
@@ -75,15 +49,7 @@
       }
     },
 
-    // ============================
-    // Catalog: Services (all operations)
-    // RouteName: Catalog_Services_All
-    // Upstream: GET/POST/PUT/DELETE/PATCH /catalog/services/{everything}
-    // Downstream: http://localhost:5100/api/Service/{everything}
-    // Authentication: (commented out)
-    // ============================
     {
-      "RouteName": "Catalog_Services_All",
       "DownstreamPathTemplate": "/api/Service/{everything}",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
@@ -94,18 +60,12 @@
       ],
       "UpstreamPathTemplate": "/catalog/services/{everything}",
       "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete", "Patch" ]
-      // AuthenticationOptions commented out (public)
+      //"AuthenticationOptions": {
+      //  "AuthenticationProviderKey": "Bearer",
+      //  "AllowedScopes": []
+      //}
     },
-
-    // ============================
-    // Catalog: Services (list + create)
-    // RouteName: Catalog_Services_Base
-    // Upstream: GET/POST /catalog/services
-    // Downstream: http://localhost:5100/api/Service
-    // Authentication: Bearer
-    // ============================
     {
-      "RouteName": "Catalog_Services_Base",
       "DownstreamPathTemplate": "/api/Service",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
@@ -121,16 +81,7 @@
         "AllowedScopes": []
       }
     },
-
-    // ============================
-    // Catalog: Services Search
-    // RouteName: Catalog_Services_Search
-    // Upstream: GET /catalog/services/search
-    // Downstream: http://localhost:5100/api/Service/search
-    // Authentication: Bearer
-    // ============================
     {
-      "RouteName": "Catalog_Services_Search",
       "DownstreamPathTemplate": "/api/Service/search",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
@@ -147,15 +98,7 @@
       }
     },
 
-    // ============================
-    // Catalog: Service Details (all operations)
-    // RouteName: Catalog_ServiceDetails_All
-    // Upstream: GET/POST/PUT/DELETE/PATCH /catalog/service-details/{everything}
-    // Downstream: http://localhost:5100/api/ServiceDetail/{everything}
-    // Authentication: Bearer
-    // ============================
     {
-      "RouteName": "Catalog_ServiceDetails_All",
       "DownstreamPathTemplate": "/api/ServiceDetail/{everything}",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
@@ -171,16 +114,7 @@
         "AllowedScopes": []
       }
     },
-
-    // ============================
-    // Catalog: Service Details (list + create)
-    // RouteName: Catalog_ServiceDetails_Base
-    // Upstream: GET/POST /catalog/service-details
-    // Downstream: http://localhost:5100/api/ServiceDetail
-    // Authentication: Bearer
-    // ============================
     {
-      "RouteName": "Catalog_ServiceDetails_Base",
       "DownstreamPathTemplate": "/api/ServiceDetail",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
@@ -196,16 +130,39 @@
         "AllowedScopes": []
       }
     },
-
-    // ============================
-    // Catalog: Service Details by Category
-    // RouteName: Catalog_ServiceDetails_ByCategory
-    // Upstream: GET /catalog/service-details/service/{serviceId}
-    // Downstream: http://localhost:5100/api/ServiceDetail/service/{serviceId}
-    // Authentication: Bearer
-    // ============================
     {
-      "RouteName": "Catalog_ServiceDetails_ByService",
+      "DownstreamPathTemplate": "/api/ServiceDetail/search",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5100
+        }
+      ],
+      "UpstreamPathTemplate": "/catalog/service-details/search",
+      "UpstreamHttpMethod": [ "Get" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/Service/category/{categoryId}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5100
+        }
+      ],
+      "UpstreamPathTemplate": "/catalog/services/category/{categoryId}",
+      "UpstreamHttpMethod": [ "Get" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    },
+    {
       "DownstreamPathTemplate": "/api/ServiceDetail/service/{serviceId}",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
@@ -221,16 +178,7 @@
         "AllowedScopes": []
       }
     },
-
-    // ============================
-    // Identity: Account operations
-    // RouteName: Identity_Account_All
-    // Upstream: GET/POST/PUT/DELETE/PATCH /identity/account/{everything}
-    // Downstream: http://localhost:5163/api/Account/{everything}
-    // Authentication: Bearer
-    // ============================
     {
-      "RouteName": "Identity_Account_All",
       "DownstreamPathTemplate": "/api/Account/{everything}",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
@@ -246,16 +194,7 @@
         "AllowedScopes": []
       }
     },
-
-    // ============================
-    // Identity: Account base
-    // RouteName: Identity_Account_Base
-    // Upstream: GET/POST /identity/account
-    // Downstream: http://localhost:5163/api/Account
-    // Authentication: Bearer
-    // ============================
     {
-      "RouteName": "Identity_Account_Base",
       "DownstreamPathTemplate": "/api/Account",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
@@ -271,16 +210,7 @@
         "AllowedScopes": []
       }
     },
-
-    // ============================
-    // Identity: Current user
-    // RouteName: Identity_Account_Current
-    // Upstream: GET /identity/account/current
-    // Downstream: http://localhost:5163/api/Account/current
-    // Authentication: Bearer
-    // ============================
     {
-      "RouteName": "Identity_Account_Current",
       "DownstreamPathTemplate": "/api/Account/current",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
@@ -297,15 +227,7 @@
       }
     },
 
-    // ============================
-    // Identity: Login
-    // RouteName: Identity_Auth_Login
-    // Upstream: POST /identity/auth/login
-    // Downstream: http://localhost:5163/api/Auth/login
-    // Authentication: Public
-    // ============================
     {
-      "RouteName": "Identity_Auth_Login",
       "DownstreamPathTemplate": "/api/Auth/login",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
@@ -316,18 +238,13 @@
       ],
       "UpstreamPathTemplate": "/identity/auth/login",
       "UpstreamHttpMethod": [ "Post" ]
-      // public
+      //"AuthenticationOptions": {
+      //  "AuthenticationProviderKey": "Bearer",
+      //  "AllowedScopes": []
+      //}
     },
 
-    // ============================
-    // Booking: Bookings (all ops)
-    // RouteName: Booking_Bookings_All
-    // Upstream: GET/PUT/DELETE/PATCH /booking/bookings/{everything}
-    // Downstream: http://localhost:5223/api/Bookings/{everything}
-    // Authentication: Public
-    // ============================
     {
-      "RouteName": "Booking_Bookings_All",
       "DownstreamPathTemplate": "/api/Bookings/{everything}",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
@@ -338,18 +255,12 @@
       ],
       "UpstreamPathTemplate": "/booking/bookings/{everything}",
       "UpstreamHttpMethod": [ "Get", "Put", "Delete", "Patch" ]
-      // public
+      //"AuthenticationOptions": {
+      //  "AuthenticationProviderKey": "Bearer",
+      //  "AllowedScopes": []
+      //}
     },
-
-    // ============================
-    // Booking: Bookings base
-    // RouteName: Booking_Bookings_Base
-    // Upstream: GET/POST /booking/bookings
-    // Downstream: http://localhost:5223/api/Bookings
-    // Authentication: Public
-    // ============================
     {
-      "RouteName": "Booking_Bookings_Base",
       "DownstreamPathTemplate": "/api/Bookings",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
@@ -360,18 +271,12 @@
       ],
       "UpstreamPathTemplate": "/booking/bookings",
       "UpstreamHttpMethod": [ "Get", "Post" ]
-      // public
+      //"AuthenticationOptions": {
+      //  "AuthenticationProviderKey": "Bearer",
+      //  "AllowedScopes": []
+      //}
     },
-
-    // ============================
-    // Booking: Bookings by user
-    // RouteName: Booking_Bookings_ByUser
-    // Upstream: GET /booking/bookings/users/{everything}
-    // Downstream: http://localhost:5223/api/Bookings/users/{everything}
-    // Authentication: Public
-    // ============================
     {
-      "RouteName": "Booking_Bookings_ByUser",
       "DownstreamPathTemplate": "/api/Bookings/users/{everything}",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
@@ -384,15 +289,7 @@
       "UpstreamHttpMethod": [ "Get" ]
     },
 
-    // ============================
-    // Booking: BookingDetails (all ops)
-    // RouteName: Booking_Details_All
-    // Upstream: GET/PUT/DELETE/PATCH /booking/booking-details/{everything}
-    // Downstream: http://localhost:5223/api/BookingDetails/{everything}
-    // Authentication: Public
-    // ============================
     {
-      "RouteName": "Booking_Details_All",
       "DownstreamPathTemplate": "/api/BookingDetails/{everything}",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
@@ -403,18 +300,12 @@
       ],
       "UpstreamPathTemplate": "/booking/booking-details/{everything}",
       "UpstreamHttpMethod": [ "Get", "Put", "Delete", "Patch" ]
-      // public
+      //"AuthenticationOptions": {
+      //  "AuthenticationProviderKey": "Bearer",
+      //  "AllowedScopes": []
+      //}
     },
-
-    // ============================
-    // Booking: BookingDetails base
-    // RouteName: Booking_Details_Base
-    // Upstream: GET/POST /booking/booking-details
-    // Downstream: http://localhost:5223/api/BookingDetails
-    // Authentication: Public
-    // ============================
     {
-      "RouteName": "Booking_Details_Base",
       "DownstreamPathTemplate": "/api/BookingDetails",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
@@ -425,18 +316,12 @@
       ],
       "UpstreamPathTemplate": "/booking/booking-details",
       "UpstreamHttpMethod": [ "Get", "Post" ]
-      // public
+      //"AuthenticationOptions": {
+      //  "AuthenticationProviderKey": "Bearer",
+      //  "AllowedScopes": []
+      //}
     },
-
-    // ============================
-    // Booking: BookingDetails by booking
-    // RouteName: Booking_Details_ByBooking
-    // Upstream: GET /booking/booking-details/booking/{everything}
-    // Downstream: http://localhost:5223/api/BookingDetails/booking/{everything}
-    // Authentication: Public
-    // ============================
     {
-      "RouteName": "Booking_Details_ByBooking",
       "DownstreamPathTemplate": "/api/BookingDetails/booking/{everything}",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
@@ -449,15 +334,7 @@
       "UpstreamHttpMethod": [ "Get" ]
     },
 
-    // ============================
-    // Booking: BookingStatuses (all ops)
-    // RouteName: Booking_Statuses_All
-    // Upstream: GET/PUT/DELETE/PATCH /booking/booking-statuses/{everything}
-    // Downstream: http://localhost:5223/api/BookingStatuses/{everything}
-    // Authentication: Public
-    // ============================
     {
-      "RouteName": "Booking_Statuses_All",
       "DownstreamPathTemplate": "/api/BookingStatuses/{everything}",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
@@ -468,18 +345,12 @@
       ],
       "UpstreamPathTemplate": "/booking/booking-statuses/{everything}",
       "UpstreamHttpMethod": [ "Get", "Put", "Delete", "Patch" ]
-      // public
+      //"AuthenticationOptions": {
+      //  "AuthenticationProviderKey": "Bearer",
+      //  "AllowedScopes": []
+      //}
     },
-
-    // ============================
-    // Booking: BookingStatuses base
-    // RouteName: Booking_Statuses_Base
-    // Upstream: GET/POST /booking/booking-statuses
-    // Downstream: http://localhost:5223/api/BookingStatuses
-    // Authentication: Public
-    // ============================
     {
-      "RouteName": "Booking_Statuses_Base",
       "DownstreamPathTemplate": "/api/BookingStatuses",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
@@ -490,19 +361,37 @@
       ],
       "UpstreamPathTemplate": "/booking/booking-statuses",
       "UpstreamHttpMethod": [ "Get", "Post" ]
-      // public
-    },
-
-    // ============================
-    // Payment: List/Get promotions and payments (with auth)
-    // RouteName: Payment_Promotions_Payments
-    // Upstream: GET/POST/PUT /payment/promotions and GET /payment/payments/{everything}
-    // Downstream: http://localhost:5232/api/promotions/{everything} AND /api/payments/{everything}
-    // Authentication: Bearer
-    // ============================
+      //"AuthenticationOptions": {
+      //  "AuthenticationProviderKey": "Bearer",
+      //  "AllowedScopes": []
+      //}
+    }, // ... phần trước của "Routes"
     {
-      "RouteName": "Payment_Payments_All",
-      "DownstreamPathTemplate": "/api/payments/{everything}",
+      "DownstreamPathTemplate": "/api/momo/create",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5232
+        }
+      ],
+      "UpstreamPathTemplate": "/payment/momo/create",
+      "UpstreamHttpMethod": [ "Post" ]
+    },
+    {
+      "DownstreamPathTemplate": "/api/momo/callback",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5232
+        }
+      ],
+      "UpstreamPathTemplate": "/payment/momo/callback",
+      "UpstreamHttpMethod": [ "Get" ]
+    },
+    {
+      "DownstreamPathTemplate": "/api/Payments/{everything}",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
@@ -518,8 +407,7 @@
       }
     },
     {
-      "RouteName": "Payment_Promotions_All",
-      "DownstreamPathTemplate": "/api/promotions/{everything}",
+      "DownstreamPathTemplate": "/api/Promotions/{everything}",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
@@ -533,173 +421,10 @@
         "AuthenticationProviderKey": "Bearer",
         "AllowedScopes": []
       }
-
-    },
-    // ... phần sau của "Routes"
-    {
-      "DownstreamPathTemplate": "/api/Review/{everything}",
-      "DownstreamScheme": "http",
-      "DownstreamHostAndPorts": [
-        {
-          "Host": "localhost",
-          "Port": 5100
-        }
-      ],
-      "UpstreamPathTemplate": "/job/reviews/{everything}",
-      "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete", "Patch" ],
-      "AuthenticationOptions": {
-        "AuthenticationProviderKey": "Bearer",
-        "AllowedScopes": []
-      }
-    },
-    {
-      "DownstreamPathTemplate": "/api/Review",
-      "DownstreamScheme": "http",
-      "DownstreamHostAndPorts": [
-        {
-          "Host": "localhost",
-          "Port": 5100
-        }
-      ],
-      "UpstreamPathTemplate": "/job/reviews",
-      "UpstreamHttpMethod": [ "Get", "Post" ],
-      "AuthenticationOptions": {
-        "AuthenticationProviderKey": "Bearer",
-        "AllowedScopes": []
-      }
-    },
-    {
-      "DownstreamPathTemplate": "/api/Review/search",
-      "DownstreamScheme": "http",
-      "DownstreamHostAndPorts": [
-        {
-          "Host": "localhost",
-          "Port": 5100
-        }
-      ],
-      "UpstreamPathTemplate": "/job/reviews/search",
-      "UpstreamHttpMethod": [ "Get" ],
-      "AuthenticationOptions": {
-        "AuthenticationProviderKey": "Bearer",
-        "AllowedScopes": []
-      }
-    },
-
-    {
-      "DownstreamPathTemplate": "/api/TaskClaim/{everything}",
-      "DownstreamScheme": "http",
-      "DownstreamHostAndPorts": [
-        {
-          "Host": "localhost",
-          "Port": 5100
-        }
-      ],
-      "UpstreamPathTemplate": "/job/task-claims/{everything}",
-      "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete", "Patch" ],
-      "AuthenticationOptions": {
-        "AuthenticationProviderKey": "Bearer",
-        "AllowedScopes": []
-      }
-    },
-    {
-      "DownstreamPathTemplate": "/api/TaskClaim",
-      "DownstreamScheme": "http",
-      "DownstreamHostAndPorts": [
-        {
-          "Host": "localhost",
-          "Port": 5100
-        }
-      ],
-      "UpstreamPathTemplate": "/job/task-claims",
-      "UpstreamHttpMethod": [ "Get", "Post" ],
-      "AuthenticationOptions": {
-        "AuthenticationProviderKey": "Bearer",
-        "AllowedScopes": []
-      }
-    },
-    {
-      "DownstreamPathTemplate": "/api/TaskClaim/search",
-      "DownstreamScheme": "http",
-      "DownstreamHostAndPorts": [
-        {
-          "Host": "localhost",
-          "Port": 5100
-        }
-      ],
-      "UpstreamPathTemplate": "/job/task-claims/search",
-      "UpstreamHttpMethod": [ "Get" ],
-      "AuthenticationOptions": {
-        "AuthenticationProviderKey": "Bearer",
-        "AllowedScopes": []
-      }
-    },
-    {
-      "DownstreamPathTemplate": "/api/TaskClaim/change-status/{id}",
-      "DownstreamScheme": "http",
-      "DownstreamHostAndPorts": [
-        {
-          "Host": "localhost",
-          "Port": 5100
-        }
-      ],
-      "UpstreamPathTemplate": "/job/task-claims/change-status/{id}",
-      "UpstreamHttpMethod": [ "Post" ],
-      "AuthenticationOptions": {
-        "AuthenticationProviderKey": "Bearer",
-        "AllowedScopes": []
-      }
-    },
-
-    {
-      "DownstreamPathTemplate": "/api/TaskClaimStatus/{everything}",
-      "DownstreamScheme": "http",
-      "DownstreamHostAndPorts": [
-        {
-          "Host": "localhost",
-          "Port": 5100
-        }
-      ],
-      "UpstreamPathTemplate": "/job/task-claim-statuses/{everything}",
-      "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete", "Patch" ],
-      "AuthenticationOptions": {
-        "AuthenticationProviderKey": "Bearer",
-        "AllowedScopes": []
-      }
-    },
-    {
-      "DownstreamPathTemplate": "/api/TaskClaimStatus",
-      "DownstreamScheme": "http",
-      "DownstreamHostAndPorts": [
-        {
-          "Host": "localhost",
-          "Port": 5100
-        }
-      ],
-      "UpstreamPathTemplate": "/job/task-claim-statuses",
-      "UpstreamHttpMethod": [ "Get", "Post" ],
-      "AuthenticationOptions": {
-        "AuthenticationProviderKey": "Bearer",
-        "AllowedScopes": []
-      }
-    },
-    {
-      "DownstreamPathTemplate": "/api/TaskClaimStatus/search",
-      "DownstreamScheme": "http",
-      "DownstreamHostAndPorts": [
-        {
-          "Host": "localhost",
-          "Port": 5100
-        }
-      ],
-      "UpstreamPathTemplate": "/job/task-claim-statuses/search",
-      "UpstreamHttpMethod": [ "Get" ],
-      "AuthenticationOptions": {
-        "AuthenticationProviderKey": "Bearer",
-        "AllowedScopes": []
-      }
     }
-  ],
+    // ... phần sau của "Routes"
 
+  ],
   "GlobalConfiguration": {
     "BaseUrl": "https://localhost:5158"
   }

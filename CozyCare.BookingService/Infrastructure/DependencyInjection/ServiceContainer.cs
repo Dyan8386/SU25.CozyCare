@@ -44,6 +44,11 @@ namespace CozyCare.BookingService.Infrastructure.DependencyInjection
 				{
 					AllowAutoRedirect = false
 				});
+			services.AddHttpClient<IPaymentApiClient, PaymentApiClient>("PaymentService")
+				.ConfigurePrimaryHttpMessageHandler(() => new HttpClientHandler
+				{
+					AllowAutoRedirect = false
+				});
 
 			return services;
         }

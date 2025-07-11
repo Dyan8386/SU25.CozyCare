@@ -53,6 +53,6 @@ var app = builder.Build();
 app.UseInfrastructurePolicy();
 app.UseSwagger();
 app.UseSwaggerUI();
-app.UseHttpsRedirection();
+//app.UseHttpsRedirection();
 app.MapControllers();
 app.Run();
