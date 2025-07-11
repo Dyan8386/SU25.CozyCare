@@ -1,4 +1,5 @@
 ﻿using CozyCare.BookingService;
+using CozyCare.BookingService.Applications.Externals;
 using CozyCare.BookingService.Infrastructure.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
@@ -50,6 +51,9 @@ builder.Services.AddCors(options =>
 			   .AllowAnyHeader();
 	});
 });
+
+// Đăng ký hosted service
+builder.Services.AddHostedService<BookingExpiryService>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -59,7 +63,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 app.UseInfrastructurePolicy();
-app.UseHttpsRedirection();
+//app.UseHttpsRedirection();
 app.UseCors("AllowAll");
 app.UseRouting();
 
