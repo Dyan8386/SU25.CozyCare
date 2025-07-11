@@ -32,7 +32,7 @@ namespace CozyCare.ViewModels.DTOs
         public string? Phone { get; set; }
         public int RoleId { get; set; }
         public int StatusId { get; set; }
-        //public int? CreatedBy { get; set; }
+        public int? CreatedBy { get; set; }
     }
 
     public class UpdateAccountRequestDto
@@ -43,20 +43,6 @@ namespace CozyCare.ViewModels.DTOs
         public string? Phone { get; set; }
         public int? RoleId { get; set; }
         public int? StatusId { get; set; }
-        //public int? UpdatedBy { get; set; }
-    }
-
-    public class CurrentAccountDto
-    {
-        public int AccountId { get; set; }
-        public string Email { get; set; } = null!;
-        public string? FullName { get; set; }
-        public string? Avatar { get; set; }
-
-        public int RoleId { get; set; }
-        public string RoleName { get; set; } = null!;
-
-        public int StatusId { get; set; }
-        public string StatusName { get; set; } = null!;
+        public int? UpdatedBy { get; set; }
     }
 }

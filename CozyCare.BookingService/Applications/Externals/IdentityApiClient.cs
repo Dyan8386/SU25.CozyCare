@@ -21,26 +21,6 @@ namespace CozyCare.BookingService.Application.Externals
 			_tokenAccessor = tokenAccessor;
 		}
 
-		public async Task<BaseResponse<CurrentAccountDto?>> GetCurrentAccountAsync(string accessToken)
-		{
-			var request = new HttpRequestMessage(HttpMethod.Get, "/api/account/current");
-			request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
-
-			var response = await _http.SendAsync(request);
-			if (!response.IsSuccessStatusCode)
-			{
-				return BaseResponse<CurrentAccountDto?>.UnauthorizeResponse("Invalid access token");
-			}
-
-			var content = await response.Content.ReadAsStringAsync();
-			var user = JsonSerializer.Deserialize<CurrentAccountDto>(content, new JsonSerializerOptions
-			{
-				PropertyNameCaseInsensitive = true
-			});
-
-			return BaseResponse<CurrentAccountDto?>.OkResponse(user);
-		}
-
 
 		public async Task<BaseResponse<AccountDto>> GetAccountById(int accountId, CancellationToken ct = default)
 		{
