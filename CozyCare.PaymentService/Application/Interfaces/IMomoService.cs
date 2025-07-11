@@ -1,7 +1,6 @@
 ﻿using CozyCare.SharedKernel.Base;
 using CozyCare.ViewModels.DTOs;
 using CozyCare.ViewModels.Momo;
-using CozyyCare.ViewModels.Momo;
 
 namespace CozyCare.PaymentService.Application.Interfaces
 {
