@@ -152,7 +152,6 @@ namespace CozyCare.PaymentService.Application.Services
             if (payment == null || payment.statusId == (int)PaymentStatusEnum.Paid) return;
 
             payment.statusId = (int)PaymentStatusEnum.Paid;
-            payment.statusId = 2;
             payment.updatedDate = DateTime.UtcNow;
             await repo.UpdateAsync(payment);
             await _uow.SaveChangesAsync();
@@ -165,9 +164,6 @@ namespace CozyCare.PaymentService.Application.Services
             if (payment == null || payment.statusId == (int)PaymentStatusEnum.Fail) return;
 
             payment.statusId = (int)PaymentStatusEnum.Fail;
-
-
-            payment.statusId = 3;
             payment.updatedDate = DateTime.UtcNow;
             await repo.UpdateAsync(payment);
             await _uow.SaveChangesAsync();
@@ -197,8 +193,19 @@ namespace CozyCare.PaymentService.Application.Services
                 RequestId = "",      // không quan trọng ở client
                 Amount = payment.amount.ToString(),
                 OrderInfo = payment.notes,
-                ErrorCode = payment.statusId == (int)PaymentStatusEnum.Paid ? 0 : 1,
-                ResultCode = payment.statusId == (int)PaymentStatusEnum.Paid ? 0 : 1,
+                ErrorCode = payment.statusId switch
+                {
+                    (int)PaymentStatusEnum.Paid => 0,
+                    (int)PaymentStatusEnum.Fail => 1,
+                    _ => 2 // trường hợp pending hoặc không xác định
+                },
+                ResultCode = payment.statusId switch
+                {
+                    (int)PaymentStatusEnum.Paid => 0,
+                    (int)PaymentStatusEnum.Fail => 1,
+                    _ => 2
+                },
+
                 Message = payment.statusId == (int)PaymentStatusEnum.Paid
                                  ? "Thanh toán thành công"
                                  : "Thanh toán thất bại",

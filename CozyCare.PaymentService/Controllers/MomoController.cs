@@ -39,14 +39,23 @@ namespace CozyCare.PaymentService.Controllers
         [HttpPost("notify")]
         public async Task<IActionResult> Notify([FromBody] MomoExecuteResponseModel model)
         {
-            if (model.ResultCode == 0)
-                await _momoService.HandleSuccessfulPaymentAsync(model);
-            else
-                await _momoService.HandleFailedPaymentAsync(model);
+            Console.WriteLine("🔥 Received MoMo Notify callback:");
+            Console.WriteLine($"ResultCode: {model.ResultCode}, OrderId: {model.OrderId}, Amount: {model.Amount}");
 
-            // Momo yêu cầu response JSON { "resultCode": 0, "message": "OK" }
+            if (model.ResultCode == 0)
+            {
+                Console.WriteLine("✅ MoMo payment success callback.");
+                await _momoService.HandleSuccessfulPaymentAsync(model);
+            }
+            else
+            {
+                Console.WriteLine("❌ MoMo payment failed callback.");
+                await _momoService.HandleFailedPaymentAsync(model);
+            }
+
             return Ok(new { resultCode = 0, message = "Received" });
         }
+
 
         // MomoController
         [HttpGet("return")]
