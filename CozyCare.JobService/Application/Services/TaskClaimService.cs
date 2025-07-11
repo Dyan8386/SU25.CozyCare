@@ -112,7 +112,6 @@ namespace CozyCare.JobService.Application.Services
             if (taskClaims == null || !taskClaims.Any())
                 return BaseResponse<IEnumerable<TaskClaimDto>>.NotFoundResponse("No task claims found for this account");
             var TaskClaimResponses = _mapper.Map<IEnumerable<TaskClaimDto>>(taskClaims);
-
             return BaseResponse<IEnumerable<TaskClaimDto>>.OkResponse(TaskClaimResponses);
         }
         public async Task<BaseResponse<IEnumerable<TaskClaimDto>>> GetTaskClaimByDetailIdAsync(int detailid)
