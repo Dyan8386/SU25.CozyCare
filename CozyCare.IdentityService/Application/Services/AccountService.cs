@@ -5,6 +5,7 @@ using CozyCare.IdentityService.Infrastructure;
 using CozyCare.SharedKernel.Base;
 using CozyCare.SharedKernel.Utils;
 using CozyCare.ViewModels.DTOs;
+using Microsoft.EntityFrameworkCore;
 
 namespace CozyCare.IdentityService.Application.Services
 {
@@ -12,49 +13,78 @@ namespace CozyCare.IdentityService.Application.Services
     {
         private readonly IIdentityUnitOfWork _uow;
         private readonly IMapper _mapper;
-        private readonly ICurrentAccountService _currentAccount;
 
-        public AccountService(IIdentityUnitOfWork uow, IMapper mapper, ICurrentAccountService currentAccount)
+        public AccountService(IIdentityUnitOfWork uow, IMapper mapper)
         {
             _uow = uow;
             _mapper = mapper;
-            _currentAccount = currentAccount;
         }
 
         public async Task<BaseResponse<AccountDto>> CreateAsync(CreateAccountRequestDto request)
         {
-            var entity = _mapper.Map<Account>(request);
+            var normalizedEmail = request.Email.ToLowerInvariant();
+            var normalizedPhone = request.Phone?.Trim();
 
-            entity.password = PasswordHelper.HashPassword(request.Password);
-            entity.createdDate = DateTime.UtcNow;
+            // Check email exists
+            var emailExists = await _uow.Accounts.Query()
+                .AnyAsync(a => a.email.ToLower() == normalizedEmail);
+            if (emailExists)
+                return BaseResponse<AccountDto>.ErrorResponse("Email đã tồn tại");
 
-            var current = _currentAccount.GetCurrentAccount();
-            if (current != null)
+            // Check phone exists
+            if (!string.IsNullOrEmpty(normalizedPhone))
             {
-                entity.createdBy = current.AccountId;
+                var phoneExists = await _uow.Accounts.Query()
+                    .AnyAsync(a => a.phone != null && a.phone == normalizedPhone);
+                if (phoneExists)
+                    return BaseResponse<AccountDto>.ErrorResponse("Số điện thoại đã tồn tại");
             }
 
+            var entity = _mapper.Map<Account>(request);
+            entity.email = normalizedEmail;
+            entity.phone = normalizedPhone;
+            entity.password = PasswordHelper.HashPassword(request.Password);
+            entity.createdDate = DateTime.UtcNow;
+            entity.createdBy = request.CreatedBy;
+
             await _uow.Accounts.AddAsync(entity);
-            await _uow.SaveChangesAsync();
+
+            try
+            {
+                await _uow.SaveChangesAsync();
+            }
+            catch (DbUpdateException ex)
+            {
+                return BaseResponse<AccountDto>.ErrorResponse($"Không thể tạo tài khoản: {ex.InnerException?.Message ?? ex.Message}");
+            }
 
             return BaseResponse<AccountDto>.OkResponse(_mapper.Map<AccountDto>(entity));
         }
-
 
         public async Task<BaseResponse<string>> DeleteAsync(int id)
         {
             var entity = await _uow.Accounts.GetByIdAsync(id);
             if (entity == null)
-                return BaseResponse<string>.NotFoundResponse("Account not found");
+                return BaseResponse<string>.NotFoundResponse("Tài khoản không tồn tại");
+
             await _uow.Accounts.DeleteAsync(entity);
-            await _uow.SaveChangesAsync();
-            return BaseResponse<string>.OkResponse("Deleted successfully");
+
+            try
+            {
+                await _uow.SaveChangesAsync();
+            }
+            catch (DbUpdateException ex)
+            {
+                return BaseResponse<string>.ErrorResponse($"Không thể xoá tài khoản: {ex.InnerException?.Message ?? ex.Message}");
+            }
+
+            return BaseResponse<string>.OkResponse("Xoá thành công");
         }
 
         public async Task<BaseResponse<IEnumerable<AccountDto>>> GetAllAsync()
         {
             var list = await _uow.Accounts.GetAllAsync();
-            var dtos = list.Select(a => _mapper.Map<AccountDto>(a));
+            var dtos = list.Select(_mapper.Map<AccountDto>);
             return BaseResponse<IEnumerable<AccountDto>>.OkResponse(dtos);
         }
 
@@ -62,25 +92,45 @@ namespace CozyCare.IdentityService.Application.Services
         {
             var account = await _uow.Accounts.GetByIdAsync(id);
             if (account == null)
-                return BaseResponse<AccountDto>.NotFoundResponse("Account not found");
+                return BaseResponse<AccountDto>.NotFoundResponse("Tài khoản không tồn tại");
+
             return BaseResponse<AccountDto>.OkResponse(_mapper.Map<AccountDto>(account));
         }
 
         public async Task<BaseResponse<AccountDto>> UpdateAsync(int id, UpdateAccountRequestDto request)
         {
-
             var entity = await _uow.Accounts.GetByIdAsync(id);
             if (entity == null)
-                return BaseResponse<AccountDto>.NotFoundResponse("Account not found");
-            var current = _currentAccount.GetCurrentAccount();
-            if (current != null)
+                return BaseResponse<AccountDto>.NotFoundResponse("Tài khoản không tồn tại");
+
+            var normalizedPhone = request.Phone?.Trim();
+
+            if (!string.IsNullOrEmpty(normalizedPhone) && normalizedPhone != entity.phone)
             {
-                entity.updatedBy = current.AccountId;
+                var phoneExists = await _uow.Accounts.Query()
+                    .AnyAsync(a => a.phone != null && a.phone == normalizedPhone && a.accountId != id);
+                if (phoneExists)
+                    return BaseResponse<AccountDto>.ErrorResponse("Số điện thoại đã tồn tại");
             }
+
             _mapper.Map(request, entity);
+            if (!string.IsNullOrEmpty(normalizedPhone))
+                entity.phone = normalizedPhone;
+
             entity.updatedDate = DateTime.UtcNow;
+            entity.updatedBy = request.UpdatedBy;
+
             _uow.Accounts.Update(entity);
-            await _uow.SaveChangesAsync();
+
+            try
+            {
+                await _uow.SaveChangesAsync();
+            }
+            catch (DbUpdateException ex)
+            {
+                return BaseResponse<AccountDto>.ErrorResponse($"Không thể cập nhật tài khoản: {ex.InnerException?.Message ?? ex.Message}");
+            }
+
             return BaseResponse<AccountDto>.OkResponse(_mapper.Map<AccountDto>(entity));
         }
     }

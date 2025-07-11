@@ -43,4 +43,8 @@
     <ProjectReference Include="..\CozyCare.ViewModels\CozyCare.ViewModels.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Application\Externals\" />
+  </ItemGroup>
+
 </Project>

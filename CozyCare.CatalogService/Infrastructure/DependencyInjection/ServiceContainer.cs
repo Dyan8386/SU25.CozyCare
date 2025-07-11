@@ -1,5 +1,4 @@
-﻿using CozyCare.CatalogService.Application.Externals;
-using CozyCare.CatalogService.Application.Interfaces;
+﻿using CozyCare.CatalogService.Application.Interfaces;
 using CozyCare.CatalogService.Application.Profiles;
 using CozyCare.CatalogService.Application.Services;
 using CozyCare.CatalogService.Infrastructure.DBContext;
@@ -23,10 +22,6 @@ namespace CozyCare.CatalogService.Infrastructure.DependencyInjection
             services.AddScoped<IServiceService, ServiceService>();
 
             services.AddAutoMapper(typeof(CatalogMappingProfile).Assembly);
-            services.AddHttpClient<IIdentityApiClient, IdentityApiClient>("IdentityService").ConfigurePrimaryHttpMessageHandler(() => new HttpClientHandler
-            {
-                AllowAutoRedirect = false
-            }); ;
 
 
             return services;
