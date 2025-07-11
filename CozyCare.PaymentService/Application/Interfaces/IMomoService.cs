@@ -1,7 +1,6 @@
 ﻿using CozyCare.SharedKernel.Base;
 using CozyCare.ViewModels.DTOs;
 using CozyCare.ViewModels.Momo;
-using CozyyCare.ViewModels.Momo;
 
 namespace CozyCare.PaymentService.Application.Interfaces
 {
@@ -26,5 +25,6 @@ namespace CozyCare.PaymentService.Application.Interfaces
         /// Xử lý callback thất bại (ghi log, cập nhật trạng thái “Failed”)
         /// </summary>
         Task HandleFailedPaymentAsync(MomoExecuteResponseModel response);
+        Task<MomoExecuteResponseModel> GetCallbackDataAsync(string orderId);
     }
 }

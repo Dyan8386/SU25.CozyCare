@@ -13,6 +13,10 @@ namespace CozyCare.Persistence
             _context = context;
             _dbSet = _context.Set<T>();
         }
+        public IQueryable<T> Query()
+        {
+            return _dbSet.AsQueryable();
+        }
 
         #region Async Methods
 

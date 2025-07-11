@@ -48,15 +48,34 @@ namespace CozyCare.PaymentService.Controllers
             return Ok(new { resultCode = 0, message = "Received" });
         }
 
+        // MomoController
         [HttpGet("return")]
         public IActionResult Return([FromQuery] MomoExecuteResponseModel model)
         {
-            // DÙNG ErrorCode cho return URL
+            // 1. Xác thực model.Signature (nếu cần)
+            // 2. Lấy orderId và errorCode từ model
             var isSuccess = model.ErrorCode == 0;
-            var redirectUrl = isSuccess
-                ? $"{_returnUrl}?result=success"
-                : $"{_returnUrl}?result=fail&message={Uri.EscapeDataString(model.Message)}";
-            return Redirect(redirectUrl);
+
+            // 3. Redirect về frontend, kèm orderId để client fetch tiếp
+            var clientUrl = isSuccess
+                ? $"{_returnUrl}?orderId={model.OrderId}"
+                : $"{_returnUrl}?orderId={model.OrderId}&error=1&message={Uri.EscapeDataString(model.Message)}";
+
+            return Redirect(clientUrl);
+        }
+
+        /// <summary>
+        /// Cho client fetch kết quả thanh toán sau khi redirect về frontend
+        /// </summary>
+        [HttpGet("callback/{orderId}")]
+        public async Task<IActionResult> GetCallbackData(string orderId)
+        {
+            var model = await _momoService.GetCallbackDataAsync(orderId);
+            if (model == null)
+                return NotFound(new { message = $"Không tìm thấy orderId {orderId}" });
+
+            // Trả thẳng JSON MomoExecuteResponseModel
+            return Ok(model);
         }
 
     }

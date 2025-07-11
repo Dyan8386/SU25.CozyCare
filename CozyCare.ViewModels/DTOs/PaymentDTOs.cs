@@ -29,5 +29,11 @@ namespace CozyCare.ViewModels.DTOs
         public DateTime? PaymentDate { get; set; }
         public string? Notes { get; set; }
     }
-
+    public class CallbackDto
+    {
+        public decimal Amount { get; set; }
+        public string OrderInfo { get; set; } = string.Empty;
+        public int ErrorCode { get; set; }
+        public string Message { get; set; } = string.Empty;
+    }
 }

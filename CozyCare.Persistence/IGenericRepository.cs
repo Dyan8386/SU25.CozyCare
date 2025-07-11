@@ -4,6 +4,7 @@ namespace CozyCare.Persistence
 {
     public interface IGenericRepository<T> where T : class
     {
+        IQueryable<T> Query();
         #region Async
         Task<IEnumerable<T>> GetAllAsync(string? includeProperties = null);
         Task<T?> GetByIdAsync(object id);
