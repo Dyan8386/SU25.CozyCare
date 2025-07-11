@@ -180,5 +180,33 @@ namespace CozyCare.PaymentService.Application.Services
             var hash = hmac.ComputeHash(Encoding.UTF8.GetBytes(data));
             return BitConverter.ToString(hash).Replace("-", "").ToLower();
         }
+
+        public async Task<MomoExecuteResponseModel> GetCallbackDataAsync(string orderId)
+        {
+            var payment = await _uow.Payments
+                .GetFirstOrDefaultAsync(p => p.momoOrderId == orderId);
+
+            if (payment == null)
+                return null!;    // Controller sẽ kiểm tra null
+
+            // Map lại thành MomoExecuteResponseModel để dùng chung DTO
+            return new MomoExecuteResponseModel
+            {
+                PartnerCode = _opts.PartnerCode,
+                OrderId = payment.momoOrderId,
+                RequestId = "",      // không quan trọng ở client
+                Amount = payment.amount.ToString(),
+                OrderInfo = payment.notes,
+                ErrorCode = payment.statusId == (int)PaymentStatusEnum.Paid ? 0 : 1,
+                ResultCode = payment.statusId == (int)PaymentStatusEnum.Paid ? 0 : 1,
+                Message = payment.statusId == (int)PaymentStatusEnum.Paid
+                                 ? "Thanh toán thành công"
+                                 : "Thanh toán thất bại",
+                PayType = "",      // nếu cần có thể lưu thêm
+                ResponseTime = 0,
+                ExtraData = "",
+                Signature = ""
+            };
+        }
     }
 }
