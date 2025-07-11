@@ -43,6 +43,5 @@ namespace CozyCare.ViewModels.DTOs
     public class LockServiceDto
     {
         public bool? IsActive { get; set; }
-
     }
 }
