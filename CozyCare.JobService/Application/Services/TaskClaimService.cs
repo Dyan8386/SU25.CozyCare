@@ -10,7 +10,7 @@ using CozyCare.ViewModels.DTOs;
 using System.Linq.Expressions;
 
 namespace CozyCare.JobService.Application.Services
-{   
+{
     public class TaskClaimService : ITaskClaimService
     {
         private readonly IJobUnitOfWork _unitOfWork;
@@ -36,7 +36,7 @@ namespace CozyCare.JobService.Application.Services
             if (bookingDetail.StatusCode != StatusCodeHelper.OK || bookingDetail.Data == null)
                 throw new BaseException.BadRequestException("booking_detail_not_found", "Booking detail not found");
 
-            
+
             var entity = _mapper.Map<TaskClaim>(dto);
 
             await _unitOfWork.TaskClaims.AddAsync(entity);
@@ -105,6 +105,23 @@ namespace CozyCare.JobService.Application.Services
             _unitOfWork.TaskClaims.Update(entity);
             await _unitOfWork.SaveChangesAsync();
             return BaseResponse<bool>.OkResponse(true); // Fixed by removing the second argument
+        }
+        public async Task<BaseResponse<IEnumerable<TaskClaimDto>>> GeTaskClaimByAccountIdAsync(int accountId)
+        {
+            var taskClaims = await _unitOfWork.TaskClaims.SearchAsync(c => c.housekeeperId == accountId);
+            if (taskClaims == null || !taskClaims.Any())
+                return BaseResponse<IEnumerable<TaskClaimDto>>.NotFoundResponse("No task claims found for this account");
+            var TaskClaimResponses = _mapper.Map<IEnumerable<TaskClaimDto>>(taskClaims);
+
+            return BaseResponse<IEnumerable<TaskClaimDto>>.OkResponse(TaskClaimResponses);
+        }
+        public async Task<BaseResponse<IEnumerable<TaskClaimDto>>> GetTaskClaimByDetailIdAsync(int detailid)
+        {
+            var taskClaims = await _unitOfWork.TaskClaims.SearchAsync(c => c.detailId == detailid);
+            if (taskClaims == null || !taskClaims.Any())
+                return BaseResponse<IEnumerable<TaskClaimDto>>.NotFoundResponse("No task claims found for this booking detail");
+            var TaskClaimResponses = _mapper.Map<IEnumerable<TaskClaimDto>>(taskClaims);
+            return BaseResponse<IEnumerable<TaskClaimDto>>.OkResponse(TaskClaimResponses);
         }
     }
 }

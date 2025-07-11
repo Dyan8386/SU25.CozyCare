@@ -1,6 +1,7 @@
 ﻿
 using CozyCare.JobService.Application.Externals;
 using CozyCare.JobService.Application.Interfaces;
+using CozyCare.JobService.Application.Profiles;
 using CozyCare.JobService.Application.Services;
 using CozyCare.JobService.Infrastructure.DBContext;
 using CozyCare.SharedKernel.DependencyInjection;
@@ -21,13 +22,16 @@ namespace CozyCare.JobService.Infrastructure.DependencyInjection
             //services.AddScoped<ICategoryService, CategoryService>();
             services.AddScoped<IReviewService, ReviewService>();
             services.AddScoped<ITaskClaimService, TaskClaimService>();
-            services.AddHttpClient<ITaskClaimStatusService, TaskClaimStatusService>("BookingService");
+            services.AddScoped<ITaskClaimStatusService, TaskClaimStatusService>();
+
+            services.AddHttpClient<IJobApiClient, JobApiClient>("JobService");
             //services.AddAutoMapper(typeof(CatalogMappingProfile).Assembly);
             //services.AddHttpClient<IIdentityApiClient, IdentityApiClient>("IdentityService");
+            services.AddAutoMapper(typeof(JobMappingProfile).Assembly);
             services.AddHttpClient<IJobApiClient, JobApiClient>("JobService").ConfigurePrimaryHttpMessageHandler(() => new HttpClientHandler
             {
                 AllowAutoRedirect = false
-            }); ;
+            });
 
             return services;
         }

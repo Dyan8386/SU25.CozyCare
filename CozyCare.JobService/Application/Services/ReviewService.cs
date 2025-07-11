@@ -92,5 +92,22 @@ namespace CozyCare.JobService.Application.Services
             await _unitOfWork.SaveChangesAsync();
             return BaseResponse<string>.OkResponse("Review updated successfully");
         }
+        public async Task<BaseResponse<IEnumerable<ReviewDto>>> GeReviewByAccountIdAsync(int accountId)
+        {
+            var reviews = await _unitOfWork.Reviews.SearchAsync(c => c.customerId == accountId);
+            if (reviews == null || !reviews.Any())
+                return BaseResponse<IEnumerable<ReviewDto>>.NotFoundResponse("No review found for this account");
+            var ReviewResponses = _mapper.Map<IEnumerable<ReviewDto>>(reviews);
+
+            return BaseResponse<IEnumerable<ReviewDto>>.OkResponse(ReviewResponses);
+        }
+        public async Task<BaseResponse<IEnumerable<TaskClaimDto>>> GetReviewByDetailIdAsync(int detailid)
+        {
+            var taskClaims = await _unitOfWork.TaskClaims.SearchAsync(c => c.detailId == detailid);
+            if (taskClaims == null || !taskClaims.Any())
+                return BaseResponse<IEnumerable<TaskClaimDto>>.NotFoundResponse("No task claims found for this booking detail");
+            var TaskClaimResponses = _mapper.Map<IEnumerable<TaskClaimDto>>(taskClaims);
+            return BaseResponse<IEnumerable<TaskClaimDto>>.OkResponse(TaskClaimResponses);
+        }
     }
 }

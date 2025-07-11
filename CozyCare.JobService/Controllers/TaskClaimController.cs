@@ -5,11 +5,12 @@ using System.Linq.Expressions;
 using CozyCare.SharedKernel.Base;
 using CozyCare.SharedKernel.Store;
 using Microsoft.AspNetCore.Authorization;
+using CozyCare.JobService.Application.Services;
 namespace CozyCare.JobService.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    [Authorize]
+ //   [Authorize]
     public class TaskClaimController : BaseApiController
     {
         private readonly ITaskClaimService _taskClaimService;
@@ -55,6 +56,18 @@ namespace CozyCare.JobService.Controllers
                 return Ok(result.Data);
             }
             return BadRequest(result.Message);
+        }
+        [HttpGet("users/{accountId}")]
+        public async Task<IActionResult> GetByAccountId(int accountId)
+        {
+            var result = await _taskClaimService.GeTaskClaimByAccountIdAsync(accountId);
+            return FromBaseResponse(result);
+        }
+        [HttpGet("bookingdetails/{Id}")]
+        public async Task<IActionResult> GetByBookingDetailsId(int Id)
+        {
+            var result = await _taskClaimService.GetTaskClaimByDetailIdAsync(Id);
+            return FromBaseResponse(result);
         }
     }
 }

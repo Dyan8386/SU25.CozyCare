@@ -15,6 +15,7 @@ namespace CozyCare.JobService.Application.Interfaces
         Task<BaseResponse<string>> DeleteAsync(int id);
         Task<BaseResponse<bool>> ChangeStatusTaskClaim(int id);
 
-
+        Task<BaseResponse<IEnumerable<TaskClaimDto>>> GeTaskClaimByAccountIdAsync(int accountId);
+        Task<BaseResponse<IEnumerable<TaskClaimDto>>> GetTaskClaimByDetailIdAsync(int detailid);
     }
 }
