@@ -36,42 +36,57 @@ namespace CozyCare.PaymentService.Controllers
         /// Callback từ MoMo gửi về sau khi người dùng thanh toán
         /// </summary>
         // 1. Endpoint để Momo thông báo kết quả (server‑to‑server)
-        [HttpPost("notify")]
-        public async Task<IActionResult> Notify([FromBody] MomoExecuteResponseModel model)
-        {
-            Console.WriteLine("🔥 Received MoMo Notify callback:");
-            Console.WriteLine($"ResultCode: {model.ResultCode}, OrderId: {model.OrderId}, Amount: {model.Amount}");
+        //[HttpPost("notify")]
+        //public async Task<IActionResult> Notify([FromBody] MomoExecuteResponseModel model)
+        //{
+        //    Console.WriteLine("🔥 Received MoMo Notify callback:");
+        //    Console.WriteLine($"ResultCode: {model.ResultCode}, OrderId: {model.OrderId}, Amount: {model.Amount}");
 
-            if (model.ResultCode == 0)
+        //    if (model.ResultCode == 0)
+        //    {
+        //        Console.WriteLine("✅ MoMo payment success callback.");
+        //        await _momoService.HandleSuccessfulPaymentAsync(model);
+        //    }
+        //    else
+        //    {
+        //        Console.WriteLine("❌ MoMo payment failed callback.");
+        //        await _momoService.HandleFailedPaymentAsync(model);
+        //    }
+
+        //    return Ok(new { resultCode = 0, message = "Received" });
+        //}
+
+
+        [HttpGet("return")]
+        public async Task<IActionResult> Return([FromQuery] MomoExecuteResponseModel model)
+        {
+            // Log đầu vào
+            Console.WriteLine("🔥 Received MoMo Return callback:");
+            Console.WriteLine($"ErrorCode: {model.ErrorCode}, OrderId: {model.OrderId}, Amount: {model.Amount}");
+
+            // Xử lý thanh toán giống như notify
+            if (model.ErrorCode == "0")
             {
-                Console.WriteLine("✅ MoMo payment success callback.");
+                Console.WriteLine("✅ MoMo payment success via return.");
                 await _momoService.HandleSuccessfulPaymentAsync(model);
             }
             else
             {
-                Console.WriteLine("❌ MoMo payment failed callback.");
+                Console.WriteLine("❌ MoMo payment failed via return.");
                 await _momoService.HandleFailedPaymentAsync(model);
             }
 
-            return Ok(new { resultCode = 0, message = "Received" });
+            // Redirect về frontend
+            var clientUrl = $"http://localhost:3000/payment/callback?orderId={model.OrderId}";
+            if (model.ErrorCode != "0")
+            {
+                var escapedMessage = Uri.EscapeDataString(model.Message ?? "Lỗi không xác định");
+                clientUrl += $"&error=1&message={escapedMessage}";
+            }
+
+            return Redirect(clientUrl); // ✅ Đây là redirect về frontend UI
         }
 
-
-        // MomoController
-        [HttpGet("return")]
-        public IActionResult Return([FromQuery] MomoExecuteResponseModel model)
-        {
-            // 1. Xác thực model.Signature (nếu cần)
-            // 2. Lấy orderId và errorCode từ model
-            var isSuccess = model.ErrorCode == 0;
-
-            // 3. Redirect về frontend, kèm orderId để client fetch tiếp
-            var clientUrl = isSuccess
-                ? $"{_returnUrl}?orderId={model.OrderId}"
-                : $"{_returnUrl}?orderId={model.OrderId}&error=1&message={Uri.EscapeDataString(model.Message)}";
-
-            return Redirect(clientUrl);
-        }
 
         /// <summary>
         /// Cho client fetch kết quả thanh toán sau khi redirect về frontend

@@ -1,51 +1,49 @@
-﻿using System.Text.Json.Serialization;
+﻿using Microsoft.AspNetCore.Mvc;
 
 namespace CozyCare.ViewModels.Momo
 {
     public class MomoExecuteResponseModel
     {
-        [JsonPropertyName("partnerCode")]
-        public string PartnerCode { get; set; } = string.Empty;
+        [FromQuery(Name = "partnerCode")]
+        public string? PartnerCode { get; set; }
 
-        [JsonPropertyName("orderId")]
-        public string OrderId { get; set; } = string.Empty;
+        [FromQuery(Name = "orderId")]
+        public string? OrderId { get; set; }
 
-        [JsonPropertyName("requestId")]
-        public string RequestId { get; set; } = string.Empty;
+        [FromQuery(Name = "requestId")]
+        public string? RequestId { get; set; }
 
-        [JsonPropertyName("amount")]
-        public string Amount { get; set; } = string.Empty;
+        [FromQuery(Name = "amount")]
+        public string? Amount { get; set; }
 
-        [JsonPropertyName("orderInfo")]
-        public string OrderInfo { get; set; } = string.Empty;
+        [FromQuery(Name = "orderInfo")]
+        public string? OrderInfo { get; set; }
 
-        [JsonPropertyName("orderType")]
-        public string OrderType { get; set; } = string.Empty;
+        [FromQuery(Name = "orderType")]
+        public string? OrderType { get; set; }
 
-        [JsonPropertyName("transId")]
-        public string TransId { get; set; } = string.Empty;
+        [FromQuery(Name = "transId")]
+        public string? TransId { get; set; }
 
-        // Dùng cho notify (POST JSON)
-        [JsonPropertyName("resultCode")]
-        public int ResultCode { get; set; }
+        [FromQuery(Name = "errorCode")]
+        public string? ErrorCode { get; set; }
 
-        // Dùng cho return (redirect) — Momo trả về query param errorCode
-        [JsonPropertyName("errorCode")]
-        public int ErrorCode { get; set; }
+        [FromQuery(Name = "resultCode")]
+        public string? ResultCode { get; set; }
 
-        [JsonPropertyName("message")]
-        public string Message { get; set; } = string.Empty;
+        [FromQuery(Name = "message")]
+        public string? Message { get; set; }
 
-        [JsonPropertyName("payType")]
-        public string PayType { get; set; } = string.Empty;
+        [FromQuery(Name = "payType")]
+        public string? PayType { get; set; }
 
-        [JsonPropertyName("responseTime")]
-        public long ResponseTime { get; set; }
+        [FromQuery(Name = "responseTime")]
+        public string? ResponseTime { get; set; }
 
-        [JsonPropertyName("extraData")]
-        public string ExtraData { get; set; } = string.Empty;
+        [FromQuery(Name = "extraData")]
+        public string? ExtraData { get; set; }
 
-        [JsonPropertyName("signature")]
-        public string Signature { get; set; } = string.Empty;
+        [FromQuery(Name = "signature")]
+        public string? Signature { get; set; }
     }
 }

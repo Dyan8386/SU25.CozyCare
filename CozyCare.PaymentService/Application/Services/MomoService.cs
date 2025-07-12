@@ -114,7 +114,7 @@ namespace CozyCare.PaymentService.Application.Services
 
             await _uow.Payments.AddAsync(payment);
             await _uow.SaveChangesAsync();
-
+            await _bookingApiClient.UpdatePaymentStatusAsync(req.BookingId, (int)PaymentStatusEnum.Unpaid);
             return BaseResponse<string>.OkResponse(data: model.PayUrl);
         }
 
@@ -132,18 +132,17 @@ namespace CozyCare.PaymentService.Application.Services
                 OrderInfo = G("orderInfo"),
                 OrderType = G("orderType"),
                 TransId = G("transId"),
-                ErrorCode = int.TryParse(G("errorCode"), out var ec) ? ec : -1,
-                ResultCode = int.TryParse(G("resultCode"), out var rc) ? rc : -1,
+                ErrorCode = G("errorCode"),
+                ResultCode = G("resultCode"),
                 Message = G("message"),
                 PayType = G("payType"),
-                ResponseTime = long.TryParse(G("responseTime"), out var rt) ? rt : 0,
+                ResponseTime = G("responseTime"),
                 ExtraData = G("extraData"),
                 Signature = G("signature")
             };
 
             return model;
         }
-
 
         public async Task HandleSuccessfulPaymentAsync(MomoExecuteResponseModel r)
         {
@@ -155,6 +154,8 @@ namespace CozyCare.PaymentService.Application.Services
             payment.updatedDate = DateTime.UtcNow;
             await repo.UpdateAsync(payment);
             await _uow.SaveChangesAsync();
+            await _bookingApiClient.UpdatePaymentStatusAsync(payment.bookingId, (int)PaymentStatusEnum.Paid);
+
         }
 
         public async Task HandleFailedPaymentAsync(MomoExecuteResponseModel r)
@@ -167,8 +168,8 @@ namespace CozyCare.PaymentService.Application.Services
             payment.updatedDate = DateTime.UtcNow;
             await repo.UpdateAsync(payment);
             await _uow.SaveChangesAsync();
+            await _bookingApiClient.UpdatePaymentStatusAsync(payment.bookingId, (int)PaymentStatusEnum.Fail);
         }
-
 
         private static string ComputeHmacSHA256(string data, string key)
         {
@@ -190,30 +191,18 @@ namespace CozyCare.PaymentService.Application.Services
             {
                 PartnerCode = _opts.PartnerCode,
                 OrderId = payment.momoOrderId,
-                RequestId = "",      // không quan trọng ở client
-                Amount = payment.amount.ToString(),
+                RequestId = "",
+                Amount = payment.amount.ToString("F0"),
                 OrderInfo = payment.notes,
-                ErrorCode = payment.statusId switch
-                {
-                    (int)PaymentStatusEnum.Paid => 0,
-                    (int)PaymentStatusEnum.Fail => 1,
-                    _ => 2 // trường hợp pending hoặc không xác định
-                },
-                ResultCode = payment.statusId switch
-                {
-                    (int)PaymentStatusEnum.Paid => 0,
-                    (int)PaymentStatusEnum.Fail => 1,
-                    _ => 2
-                },
-
-                Message = payment.statusId == (int)PaymentStatusEnum.Paid
-                                 ? "Thanh toán thành công"
-                                 : "Thanh toán thất bại",
-                PayType = "",      // nếu cần có thể lưu thêm
-                ResponseTime = 0,
+                ErrorCode = payment.statusId == (int)PaymentStatusEnum.Paid ? "0" : "1",
+                ResultCode = payment.statusId == (int)PaymentStatusEnum.Paid ? "0" : "1",
+                Message = payment.statusId == (int)PaymentStatusEnum.Paid ? "Thanh toán thành công" : "Thanh toán thất bại",
+                PayType = "",
+                ResponseTime = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds().ToString(), // convert long -> string
                 ExtraData = "",
                 Signature = ""
             };
+
         }
     }
 }
