@@ -30,6 +30,7 @@ namespace CozyCare.BookingService.Controllers
             FromBaseResponse(await _bookingService.GetAllBookingsAsync());
 
         [HttpGet("{id}")]
+        [AllowAnonymous]
         public async Task<IActionResult> GetBookingById(int id) =>
             FromBaseResponse(await _bookingService.GetBookingByIdAsync(id));
 
@@ -38,6 +39,7 @@ namespace CozyCare.BookingService.Controllers
             FromBaseResponse(await _bookingService.CreateBookingAsync(booking));
 
         [HttpPut("{id}")]
+        [AllowAnonymous]
         public async Task<IActionResult> UpdateBooking(int id, [FromBody] BookingRequest booking) =>
             FromBaseResponse(await _bookingService.UpdateBookingAsync(id, booking));
 

@@ -35,5 +35,7 @@ namespace CozyCare.ViewModels.DTOs
         public string OrderInfo { get; set; } = string.Empty;
         public int ErrorCode { get; set; }
         public string Message { get; set; } = string.Empty;
+
+        public string? Token { get; set; }
     }
 }

@@ -178,7 +178,7 @@ namespace CozyCare.PaymentService.Application.Services
             return BitConverter.ToString(hash).Replace("-", "").ToLower();
         }
 
-        public async Task<MomoExecuteResponseModel> GetCallbackDataAsync(string orderId)
+        public async Task<MomoExecuteResponseModel> GetCallbackDataAsync(string orderId, string token)
         {
             var payment = await _uow.Payments
                 .GetFirstOrDefaultAsync(p => p.momoOrderId == orderId);
@@ -199,7 +199,7 @@ namespace CozyCare.PaymentService.Application.Services
                 Message = payment.statusId == (int)PaymentStatusEnum.Paid ? "Thanh toán thành công" : "Thanh toán thất bại",
                 PayType = "",
                 ResponseTime = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds().ToString(), // convert long -> string
-                ExtraData = "",
+                ExtraData = token,
                 Signature = ""
             };
 
