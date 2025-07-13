@@ -367,7 +367,7 @@
       //}
     }, // ... phần trước của "Routes"
     {
-      "DownstreamPathTemplate": "/api/momo/create",
+      "DownstreamPathTemplate": "/api/Momo/create",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
@@ -376,18 +376,6 @@
         }
       ],
       "UpstreamPathTemplate": "/payment/momo/create",
-      "UpstreamHttpMethod": [ "Post" ]
-    },
-    {
-      "DownstreamPathTemplate": "/api/momo/notify",
-      "DownstreamScheme": "http",
-      "DownstreamHostAndPorts": [
-        {
-          "Host": "localhost",
-          "Port": 5232
-        }
-      ],
-      "UpstreamPathTemplate": "/payment/momo/notify",
       "UpstreamHttpMethod": [ "Post" ]
     },
     {
