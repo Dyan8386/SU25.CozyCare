@@ -91,12 +91,13 @@ namespace CozyCare.BookingService.Applications.Services
 		public async Task<BaseResponse<IEnumerable<TaskAvailableResponse>>> GetAvailableTasksAsync()
 		{
 			const int PENDING = 1;  // trạng thái cần lọc
+			const int PAID = 2; // trạng thái thanh toán cần lọc
 
 			// Lọc bookingDetail sao cho booking.bookingStatusId == AVAILABLE_STATUS
 			// Include luôn navigation property "booking" để lấy BookingNumber và BookingStatusId
 			var details = await _unitOfWork.BookingDetails
 				.SearchAsync(
-					filter: bd => bd.booking.bookingStatusId == PENDING,
+					filter: bd => bd.booking.bookingStatusId == PENDING && bd.booking.paymentStatusId == PAID, // Fixed comparison operator
 					includeProperties: "booking"
 				);
 
