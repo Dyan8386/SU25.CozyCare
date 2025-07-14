@@ -1,5 +1,7 @@
 ﻿using CozyCare.IdentityService.Application.Interfaces;
 using CozyCare.SharedKernel.Base;
+using CozyCare.SharedKernel.Store;
+using CozyCare.SharedKernel.Utils;
 using CozyCare.ViewModels.DTOs;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -23,5 +25,13 @@ namespace CozyCare.IdentityService.Controllers
             var result = await _authService.AuthenticateAsync(request);
             return FromBaseResponse(result);
         }
+
+        [HttpGet("verify")]
+        [Authorize]
+        public IActionResult VerifyToken()
+        {
+            return Ok(BaseResponse<string>.OkResponse("Token is valid"));
+        }
+
     }
 }

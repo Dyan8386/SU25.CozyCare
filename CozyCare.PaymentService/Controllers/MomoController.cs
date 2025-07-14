@@ -92,9 +92,9 @@ namespace CozyCare.PaymentService.Controllers
         /// Cho client fetch kết quả thanh toán sau khi redirect về frontend
         /// </summary>
         [HttpGet("callback/{orderId}")]
-        public async Task<IActionResult> GetCallbackData(string orderId, string token) 
+        public async Task<IActionResult> GetCallbackData(string orderId) 
         {
-            var model = await _momoService.GetCallbackDataAsync(orderId, token);
+            var model = await _momoService.GetCallbackDataAsync(orderId);
             if (model == null)
                 return NotFound(new { message = $"Không tìm thấy orderId {orderId}" });
 
