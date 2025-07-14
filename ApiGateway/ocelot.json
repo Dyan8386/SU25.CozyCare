@@ -243,6 +243,23 @@
       //  "AllowedScopes": []
       //}
     },
+    {
+      "DownstreamPathTemplate": "/api/Auth/verify",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5163
+        }
+      ],
+      "UpstreamPathTemplate": "/identity/auth/verify",
+      "UpstreamHttpMethod": [ "Get" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    },
+
 
     {
       "DownstreamPathTemplate": "/api/Bookings/{everything}",
@@ -379,6 +396,18 @@
       "UpstreamHttpMethod": [ "Post" ]
     },
     {
+      "DownstreamPathTemplate": "/api/Momo/callback/{orderId}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5232
+        }
+      ],
+      "UpstreamPathTemplate": "/payment/momo/callback/{orderId}",
+      "UpstreamHttpMethod": [ "Get" ]
+    },
+    {
       "DownstreamPathTemplate": "/api/Payments/{everything}",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
@@ -417,7 +446,7 @@
       "DownstreamHostAndPorts": [
         {
           "Host": "localhost",
-          "Port": 5100
+          "Port": 5193
         }
       ],
       "UpstreamPathTemplate": "/job/reviews",
@@ -433,7 +462,7 @@
       "DownstreamHostAndPorts": [
         {
           "Host": "localhost",
-          "Port": 5100
+          "Port": 5193
         }
       ],
       "UpstreamPathTemplate": "/job/reviews/{id}",
@@ -449,7 +478,7 @@
       "DownstreamHostAndPorts": [
         {
           "Host": "localhost",
-          "Port": 5100
+          "Port": 5193
         }
       ],
       "UpstreamPathTemplate": "/job/reviews/search",
@@ -465,7 +494,7 @@
       "DownstreamHostAndPorts": [
         {
           "Host": "localhost",
-          "Port": 5100
+          "Port": 5193
         }
       ],
       "UpstreamPathTemplate": "/job/reviews/users/{accountId}",
@@ -481,7 +510,7 @@
       "DownstreamHostAndPorts": [
         {
           "Host": "localhost",
-          "Port": 5100
+          "Port": 5193
         }
       ],
       "UpstreamPathTemplate": "/job/reviews/bookingdetails/{Id}",
@@ -497,7 +526,7 @@
       "DownstreamHostAndPorts": [
         {
           "Host": "localhost",
-          "Port": 5100
+          "Port": 5193
         }
       ],
       "UpstreamPathTemplate": "/job/taskclaims/{everything}",
@@ -513,7 +542,7 @@
       "DownstreamHostAndPorts": [
         {
           "Host": "localhost",
-          "Port": 5100
+          "Port": 5193
         }
       ],
       "UpstreamPathTemplate": "/job/taskclaims",
@@ -529,7 +558,7 @@
       "DownstreamHostAndPorts": [
         {
           "Host": "localhost",
-          "Port": 5100
+          "Port": 5193
         }
       ],
       "UpstreamPathTemplate": "/job/taskclaims/search",
@@ -545,7 +574,7 @@
       "DownstreamHostAndPorts": [
         {
           "Host": "localhost",
-          "Port": 5100
+          "Port": 5193
         }
       ],
       "UpstreamPathTemplate": "/job/taskclaims/change-status/{id}",
@@ -561,7 +590,7 @@
       "DownstreamHostAndPorts": [
         {
           "Host": "localhost",
-          "Port": 5100
+          "Port": 5193
         }
       ],
       "UpstreamPathTemplate": "/job/taskclaims/users/{accountId}",
@@ -577,7 +606,7 @@
       "DownstreamHostAndPorts": [
         {
           "Host": "localhost",
-          "Port": 5100
+          "Port": 5193
         }
       ],
       "UpstreamPathTemplate": "/job/taskclaims/bookingdetails/{Id}",
@@ -593,7 +622,7 @@
       "DownstreamHostAndPorts": [
         {
           "Host": "localhost",
-          "Port": 5100
+          "Port": 5193
         }
       ],
       "UpstreamPathTemplate": "/job/taskclaim-status",
@@ -609,7 +638,7 @@
       "DownstreamHostAndPorts": [
         {
           "Host": "localhost",
-          "Port": 5100
+          "Port": 5193
         }
       ],
       "UpstreamPathTemplate": "/job/taskclaim-status/{id}",
@@ -625,7 +654,7 @@
       "DownstreamHostAndPorts": [
         {
           "Host": "localhost",
-          "Port": 5100
+          "Port": 5193
         }
       ],
       "UpstreamPathTemplate": "/job/taskclaim-status/search",
