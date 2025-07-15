@@ -55,19 +55,13 @@ namespace CozyCare.IdentityService.Controllers
             return FromBaseResponse(result);
         }
 
-        [HttpGet("current")]
-        public IActionResult GetCurrent()
+        [HttpPatch("{id}/status")]
+        public async Task<IActionResult> ToggleAccountStatus(int id)
         {
-            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            var username = User.Identity?.Name;
-            var roles = User.FindAll(ClaimTypes.Role).Select(r => r.Value).ToList();
-
-            return Ok(new
-            {
-                id = int.Parse(userId!),
-                username,
-                roles
-            });
+            var result = await _accountService.ToggleAccountStatusAsync(id);
+            return FromBaseResponse(result);
         }
+
+
     }
 }

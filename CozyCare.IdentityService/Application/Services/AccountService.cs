@@ -5,6 +5,7 @@ using CozyCare.IdentityService.Infrastructure;
 using CozyCare.SharedKernel.Base;
 using CozyCare.SharedKernel.Utils;
 using CozyCare.ViewModels.DTOs;
+using CozyCare.ViewModels.Enums;
 using Microsoft.EntityFrameworkCore;
 
 namespace CozyCare.IdentityService.Application.Services
@@ -133,5 +134,44 @@ namespace CozyCare.IdentityService.Application.Services
 
             return BaseResponse<AccountDto>.OkResponse(_mapper.Map<AccountDto>(entity));
         }
+
+        public async Task<BaseResponse<string>> ToggleAccountStatusAsync(int id)
+        {
+            var entity = await _uow.Accounts.GetByIdAsync(id);
+            if (entity == null)
+                return BaseResponse<string>.NotFoundResponse("Tài khoản không tồn tại");
+
+            // Đảo trạng thái giữa Active và Locked
+            if (entity.statusId == (int)AccountStatusEnum.Locked)
+            {
+                entity.statusId = (int)AccountStatusEnum.Active;
+            }
+            else
+            {
+                entity.statusId = (int)AccountStatusEnum.Locked;
+            }
+
+            entity.updatedDate = DateTime.UtcNow;
+
+            _uow.Accounts.Update(entity);
+
+            try
+            {
+                await _uow.SaveChangesAsync();
+            }
+            catch (DbUpdateException ex)
+            {
+                return BaseResponse<string>.ErrorResponse($"Không thể cập nhật trạng thái tài khoản: {ex.InnerException?.Message ?? ex.Message}");
+            }
+
+            var message = entity.statusId == (int)AccountStatusEnum.Locked
+                ? "Tài khoản đã bị khóa"
+                : "Tài khoản đã được mở khóa";
+
+            return BaseResponse<string>.OkResponse(message);
+        }
+
+
     }
+
 }

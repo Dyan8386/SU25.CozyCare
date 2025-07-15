@@ -211,7 +211,7 @@
       }
     },
     {
-      "DownstreamPathTemplate": "/api/Account/current",
+      "DownstreamPathTemplate": "/api/Account/{id}/status",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
@@ -219,14 +219,13 @@
           "Port": 5163
         }
       ],
-      "UpstreamPathTemplate": "/identity/account/current",
-      "UpstreamHttpMethod": [ "Get" ],
+      "UpstreamPathTemplate": "/identity/account/{id}/status",
+      "UpstreamHttpMethod": [ "Patch" ],
       "AuthenticationOptions": {
         "AuthenticationProviderKey": "Bearer",
         "AllowedScopes": []
       }
     },
-
     {
       "DownstreamPathTemplate": "/api/Auth/login",
       "DownstreamScheme": "http",
@@ -259,8 +258,6 @@
         "AllowedScopes": []
       }
     },
-
-
     {
       "DownstreamPathTemplate": "/api/Bookings/{everything}",
       "DownstreamScheme": "http",
@@ -417,6 +414,38 @@
         }
       ],
       "UpstreamPathTemplate": "/payment/payments/{everything}",
+      "UpstreamHttpMethod": [ "Get" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/Payments",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5232
+        }
+      ],
+      "UpstreamPathTemplate": "/payment/payments",
+      "UpstreamHttpMethod": [ "Get" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/Payments/{id}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5232
+        }
+      ],
+      "UpstreamPathTemplate": "/payment/payments/{id}",
       "UpstreamHttpMethod": [ "Get" ],
       "AuthenticationOptions": {
         "AuthenticationProviderKey": "Bearer",

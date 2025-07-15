@@ -32,7 +32,7 @@ namespace CozyCare.JobService.Application.Externals
             _http.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
             // Gọi Ocelot: GET https://localhost:5158/catalog/services/{serviceId}
-            var resp = await _http.GetAsync($"bookingDetails/{id}", ct);
+            var resp = await _http.GetAsync($"booking/booking-details/{id}", ct);
             //var resp = await _http.GetAsync($"/catalog/services/{serviceId}", ct);
             // Nếu gặp redirect (nếu Ocelot forward redirect về URL khác)
             if (resp.StatusCode == HttpStatusCode.TemporaryRedirect ||
@@ -67,7 +67,7 @@ namespace CozyCare.JobService.Application.Externals
             _http.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
             // Gọi Ocelot: GET https://localhost:5158/catalog/services/{serviceId}
-            var resp = await _http.GetAsync($"accounts/{id}", ct);
+            var resp = await _http.GetAsync($"identity/account/{id}", ct);
             //var resp = await _http.GetAsync($"/catalog/services/{serviceId}", ct);
             // Nếu gặp redirect (nếu Ocelot forward redirect về URL khác)
             if (resp.StatusCode == HttpStatusCode.TemporaryRedirect ||

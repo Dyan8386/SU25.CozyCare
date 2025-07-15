@@ -21,8 +21,16 @@ namespace CozyCare.JobService.Application.Profiles
                 );
 
             CreateMap<TaskClaim, TaskClaimDto>().ReverseMap();
-            CreateMap<TaskClaim, CreateTaskClaimDto>();
+            //CreateMap<TaskClaim, CreateTaskClaimDto>();
+            CreateMap<CreateTaskClaimDto, TaskClaim>();
             CreateMap<TaskClaim, UpdateTaskClaimDto>()
+                .ForAllMembers(opts =>
+                    opts.Condition((src, dest, srcMember) =>
+                        srcMember != null &&
+                        (!ProfileHelper.IsNumericType(srcMember.GetType()) || !srcMember.Equals(0))
+                    )
+                );
+            CreateMap<UpdateTaskClaimDto, TaskClaim>()
                 .ForAllMembers(opts =>
                     opts.Condition((src, dest, srcMember) =>
                         srcMember != null &&
