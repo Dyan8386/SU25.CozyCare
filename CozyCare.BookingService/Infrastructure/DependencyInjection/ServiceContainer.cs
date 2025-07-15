@@ -49,6 +49,11 @@ namespace CozyCare.BookingService.Infrastructure.DependencyInjection
 				{
 					AllowAutoRedirect = false
 				});
+			services.AddHttpClient<IJobApiClient, JobApiClient>("JobService")
+				.ConfigurePrimaryHttpMessageHandler(() => new HttpClientHandler
+				{
+					AllowAutoRedirect = false
+				});
 
 			return services;
         }
