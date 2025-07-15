@@ -1,4 +1,5 @@
-﻿using CozyCare.BookingService.Applications.Interfaces;
+﻿using CozyCare.BookingService.Applications.Externals;
+using CozyCare.BookingService.Applications.Interfaces;
 using CozyCare.BookingService.DTOs.BookingDetails;
 using CozyCare.SharedKernel.Base;
 using Microsoft.AspNetCore.Authorization;
@@ -13,10 +14,12 @@ namespace CozyCare.BookingService.Controllers
     public class BookingDetailsController : BaseApiController
     {
         private readonly IBookingDetailService _bookingDetailService;
+        private readonly IJobApiClient _jobApiClient;
 
-        public BookingDetailsController(IBookingDetailService bookingDetailService)
+        public BookingDetailsController(IBookingDetailService bookingDetailService, IJobApiClient jobApiClient)
         {
             _bookingDetailService = bookingDetailService;
+            _jobApiClient = jobApiClient;
         }
 
         [HttpGet]
@@ -54,5 +57,13 @@ namespace CozyCare.BookingService.Controllers
             var response = await _bookingDetailService.GetBookingDetailsByBookingIdAsync(id);
             return FromBaseResponse(response);
         }
-    }
+
+		[HttpGet("getTasksbyDetail/{id}")]
+        [AllowAnonymous]
+        public async Task<IActionResult> GetTasksByDetailId(int id)
+        {
+            var response = await _jobApiClient.GetTaskByBookingDetailsId(id);
+            return FromBaseResponse(response);
+        }
+	}
 }
