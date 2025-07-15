@@ -22,7 +22,7 @@ namespace CozyCare.IdentityService.Infrastructure.Repositories
                 .Include(a => a.status)
                 .FirstOrDefaultAsync(a =>
                     (a.email == input || a.phone == input) &&
-                    a.password == password);
+                    a.password == password && a.status.statusId == 1);
         }
     }
 }

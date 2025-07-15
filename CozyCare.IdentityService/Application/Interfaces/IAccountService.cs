@@ -10,5 +10,6 @@ namespace CozyCare.IdentityService.Application.Interfaces
         Task<BaseResponse<AccountDto>> CreateAsync(CreateAccountRequestDto request);
         Task<BaseResponse<AccountDto>> UpdateAsync(int id, UpdateAccountRequestDto request);
         Task<BaseResponse<string>> DeleteAsync(int id);
+        Task<BaseResponse<string>> ToggleAccountStatusAsync(int id);
     }
 }
