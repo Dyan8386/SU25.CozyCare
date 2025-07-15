@@ -18,6 +18,8 @@ namespace CozyCare.ViewModels.DTOs
         public bool? IsActive { get; set; }
         public DateTime? CreatedDate { get; set; }
         public DateTime? UpdatedDate { get; set; }
+
+        public List<ServiceDetailDto>? serviceDetails { get; set; }
     }
 
     public class CreateServiceDto

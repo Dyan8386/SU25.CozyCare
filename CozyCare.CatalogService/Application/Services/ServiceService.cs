@@ -22,7 +22,7 @@ namespace CozyCare.CatalogService.Application.Services
 
         public async Task<BaseResponse<IEnumerable<ServiceDto>>> GetAllAsync()
         {
-            var services = await _unitOfWork.Services.GetAllAsync();
+            var services = await _unitOfWork.Services.GetAllAsync("ServiceDetails");
             return BaseResponse<IEnumerable<ServiceDto>>.OkResponse(_mapper.Map<IEnumerable<ServiceDto>>(services));
         }
 

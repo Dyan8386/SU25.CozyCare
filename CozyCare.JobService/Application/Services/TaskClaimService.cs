@@ -26,17 +26,15 @@ namespace CozyCare.JobService.Application.Services
 
         public async Task<BaseResponse<TaskClaimDto>> CreateAsync(CreateTaskClaimDto dto)
         {
-            var customer = await _jobApiClient.GetAccountByIdAsync(dto.housekeeperId);
-            if (customer.StatusCode != StatusCodeHelper.OK || customer.Data == null)
-                return customer.StatusCode == StatusCodeHelper.NotFound
-                    ? BaseResponse<TaskClaimDto>.NotFoundResponse($"housekeeper with ID {dto.housekeeperId} not found.")
-                    : BaseResponse<TaskClaimDto>.ErrorResponse(customer.Message);
+            //var customer = await _jobApiClient.GetAccountByIdAsync(dto.housekeeperId);
+            //if (customer.StatusCode != StatusCodeHelper.OK || customer.Data == null)
+            //    return customer.StatusCode == StatusCodeHelper.NotFound
+            //        ? BaseResponse<TaskClaimDto>.NotFoundResponse($"housekeeper with ID {dto.housekeeperId} not found.")
+            //        : BaseResponse<TaskClaimDto>.ErrorResponse(customer.Message);
 
-            var bookingDetail = await _jobApiClient.GetBookingDetailByIdAsync(dto.detailId);
-            if (bookingDetail.StatusCode != StatusCodeHelper.OK || bookingDetail.Data == null)
-                throw new BaseException.BadRequestException("booking_detail_not_found", "Booking detail not found");
-
-
+            //var bookingDetail = await _jobApiClient.GetBookingDetailByIdAsync(dto.detailId);
+            //if (bookingDetail.StatusCode != StatusCodeHelper.OK || bookingDetail.Data == null)
+            //    throw new BaseException.BadRequestException("booking_detail_not_found", "Booking detail not found");
             var entity = _mapper.Map<TaskClaim>(dto);
 
             await _unitOfWork.TaskClaims.AddAsync(entity);

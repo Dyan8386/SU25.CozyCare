@@ -24,11 +24,10 @@ namespace CozyCare.JobService.Infrastructure.DependencyInjection
             services.AddScoped<ITaskClaimService, TaskClaimService>();
             services.AddScoped<ITaskClaimStatusService, TaskClaimStatusService>();
 
-            services.AddHttpClient<IJobApiClient, JobApiClient>("JobService");
             //services.AddAutoMapper(typeof(CatalogMappingProfile).Assembly);
             //services.AddHttpClient<IIdentityApiClient, IdentityApiClient>("IdentityService");
             services.AddAutoMapper(typeof(JobMappingProfile).Assembly);
-            services.AddHttpClient<IJobApiClient, JobApiClient>("JobService").ConfigurePrimaryHttpMessageHandler(() => new HttpClientHandler
+            services.AddHttpClient<IJobApiClient, JobApiClient>().ConfigurePrimaryHttpMessageHandler(() => new HttpClientHandler
             {
                 AllowAutoRedirect = false
             });
