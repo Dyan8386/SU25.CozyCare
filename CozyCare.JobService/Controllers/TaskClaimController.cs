@@ -51,12 +51,8 @@ namespace CozyCare.JobService.Controllers
         public async Task<IActionResult> ChangeStatus(int id)
         {
             var result = await _taskClaimService.ChangeStatusTaskClaim(id);
-            if (result.StatusCode == StatusCodeHelper.OK) // Replace 'IsSuccess' with a valid property or condition  
-            {
-                return Ok(result.Data);
-            }
-            return BadRequest(result.Message);
-        }
+			return FromBaseResponse(result);
+		}
         [HttpGet("users/{accountId}")]
         public async Task<IActionResult> GetByAccountId(int accountId)
         {

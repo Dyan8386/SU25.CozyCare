@@ -16,13 +16,49 @@ namespace CozyCare.BookingService.Applications.Services
 		private readonly IMapper _mapper;
 		private readonly IIdentityApiClient _identityApiClient;
 		private readonly IPaymentApiClient _paymentApiClient;
+		private readonly IJobApiClient _jobApiClient;
 
-		public BookingService(IBookingUnitOfWork unitOfWork, IMapper mapper, IIdentityApiClient identityApiClient, IPaymentApiClient paymentApiClient)
+		public BookingService(IBookingUnitOfWork unitOfWork, IMapper mapper, IIdentityApiClient identityApiClient, IPaymentApiClient paymentApiClient, IJobApiClient jobApiClient)
 		{
 			_unitOfWork = unitOfWork;
 			_mapper = mapper;
 			_identityApiClient = identityApiClient;
 			_paymentApiClient = paymentApiClient;
+			_jobApiClient = jobApiClient;
+		}
+
+		public async Task<BaseResponse<string>> CompleteTask(int id)
+		{
+			// Lấy booking detail 
+			var bookingDetails = await _unitOfWork.BookingDetails
+				.SearchAsync(bd => bd.bookingId == id);
+
+			//Lấy detailId đầu tiên
+			var detailId = bookingDetails.First().detailId;
+
+			//Lấy thông tin của tasks thông qua detailId
+			var tasks = await _jobApiClient.GetTaskByBookingDetailsId(detailId);
+
+			var taskId = tasks.Data.FirstOrDefault().claimId;
+			//Thay đổi status của task
+			await _jobApiClient.ChangeStatusTaskClaim(taskId);
+
+			//Lấy booking
+			var booking = await _unitOfWork.Bookings.GetByIdAsync(id);
+
+			if (booking == null)
+			{
+				return BaseResponse<string>.NotFoundResponse($"Booking with ID {id} not found.");
+			}
+
+			//thay đổi bookingStatusId thành trạng thái completed
+			const int COMPLETED = 4;
+			booking.bookingStatusId = COMPLETED;
+			await _unitOfWork.Bookings.UpdateAsync(booking);
+			await _unitOfWork.SaveChangesAsync();
+
+			return BaseResponse<string>.OkResponse($"Booking with {id} is updated COMPLETED sucessfully");
+
 		}
 
 		public async Task<BaseResponse<IEnumerable<BookingResponse>>> GetAllBookingsAsync()

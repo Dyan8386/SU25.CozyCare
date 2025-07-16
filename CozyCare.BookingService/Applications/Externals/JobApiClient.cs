@@ -23,6 +23,46 @@ namespace CozyCare.BookingService.Applications.Externals
 			_tokenAccessor = tokenAccessor;
 		}
 
+		public async Task<BaseResponse<bool>> ChangeStatusTaskClaim(int id, CancellationToken ct = default)
+		{
+			// Gắn token
+			var token = _tokenAccessor.GetAccessToken();
+			_http.DefaultRequestHeaders.Remove("Authorization");
+			_http.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+			// (1) Đảm bảo đã set BaseAddress = https://localhost:5158/
+			//    nếu chưa: _http.BaseAddress = new Uri("https://localhost:5158/");
+
+			// Gọi Ocelot
+			var resp = await _http.PostAsync($"taskclaims/change-status/{id}", content: null, ct);
+
+			// (2) Xử lý redirect như trước
+			if (resp.StatusCode == HttpStatusCode.TemporaryRedirect ||
+				resp.StatusCode == HttpStatusCode.MovedPermanently ||
+				resp.StatusCode == HttpStatusCode.PermanentRedirect)
+			{
+				var redirectUri = resp.Headers.Location!;
+				resp = await _http.PostAsync(redirectUri, content: null, ct);
+			}
+
+			var json = await resp.Content.ReadAsStringAsync(ct);
+
+			if (!resp.IsSuccessStatusCode)
+			{
+				return BaseResponse<bool>.ErrorResponse(
+					$"HTTP {(int)resp.StatusCode} - {resp.ReasonPhrase}"
+				);
+			}
+
+			// (3) Deserialize vào wrapper BaseResponse<AccountDto>
+			var wrapper = JsonSerializer.Deserialize<BaseResponse<bool>>(json, _jsonOptions);
+			if (wrapper is null)
+				return BaseResponse<bool>.ErrorResponse("Không thể deserialize thành BaseResponse<AccountDto>");
+
+			// (4) Trả về kết quả
+			return BaseResponse<bool>.OkResponse(wrapper.Data);
+		}
+
 		public async Task<BaseResponse<IEnumerable<TaskClaimDto>>> GetTaskByBookingDetailsId (int id, CancellationToken ct = default)
 		{
 			// Gắn token
