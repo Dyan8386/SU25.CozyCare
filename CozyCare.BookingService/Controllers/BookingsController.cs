@@ -83,5 +83,12 @@ namespace CozyCare.BookingService.Controllers
             var response = await _paymentApiClient.GetPromotionByCode(code);
             return FromBaseResponse(response);
         }
+
+        [HttpPatch("completed-task/{id}")]
+        public async Task<IActionResult> PatchCompletedTask(int id)
+        {
+            var response = await _bookingService.CompleteTask(id);
+            return FromBaseResponse(response);
+        }
     }
 }

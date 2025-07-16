@@ -6,5 +6,7 @@ namespace CozyCare.BookingService.Applications.Externals
 	public interface IJobApiClient
 	{
 		Task<BaseResponse<IEnumerable<TaskClaimDto>>> GetTaskByBookingDetailsId(int id, CancellationToken ct = default);
+        Task<BaseResponse<bool>> ChangeStatusTaskClaim(int id, CancellationToken ct = default);
+
 	}
 }

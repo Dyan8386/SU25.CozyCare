@@ -15,6 +15,7 @@ namespace CozyCare.BookingService.Applications.Interfaces
 		Task<BaseResponse<IEnumerable<BookingResponse>>> GetAvailableTasksAsync();
 		Task<BaseResponse<IEnumerable<BookingResponse>>> GetBookingsByAccountIdAsync(int accountId);
 		Task<BaseResponse<IEnumerable<BookingResponse>>> GetBookingsByStatusAsync(int statusId);
+		Task<BaseResponse<string>> CompleteTask(int id);
 
 	}
 }
