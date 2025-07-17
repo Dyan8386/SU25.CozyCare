@@ -1,5 +1,7 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using CozyCare.BookingService.Domain.Entities;
+using CozyCare.BookingService.DTOs.BookingDetails;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CozyCare.BookingService.DTOs.Bookings
 {
@@ -26,6 +28,8 @@ namespace CozyCare.BookingService.DTOs.Bookings
 		public int paymentStatusId { get; set; }
 
 		public string address { get; set; } = string.Empty; // Add the Address field
+
+		public List<BDetailResponse?> bookingDetails { get; set; } = new List<BDetailResponse?>();
 
 	}
 }
