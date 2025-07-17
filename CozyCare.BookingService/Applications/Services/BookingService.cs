@@ -63,7 +63,7 @@ namespace CozyCare.BookingService.Applications.Services
 
 		public async Task<BaseResponse<IEnumerable<BookingResponse>>> GetAllBookingsAsync()
 		{
-			var bookings = await _unitOfWork.Bookings.GetAllAsync();
+			var bookings = await _unitOfWork.Bookings.GetAllAsync("BookingDetails");
 			var bookingResponses = _mapper.Map<IEnumerable<BookingResponse>>(bookings);
 			return BaseResponse<IEnumerable<BookingResponse>>.OkResponse(bookingResponses);
 		}
