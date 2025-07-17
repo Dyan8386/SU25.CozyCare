@@ -2,6 +2,7 @@
 using CozyCare.BookingService.Domain.Entities;
 using CozyCare.BookingService.DTOs.Bookings;
 using CozyCare.SharedKernel.Utils;
+using CozyCare.ViewModels.DTOs;
 
 namespace CozyCare.BookingService.Applications.Profiles
 {
@@ -9,9 +10,10 @@ namespace CozyCare.BookingService.Applications.Profiles
 	{
 		public BookingProfile()
 		{
-			CreateMap<Booking, BookingResponse>().ReverseMap();
-			CreateMap<BookingRequest, Booking>();
-			CreateMap<BookingRequest, Booking>()
+            CreateMap<Booking, BookingDto>().ReverseMap();
+            CreateMap<Booking, BookingResponse>().ReverseMap();
+			CreateMap<DTOs.Bookings.BookingRequest, Booking>();
+			CreateMap<DTOs.Bookings.BookingRequest, Booking>()
 				// Map tất cả member nhưng với điều kiện chung cho số = 0 và datetime = default
 				.ForAllMembers(opts => opts.Condition((src, dest, srcMember) =>
 				{

@@ -7,6 +7,7 @@ using CozyCare.BookingService.DTOs.Bookings;
 using CozyCare.BookingService.Infrastructure;
 using CozyCare.SharedKernel.Base;
 using CozyCare.SharedKernel.Store;
+using CozyCare.ViewModels.DTOs;
 
 namespace CozyCare.BookingService.Applications.Services
 {
@@ -61,11 +62,11 @@ namespace CozyCare.BookingService.Applications.Services
 
 		}
 
-		public async Task<BaseResponse<IEnumerable<BookingResponse>>> GetAllBookingsAsync()
+		public async Task<BaseResponse<IEnumerable<BookingDto>>> GetAllBookingsAsync()
 		{
 			var bookings = await _unitOfWork.Bookings.GetAllAsync("BookingDetails");
-			var bookingResponses = _mapper.Map<IEnumerable<BookingResponse>>(bookings);
-			return BaseResponse<IEnumerable<BookingResponse>>.OkResponse(bookingResponses);
+			var bookingResponses = _mapper.Map<IEnumerable<BookingDto>>(bookings);
+			return BaseResponse<IEnumerable<BookingDto>>.OkResponse(bookingResponses);
 		}
 
 		public async Task<BaseResponse<BookingResponse>> GetBookingByIdAsync(int id)
@@ -79,7 +80,7 @@ namespace CozyCare.BookingService.Applications.Services
 			return BaseResponse<BookingResponse>.OkResponse(bookingResponse);
 		}
 
-		public async Task<BaseResponse<BookingResponse>> CreateBookingAsync(BookingRequest bookingRequest)
+		public async Task<BaseResponse<BookingResponse>> CreateBookingAsync(DTOs.Bookings.BookingRequest bookingRequest)
 		{
 			var customer = await _identityApiClient.GetAccountById(bookingRequest.customerId);
 			if (customer.StatusCode != StatusCodeHelper.OK || customer.Data == null)
@@ -101,7 +102,7 @@ namespace CozyCare.BookingService.Applications.Services
 			return BaseResponse<BookingResponse>.OkResponse(bookingResponse);
 		}
 
-		public async Task<BaseResponse<string>> UpdateBookingAsync(int id, BookingRequest bookingRequest)
+		public async Task<BaseResponse<string>> UpdateBookingAsync(int id, DTOs.Bookings.BookingRequest bookingRequest)
 		{
 			var existingBooking = await _unitOfWork.Bookings.GetByIdAsync(id);
 			if (existingBooking == null)
