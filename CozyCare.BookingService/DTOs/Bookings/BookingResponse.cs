@@ -29,7 +29,5 @@ namespace CozyCare.BookingService.DTOs.Bookings
 
 		public string address { get; set; } = string.Empty; // Add the Address field
 
-		public List<BDetailResponse?> bookingDetails { get; set; } = new List<BDetailResponse?>();
-
 	}
 }

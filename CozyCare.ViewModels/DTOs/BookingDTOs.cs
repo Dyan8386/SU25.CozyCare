@@ -19,6 +19,7 @@ namespace CozyCare.ViewModels.DTOs
         public int BookingStatusId { get; set; }
         public int PaymentStatusId { get; set; }
         public string Address { get; set; } = string.Empty;
+        public List<BookingDetailDto?> bookingDetails { get; set; } = new List<BookingDetailDto?>();
     }
 
     public class BookingRequest
