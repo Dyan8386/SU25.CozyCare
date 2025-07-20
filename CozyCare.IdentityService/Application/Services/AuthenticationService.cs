@@ -19,18 +19,18 @@ namespace CozyCare.IdentityService.Application.Services
     {
         private readonly IIdentityUnitOfWork _uow;
         private readonly IMapper _mapper;
-        private readonly IConfiguration _configuration;
         private readonly JwtSettings _jwtSettings;
 
-
-        public AuthenticationService(IIdentityUnitOfWork uow, IMapper mapper, IConfiguration configuration, IOptions<JwtSettings> jwtOptions)
+        public AuthenticationService(
+            IIdentityUnitOfWork uow,
+            IMapper mapper,
+            IConfiguration configuration,
+            IOptions<JwtSettings> jwtOptions)
         {
             _uow = uow;
             _mapper = mapper;
-            _configuration = configuration;
-            _jwtSettings = jwtOptions?.Value ?? throw new InvalidOperationException("JWT Key is not configured.");
+            _jwtSettings = jwtOptions.Value;
         }
-        
 
         public async Task<BaseResponse<LoginResponseDto>> AuthenticateAsync(LoginRequestDto request)
         {
@@ -45,45 +45,64 @@ namespace CozyCare.IdentityService.Application.Services
             var response = new LoginResponseDto
             {
                 AccessToken = token,
-                Expires = DateTime.UtcNow.AddHours(1),
+                Expires = DateTime.UtcNow.AddHours(_jwtSettings.ExpireHours),
                 Account = _mapper.Map<AccountDto>(account)
             };
 
             return BaseResponse<LoginResponseDto>.OkResponse(response);
         }
 
+        public async Task<BaseResponse<AccountDto>> RegisterAsync(RegisterRequestDto request)
+        {
+            // TODO: implement registration (verify email/phone, OTP)
+            throw new NotImplementedException();
+        }
+
+        public async Task<BaseResponse<string>> ConfirmEmailAsync(string email, string token)
+        {
+            // TODO: confirm email
+            throw new NotImplementedException();
+        }
+
+        public async Task<BaseResponse<string>> SendOtpAsync(string phone)
+        {
+            // TODO: send OTP
+            throw new NotImplementedException();
+        }
+
+        public async Task<BaseResponse<string>> VerifyOtpAsync(string phone, string otp)
+        {
+            // TODO: verify OTP
+            throw new NotImplementedException();
+        }
+
+        public async Task<BaseResponse<string>> ResetPasswordAsync(ResetPasswordRequestDto request)
+        {
+            // TODO: reset password
+            throw new NotImplementedException();
+        }
+
         private string GenerateJwtToken(Account account)
         {
-            var keyString = _jwtSettings.Key ?? throw new InvalidOperationException("JWT Key is not configured.");
-            var issuer = _jwtSettings.Issuer ?? throw new InvalidOperationException("JWT Issuer is not configured.");
-            var audience = _jwtSettings.Audience ?? throw new InvalidOperationException("JWT Audience is not configured.");
-
-            var key = Encoding.UTF8.GetBytes(keyString);
+            var key = Encoding.UTF8.GetBytes(_jwtSettings.Key);
             var claims = new[]
             {
                 new Claim(JwtRegisteredClaimNames.Sub, account.email),
                 new Claim(ClaimTypes.NameIdentifier, account.accountId.ToString()),
                 new Claim(ClaimTypes.Email, account.email ?? ""),
                 new Claim("FullName", account.fullName ?? ""),
-                new Claim("Avatar", account.avatar ?? ""),
-                new Claim(ClaimTypes.Role, account.roleId.ToString()),
-                new Claim("RoleName", account.role?.roleName ?? ""),
-                new Claim("StatusId", account.statusId.ToString()),
-                new Claim("StatusName", account.status?.statusName ?? "")
+                new Claim(ClaimTypes.Role, account.roleId.ToString())
             };
 
             var creds = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256);
-
             var token = new JwtSecurityToken(
-                issuer: issuer,
-                audience: audience,
+                issuer: _jwtSettings.Issuer,
+                audience: _jwtSettings.Audience,
                 claims: claims,
                 expires: DateTime.UtcNow.AddHours(_jwtSettings.ExpireHours),
-                signingCredentials: creds
-            );
+                signingCredentials: creds);
 
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
-
     }
 }

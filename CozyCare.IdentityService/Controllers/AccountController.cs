@@ -37,7 +37,7 @@ namespace CozyCare.IdentityService.Controllers
         [AllowAnonymous] // Cho phép tạo tài khoản mà không cần đăng nhập
         public async Task<IActionResult> Create([FromBody] CreateAccountRequestDto request)
         {
-            var result = await _accountService.CreateAsync(request);
+            var result = await _accountService.CreateAccountForAdminAsync(request);
             return FromBaseResponse(result);
         }
 

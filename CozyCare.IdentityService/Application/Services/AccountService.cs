@@ -21,25 +21,17 @@ namespace CozyCare.IdentityService.Application.Services
             _mapper = mapper;
         }
 
-        public async Task<BaseResponse<AccountDto>> CreateAsync(CreateAccountRequestDto request)
+       public async Task<BaseResponse<AccountDto>> CreateAccountForAdminAsync(CreateAccountRequestDto request)
         {
             var normalizedEmail = request.Email.ToLowerInvariant();
             var normalizedPhone = request.Phone?.Trim();
 
-            // Check email exists
-            var emailExists = await _uow.Accounts.Query()
-                .AnyAsync(a => a.email.ToLower() == normalizedEmail);
-            if (emailExists)
+            if (await _uow.Accounts.Query().AnyAsync(a => a.email.ToLower() == normalizedEmail))
                 return BaseResponse<AccountDto>.ErrorResponse("Email đã tồn tại");
 
-            // Check phone exists
-            if (!string.IsNullOrEmpty(normalizedPhone))
-            {
-                var phoneExists = await _uow.Accounts.Query()
-                    .AnyAsync(a => a.phone != null && a.phone == normalizedPhone);
-                if (phoneExists)
-                    return BaseResponse<AccountDto>.ErrorResponse("Số điện thoại đã tồn tại");
-            }
+            if (!string.IsNullOrEmpty(normalizedPhone) &&
+                await _uow.Accounts.Query().AnyAsync(a => a.phone == normalizedPhone))
+                return BaseResponse<AccountDto>.ErrorResponse("Số điện thoại đã tồn tại");
 
             var entity = _mapper.Map<Account>(request);
             entity.email = normalizedEmail;
@@ -49,7 +41,6 @@ namespace CozyCare.IdentityService.Application.Services
             entity.createdBy = request.CreatedBy;
 
             await _uow.Accounts.AddAsync(entity);
-
             try
             {
                 await _uow.SaveChangesAsync();
