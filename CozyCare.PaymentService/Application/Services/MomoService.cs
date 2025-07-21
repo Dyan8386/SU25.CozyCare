@@ -51,29 +51,49 @@ namespace CozyCare.PaymentService.Application.Services
 
             var orderId = Guid.NewGuid().ToString();
             var requestId = Guid.NewGuid().ToString();
-            var amount = ((int)req.Amount).ToString("F0");
+            //var amount = ((int)req.Amount).ToString("F0");
+            var amount = (long)req.Amount;
             var extraData = "";
+			var ipnUrl = "https://cozycare-test.loca.lt/api/momo/notify";
+			var redirectUrl = "http://10.0.2.2:5232/api/momo/return";
+			var lang = "vi";
+			//var raw =
+			//    $"partnerCode={_opts.PartnerCode}&accessKey={_opts.AccessKey}" +
+			//    $"&requestId={requestId}&amount={amount}" +
+			//    $"&orderId={orderId}&orderInfo={req.Notes}" +
+			//    $"&returnUrl={_opts.ReturnUrl}&notifyUrl={_opts.NotifyUrl}" +
+			//    $"&extraData={extraData}";
+			var raw =
+				$"accessKey={_opts.AccessKey}&amount={amount}" +
+				$"&extraData={extraData}&ipnUrl={ipnUrl}" +
+				$"&orderId={orderId}&orderInfo={req.Notes}" +
+				$"&partnerCode={_opts.PartnerCode}&redirectUrl={redirectUrl}" +
+				$"&requestId={requestId}&requestType={_opts.RequestType}";
 
-            var raw =
-                $"partnerCode={_opts.PartnerCode}&accessKey={_opts.AccessKey}" +
-                $"&requestId={requestId}&amount={amount}" +
-                $"&orderId={orderId}&orderInfo={req.Notes}" +
-                $"&returnUrl={_opts.ReturnUrl}&notifyUrl={_opts.NotifyUrl}" +
-                $"&extraData={extraData}";
+
+			var signature = ComputeHmacSHA256(raw, _opts.SecretKey);
+
+            var partnerName = "Test";
+			var storeId = "MomoTestStore";
+			
 
 
-            var signature = ComputeHmacSHA256(raw, _opts.SecretKey);
 
-            var payload = new
+			var payload = new
             {
                 partnerCode = _opts.PartnerCode,
-                accessKey = _opts.AccessKey,
+                //partnerName,
+                //storeId,
+                ipnUrl,
+                redirectUrl,
+                lang,
+				//accessKey = _opts.AccessKey,
                 requestId,
                 amount,
                 orderId,
                 orderInfo = req.Notes,
-                returnUrl = _opts.ReturnUrl,
-                notifyUrl = _opts.NotifyUrl,
+                //returnUrl = _opts.ReturnUrl,
+                //notifyUrl = _opts.NotifyUrl,
                 extraData,
                 requestType = _opts.RequestType,
                 signature
