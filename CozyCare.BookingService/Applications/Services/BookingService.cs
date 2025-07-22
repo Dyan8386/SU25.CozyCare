@@ -157,9 +157,10 @@ namespace CozyCare.BookingService.Applications.Services
 			var bookings = await _unitOfWork.Bookings.SearchAsync(b => b.customerId == accountId);
 			var sortedBookings = bookings
 				.OrderByDescending(b => b.bookingStatusId == 2)
-				.OrderByDescending(b => b.bookingStatusId == 1) // Ưu tiên bookingStatusId == 1 lên đầu
-				.ThenByDescending(b => b.bookingDate ?? DateTime.MinValue) // Sau đó sắp theo ngày mới nhất
+				.ThenByDescending(b => b.bookingStatusId == 1 && b.paymentStatusId == 2)
+				.ThenByDescending(b => b.bookingDate ?? DateTime.MinValue)
 				.ToList();
+
 			var bookingResponses = _mapper.Map<IEnumerable<BookingResponse>>(sortedBookings);
 			return BaseResponse<IEnumerable<BookingResponse>>.OkResponse(bookingResponses);
 		}
