@@ -40,7 +40,8 @@ namespace CozyCare.IdentityService.Application.Services
 
             if (account == null || !PasswordHelper.VerifyPassword(request.Password, account.password))
                 return BaseResponse<LoginResponseDto>.UnauthorizeResponse("Invalid email/phone or password");
-
+            if (account.statusId == 2)
+                return BaseResponse<LoginResponseDto>.UnauthorizeResponse("You do not have permission");
             var token = GenerateJwtToken(account);
             var response = new LoginResponseDto
             {
